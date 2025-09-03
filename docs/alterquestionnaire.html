@@ -1,0 +1,1969 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Alter questionnaire</title>
+
+<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/clipboard-1.7.1/clipboard.min.js"></script>
+<link href="site_libs/primer-tooltips-1.4.0/build.css" rel="stylesheet" />
+<link href="site_libs/klippy-0.0.0.9500/css/klippy.min.css" rel="stylesheet" />
+<script src="site_libs/klippy-0.0.0.9500/js/klippy.min.js"></script>
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="tweaks.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-info"></span>
+     
+    About
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="far fa-file-code"></span>
+     
+    Preparation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="prep_liss.html">
+        <span class="fa fa-user-friends"></span>
+         
+        Dyads
+      </a>
+    </li>
+    <li>
+      <a href="prep_ego.html">
+        <span class="fa fa-bullseye"></span>
+         
+        Ego-nets
+      </a>
+    </li>
+    <li>
+      <a href="prep_socio.html">
+        <span class="fa fa-project-diagram"></span>
+         
+        Socio-nets
+      </a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-bar-chart"></span>
+     
+    Analyses
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="des.html">1. Describing accuracy and bias</a>
+    </li>
+    <li>
+      <a href="analyse.html">2. Predictors of accuracy and bias</a>
+    </li>
+    <li>
+      <a href="saom.html">3. Social influence on perception</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-wrench"></span>
+     
+    Study design
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-submenu">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Dyads</a>
+      <ul class="dropdown-menu" role="menu">
+        <li class="dropdown-header">Questionnaire (LISS)</li>
+      </ul>
+    </li>
+    <li class="dropdown-submenu">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Ego-nets</a>
+      <ul class="dropdown-menu" role="menu">
+        <li>
+          <a href="egoquestionnaire.html">Ego-questionnaire</a>
+        </li>
+        <li>
+          <a href="alterquestionnaire.html">Alter-questionnaire</a>
+        </li>
+        <li>
+          <a href="alters.html">Selecting alters</a>
+        </li>
+      </ul>
+    </li>
+    <li class="dropdown-submenu">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Socio-nets</a>
+      <ul class="dropdown-menu" role="menu">
+        <li class="dropdown-header">Questionnaire 1</li>
+        <li class="dropdown-header">Questionnaire 2</li>
+      </ul>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/robfranken/perceptions_of_opinions">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Alter questionnaire</h1>
+
+</div>
+
+
+<script>
+  addClassKlippyTo("pre.r, pre.markdown");
+  addKlippy('right', 'top', 'auto', '1', 'Copy code', 'Copied!');
+</script>
+<p>The survey administered to alters, in Dutch:</p>
+<hr />
+<p><br></p>
+<!DOCTYPE html>
+<html lang="nl" dir="ltr" class="nl dir-ltr  no-js " >
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <title>LimeSurvey5 - ABS: netwerkleden!</title>
+    </head>
+    <body>
+
+        <x-test id="action::printableSurvey"></x-test>
+
+    <div id="limesurvey">
+            <h1>ABS: netwerkleden!</h1>
+
+            <div class="survey-description"></div>
+
+            <div class="survey-welcome"></div>
+
+            <p class="x-questions">Er zijn 27 vragen in deze enquête.</p>
+
+                                            <div class="survey-group ">
+    <h2>Welkom</h2>
+    <div class="group-desc">
+        
+    </div>
+                    <div id="question" class="boilerplate question-wrapper">
+    <div class="q-text">
+        <h3> <p>Beste heer/mevrouw,</p>
+
+<p> </p>
+
+<p>Bedankt dat u wilt bijdragen aan ons onderzoek! Dit onderzoek wordt uitgevoerd door de afdelingen Sociologie en Orthopedagogiek: Leren en Ontwikkeling van de Radboud Universiteit, met onderzoeksleiders Rob Franken, dr. Hidde Bekhuis en prof. dr. Jochem Tolsma. </p>
+
+<p>In deze vragenlijst zijn we geïnteresseerd in uw mening over migratie en milieu.<em> </em>We presenteren u een aantal stellingen. U wordt gevraagd aan te geven of u het hiermee eens of oneens bent. {if (TOKEN:ATTRIBUTE_1!='NA',"Daarnaast stellen we u een aantal vragen over sport.","")}</p>
+
+<p>We verwachten dat het invullen van de vragenlijst minder dan 5 minuten zal duren. De informatie die u verstrekt tijdens het invullen van de vragenlijst zullen we uiteraard zorgvuldig behandelen en zo snel mogelijk anonimiseren. Als u de vragenlijst invult, geven we {TOKEN:FIRSTNAME} een digitale BOL-bon ter waarde van 5 euro. Daarnaast heeft u ook zelf nog eens 50% kans om een 5-euro BOL-bon te winnen!</p>
+
+<p> </p>
+
+<p>Door op 'Volgende' te klikken, start u de vragenlijst.</p>
+
+            <span class="mandatory"></span>
+        </h3>
+        <p class="q-scenaria"></p>
+        <p class="q-type-help"></p>
+        <p class="q-man-message"></p>
+        <p class="q-validation"></p>
+        <p class="q-fvalidation"></p>
+    </div>
+    <div class="q-answer">
+        
+    </div>
+    <div class="q-help">
+        
+    </div>
+</div>
+
+    </div>
+
+                                            <div class="survey-group ">
+    <h2>Toestemming</h2>
+    <div class="group-desc">
+        
+    </div>
+                    <div id="question" class="multiple-opt mandatory question-wrapper">
+    <div class="q-text">
+        <h3> <h1><span style="font-size:20px;"><strong>TOESTEMMINGSVERKLARING</strong></span></h1>
+
+<p>voor deelname aan het wetenschappelijke onderzoek: </p>
+
+<p> </p>
+
+<p>In deze toestemmingsverklaring wordt u gevraagd om "AKKOORD" te gaan met het verzamelen, gebruiken en bewaren van uw gegevens voor ons onderzoek. Het gaat hierbij om uw (geanonimiseerde) antwoorden op de vragen in deze vragenlijst. </p>
+
+<p>Natuurlijk houden we ons met ons onderzoek aan de Europese privacywetgeving.</p>
+
+<p>Door op <strong>"IK GA AKKOORD"</strong> te klikken bevestigt u dat u akkoord gaat dat uw gegevens worden gebruikt voor wetenschappelijk onderzoek.</p>
+
+<p> </p>
+
+            <span class="mandatory">*</span>
+        </h3>
+        <p class="q-scenaria"></p>
+        <p class="q-type-help"><div class="tip-help">Kies alle voor u geldende mogelijkheden:</div></p>
+        <p class="q-man-message"></p>
+        <p class="q-validation"></p>
+        <p class="q-fvalidation"></p>
+    </div>
+    <div class="q-answer">
+        
+<ul class="list-print-answers list-unstyled colstyle-ul">
+    <li class="">
+<div class="input-checkbox"><span></span></div>
+        Ik ga akkoord.  </li>
+</ul>
+
+    </div>
+    <div class="q-help">
+        
+    </div>
+</div>
+
+    </div>
+
+                                            <div class="survey-group ">
+    <h2>Climate actions</h2>
+    <div class="group-desc">
+        
+    </div>
+                    <div id="question" class="array-flexible-row mandatory question-wrapper">
+    <div class="q-text">
+        <h3> Zijn de volgende stellingen van toepassing op u?
+            <span class="mandatory">*</span>
+        </h3>
+        <p class="q-scenaria"></p>
+        <p class="q-type-help"><div class="tip-help">Kies het toepasselijke antwoord voor elk onderdeel:</div></p>
+        <p class="q-man-message"></p>
+        <p class="q-validation"></p>
+        <p class="q-fvalidation"></p>
+    </div>
+    <div class="q-answer">
+        
+<table class='table-print-answers table table-bordered'>
+    <thead>
+        <tr>
+            <td style='width:70%'><span></span></td>
+            <th style="width:8%;">Helemaal van toepassing</th>
+            <th style="width:8%;">Enigszins van toepassing</th>
+            <th style="width:8%;">Nauwelijks van toepassing</th>
+            <th style="width:8%;">Niet van toepassing</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr class="ls-odd">
+            <th class="answertext">Omwille van het milieu en klimaat eet ik minder dierlijke producten (vlees, vis, zuivelproducten).</th>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+        </tr>
+        <tr class="ls-even">
+            <th class="answertext">Omwille van het milieu en klimaat gebruik ik items (kleren, elektronica etc.) zo lang mogelijk voordat ik ze vervang.</th>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+        </tr>
+        <tr class="ls-odd">
+            <th class="answertext">Omwille van het milieu en klimaat koop ik tweedehands producten (zoals kleren, meubels, etc.).</th>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+        </tr>
+    </tbody>
+</table>
+
+    </div>
+    <div class="q-help">
+        
+    </div>
+</div>
+
+                    <div id="question" class="list-dropdown mandatory question-wrapper">
+    <div class="q-text">
+        <h3> Hoe moeilijk vond u het om een antwoord te geven op deze stellingen?
+            <span class="mandatory">*</span>
+        </h3>
+        <p class="q-scenaria"></p>
+        <p class="q-type-help"><div class="tip-help">Kies één van de volgende mogelijkheden:</div></p>
+        <p class="q-man-message"></p>
+        <p class="q-validation"></p>
+        <p class="q-fvalidation"></p>
+    </div>
+    <div class="q-answer">
+        
+<ul class="list-print-answers list-unstyled colstyle-ul">
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Erg moeilijk
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Enigszins moeilijk
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Niet moeilijk, niet gemakkelijk
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Enigszins gemakkelijk
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Erg gemakkelijk
+    </li>
+</ul>
+
+    </div>
+    <div class="q-help">
+        
+    </div>
+</div>
+
+    </div>
+
+                                            <div class="survey-group ">
+    <h2>Climate policy</h2>
+    <div class="group-desc">
+        
+    </div>
+                    <div id="question" class="array-flexible-row mandatory question-wrapper">
+    <div class="q-text">
+        <h3> Bent u het eens met de volgende stellingen?
+            <span class="mandatory">*</span>
+        </h3>
+        <p class="q-scenaria"></p>
+        <p class="q-type-help"><div class="tip-help">Kies het toepasselijke antwoord voor elk onderdeel:</div></p>
+        <p class="q-man-message"></p>
+        <p class="q-validation"></p>
+        <p class="q-fvalidation"></p>
+    </div>
+    <div class="q-answer">
+        
+<table class='table-print-answers table table-bordered'>
+    <thead>
+        <tr>
+            <td style='width:70%'><span></span></td>
+            <th style="width:8%;">Helemaal oneens</th>
+            <th style="width:8%;">Oneens</th>
+            <th style="width:8%;">Eens</th>
+            <th style="width:8%;">Helemaal eens</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr class="ls-odd">
+            <th class="answertext">Nederland moet een extra vliegbelasting invoeren voor korte afstandsvluchten.</th>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+        </tr>
+        <tr class="ls-even">
+            <th class="answertext">Bestaande natuurgebieden moeten worden uitbreid, ook al is er dan minder grond beschikbaar voor landbouw, woningbouw en industrie.</th>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+        </tr>
+        <tr class="ls-odd">
+            <th class="answertext">Er moet een extra belasting komen op het kopen van vlees.</th>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+        </tr>
+    </tbody>
+</table>
+
+    </div>
+    <div class="q-help">
+        
+    </div>
+</div>
+
+                    <div id="question" class="list-dropdown mandatory question-wrapper">
+    <div class="q-text">
+        <h3> Hoe moeilijk vond u het om een antwoord te geven op deze stellingen?
+            <span class="mandatory">*</span>
+        </h3>
+        <p class="q-scenaria"></p>
+        <p class="q-type-help"><div class="tip-help">Kies één van de volgende mogelijkheden:</div></p>
+        <p class="q-man-message"></p>
+        <p class="q-validation"></p>
+        <p class="q-fvalidation"></p>
+    </div>
+    <div class="q-answer">
+        
+<ul class="list-print-answers list-unstyled colstyle-ul">
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Erg moeilijk
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Enigszins moeilijk
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Niet moeilijk, niet gemakkelijk
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Enigszins gemakkelijk
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Erg gemakkelijk
+    </li>
+</ul>
+
+    </div>
+    <div class="q-help">
+        
+    </div>
+</div>
+
+    </div>
+
+                                            <div class="survey-group ">
+    <h2>Migration</h2>
+    <div class="group-desc">
+        
+    </div>
+                    <div id="question" class="array-flexible-row mandatory question-wrapper">
+    <div class="q-text">
+        <h3> Bent u het eens met de volgende stellingen?
+            <span class="mandatory">*</span>
+        </h3>
+        <p class="q-scenaria"></p>
+        <p class="q-type-help"><div class="tip-help">Kies het toepasselijke antwoord voor elk onderdeel:</div></p>
+        <p class="q-man-message"></p>
+        <p class="q-validation"></p>
+        <p class="q-fvalidation"></p>
+    </div>
+    <div class="q-answer">
+        
+<table class='table-print-answers table table-bordered'>
+    <thead>
+        <tr>
+            <td style='width:70%'><span></span></td>
+            <th style="width:8%;">Helemaal oneens</th>
+            <th style="width:8%;">Oneens</th>
+            <th style="width:8%;">Eens</th>
+            <th style="width:8%;">Helemaal eens</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr class="ls-odd">
+            <th class="answertext">Er moet een jaarlijkse bovengrens komen voor de opname van nieuwe asielzoekers.</th>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+        </tr>
+        <tr class="ls-even">
+            <th class="answertext">De komst van migranten vormt een bedreiging voor de Nederlandse cultuur.</th>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+        </tr>
+        <tr class="ls-odd">
+            <th class="answertext">Buitenlandse studenten zijn een verrijking voor Nederlandse universiteiten.</th>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+        </tr>
+    </tbody>
+</table>
+
+    </div>
+    <div class="q-help">
+        
+    </div>
+</div>
+
+                    <div id="question" class="list-dropdown mandatory question-wrapper">
+    <div class="q-text">
+        <h3> Hoe moeilijk vond u het om een antwoord te geven op deze stellingen?
+            <span class="mandatory">*</span>
+        </h3>
+        <p class="q-scenaria"></p>
+        <p class="q-type-help"><div class="tip-help">Kies één van de volgende mogelijkheden:</div></p>
+        <p class="q-man-message"></p>
+        <p class="q-validation"></p>
+        <p class="q-fvalidation"></p>
+    </div>
+    <div class="q-answer">
+        
+<ul class="list-print-answers list-unstyled colstyle-ul">
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Erg moeilijk
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Enigszins moeilijk
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Niet moeilijk, niet gemakkelijk
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Enigszins gemakkelijk
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Erg gemakkelijk
+    </li>
+</ul>
+
+    </div>
+    <div class="q-help">
+        
+    </div>
+</div>
+
+    </div>
+
+                                            <div class="survey-group ">
+    <h2>General</h2>
+    <div class="group-desc">
+        
+    </div>
+                    <div id="question" class="list-dropdown mandatory question-wrapper">
+    <div class="q-text">
+        <h3> <p>Van politieke opvattingen wordt vaak gezegd, dat zij <strong>links </strong>of <strong>rechts</strong> zijn. Wanneer u denkt aan uw eigen politieke opvattingen, waar zou u zich dan plaatsen? (0=Links, 10=Rechts)</p>
+
+            <span class="mandatory">*</span>
+        </h3>
+        <p class="q-scenaria"></p>
+        <p class="q-type-help"><div class="tip-help">Kies één van de volgende mogelijkheden:</div></p>
+        <p class="q-man-message"></p>
+        <p class="q-validation"></p>
+        <p class="q-fvalidation"></p>
+    </div>
+    <div class="q-answer">
+        
+<ul class="list-print-answers list-unstyled colstyle-ul">
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            0 - Links
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            1
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            2
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            3
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            4
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            5
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            6
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            7
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            8
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            9
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            10 - Rechts
+    </li>
+</ul>
+
+    </div>
+    <div class="q-help">
+        
+    </div>
+</div>
+
+                    <div id="question" class="array-flexible-row mandatory question-wrapper">
+    <div class="q-text">
+        <h3> <p>Hoe belangrijk vindt u het dat de Nederlandse overheid aandacht besteedt aan de volgende thema's?</p>
+
+            <span class="mandatory">*</span>
+        </h3>
+        <p class="q-scenaria"></p>
+        <p class="q-type-help"><div class="tip-help">Kies het toepasselijke antwoord voor elk onderdeel:</div></p>
+        <p class="q-man-message"></p>
+        <p class="q-validation"></p>
+        <p class="q-fvalidation"></p>
+    </div>
+    <div class="q-answer">
+        
+<table class='table-print-answers table table-bordered'>
+    <thead>
+        <tr>
+            <td style='width:60%'><span></span></td>
+            <th style="width:10%;">Niet belangrijk</th>
+            <th style="width:10%;">Niet belangrijk, maar ook niet onbelangrijk</th>
+            <th style="width:10%;">Belangrijk</th>
+            <th style="width:10%;">Zeer belangrijk</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr class="ls-odd">
+            <th class="answertext">Vluchtelingenopvang </th>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+        </tr>
+        <tr class="ls-even">
+            <th class="answertext">Woningtekort</th>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+        </tr>
+        <tr class="ls-odd">
+            <th class="answertext">Discriminatie</th>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+        </tr>
+        <tr class="ls-even">
+            <th class="answertext">Klimaat en milieu</th>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+        </tr>
+        <tr class="ls-odd">
+            <th class="answertext">Criminaliteit</th>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+        </tr>
+    </tbody>
+</table>
+
+    </div>
+    <div class="q-help">
+        
+    </div>
+</div>
+
+    </div>
+
+                                            <div class="survey-group ">
+    <h2>Sport</h2>
+    <div class="group-desc">
+        
+    </div>
+                    <div id="question" class="list-dropdown mandatory question-wrapper">
+    <div class="q-text">
+        <h3> <p>Nu stellen we u graag een paar vragen over sport.</p>
+
+<p>{TOKEN:FIRSTNAME} gaf aan dat hij/zij wel eens samen met u had gesport. En dan wel de volgende sport: <strong>{TOKEN:ATTRIBUTE_1}</strong>.</p>
+
+<p>Hoe vaak beoefent u deze sport? </p>
+
+            <span class="mandatory">*</span>
+        </h3>
+        <p class="q-scenaria"></p>
+        <p class="q-type-help"><div class="tip-help">Kies één van de volgende mogelijkheden:</div></p>
+        <p class="q-man-message"></p>
+        <p class="q-validation"></p>
+        <p class="q-fvalidation"></p>
+    </div>
+    <div class="q-answer">
+        
+<ul class="list-print-answers list-unstyled colstyle-ul">
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Niet
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Minder dan 1 keer per maand
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            1 of 2 keer per maand
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            1 keer per week
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            2 of 3 keer per week
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            4 of 5 keer per week
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            6 keer per week of vaker
+    </li>
+</ul>
+
+    </div>
+    <div class="q-help">
+        
+    </div>
+</div>
+
+                    <div id="question" class="list-dropdown mandatory question-wrapper">
+    <div class="q-text">
+        <h3> <p>Als u zichzelf een cijfer zou moeten geven voor hoe goed u bent in <strong>{TOKEN:ATTRIBUTE_1}</strong>. Wat zou dat cijfer dan zijn?</p>
+
+            <span class="mandatory">*</span>
+        </h3>
+        <p class="q-scenaria"></p>
+        <p class="q-type-help"><div class="tip-help">Kies één van de volgende mogelijkheden:</div></p>
+        <p class="q-man-message"></p>
+        <p class="q-validation"></p>
+        <p class="q-fvalidation"></p>
+    </div>
+    <div class="q-answer">
+        
+<ul class="list-print-answers list-unstyled colstyle-ul">
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            1
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            2
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            3
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            4
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            5
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            6
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            7
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            8
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            9
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            10
+    </li>
+</ul>
+
+    </div>
+    <div class="q-help">
+        
+    </div>
+</div>
+
+    </div>
+
+                                            <div class="survey-group ">
+    <h2>Dyad Background</h2>
+    <div class="group-desc">
+        
+    </div>
+                    <div id="question" class="list-dropdown mandatory question-wrapper">
+    <div class="q-text">
+        <h3> <p>We willen u vragen naar uw relatie met {TOKEN:FIRSTNAME}.</p>
+
+<p>Kunt u met behulp van de onderstaande schaal uw band met deze persoon beschrijven?</p>
+
+            <span class="mandatory">*</span>
+        </h3>
+        <p class="q-scenaria"></p>
+        <p class="q-type-help"><div class="tip-help">Kies één van de volgende mogelijkheden:</div></p>
+        <p class="q-man-message"></p>
+        <p class="q-validation"></p>
+        <p class="q-fvalidation"></p>
+    </div>
+    <div class="q-answer">
+        
+<ul class="list-print-answers list-unstyled colstyle-ul">
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Heel erg hecht
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Hecht
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Enigszins hecht 
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Niet hecht
+    </li>
+</ul>
+
+    </div>
+    <div class="q-help">
+        
+    </div>
+</div>
+
+                    <div id="question" class="list-dropdown mandatory question-wrapper">
+    <div class="q-text">
+        <h3> <p>Hoe vaak spreekt u {TOKEN:FIRSTNAME}?</p>
+
+            <span class="mandatory">*</span>
+        </h3>
+        <p class="q-scenaria"></p>
+        <p class="q-type-help"><div class="tip-help">Kies één van de volgende mogelijkheden:</div></p>
+        <p class="q-man-message"></p>
+        <p class="q-validation"></p>
+        <p class="q-fvalidation"></p>
+    </div>
+    <div class="q-answer">
+        
+<ul class="list-print-answers list-unstyled colstyle-ul">
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            (Bijna) elke dag
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            1-2 keer per week
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Aantal keer per maand
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Ong. 1 keer per maand
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Aantal keer per jaar
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Ong. 1 keer per jaar
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Nooit
+    </li>
+</ul>
+
+    </div>
+    <div class="q-help">
+        
+    </div>
+</div>
+
+    </div>
+
+                                            <div class="survey-group ">
+    <h2>Climate actions X</h2>
+    <div class="group-desc">
+        
+    </div>
+                    <div id="question" class="array-flexible-row mandatory question-wrapper">
+    <div class="q-text">
+        <h3> <p>Stelt u zich voor dat <strong>{TOKEN:FIRSTNAME} </strong>moet aangeven of de volgende stellingen op zich van toepassing zijn. </p>
+
+<p>Wat denkt u dat deze persoon zou antwoorden?</p>
+
+            <span class="mandatory">*</span>
+        </h3>
+        <p class="q-scenaria"></p>
+        <p class="q-type-help"><div class="tip-help">Kies het toepasselijke antwoord voor elk onderdeel:</div></p>
+        <p class="q-man-message"></p>
+        <p class="q-validation"></p>
+        <p class="q-fvalidation"></p>
+    </div>
+    <div class="q-answer">
+        
+<table class='table-print-answers table table-bordered'>
+    <thead>
+        <tr>
+            <td style='width:70%'><span></span></td>
+            <th style="width:8%;">Helemaal van toepassing</th>
+            <th style="width:8%;">Enigszins van toepassing</th>
+            <th style="width:8%;">Nauwelijks van toepassing</th>
+            <th style="width:8%;">Niet van toepassing</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr class="ls-odd">
+            <th class="answertext">Omwille van het milieu en klimaat koop ik tweedehands producten (zoals kleren, meubels, etc.).</th>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+        </tr>
+        <tr class="ls-even">
+            <th class="answertext">Omwille van het milieu en klimaat gebruik ik items (kleren, elektronica etc.) zo lang mogelijk voordat ik ze vervang.</th>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+        </tr>
+        <tr class="ls-odd">
+            <th class="answertext">Omwille van het milieu en klimaat eet ik minder dierlijke producten (vlees, vis, zuivelproducten).</th>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+        </tr>
+    </tbody>
+</table>
+
+    </div>
+    <div class="q-help">
+        
+    </div>
+</div>
+
+                    <div id="question" class="list-dropdown mandatory question-wrapper">
+    <div class="q-text">
+        <h3> <p>Hoe moeilijk vond u het om in te schatten hoe <strong>{TOKEN:FIRSTNAME} </strong>zou antwoorden op deze stellingen?</p>
+
+            <span class="mandatory">*</span>
+        </h3>
+        <p class="q-scenaria"></p>
+        <p class="q-type-help"><div class="tip-help">Kies één van de volgende mogelijkheden:</div></p>
+        <p class="q-man-message"></p>
+        <p class="q-validation"></p>
+        <p class="q-fvalidation"></p>
+    </div>
+    <div class="q-answer">
+        
+<ul class="list-print-answers list-unstyled colstyle-ul">
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Erg moeilijk
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Enigszins moeilijk
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Niet moeilijk, niet gemakkelijk
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Enigszins gemakkelijk
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Erg gemakkelijk
+    </li>
+</ul>
+
+    </div>
+    <div class="q-help">
+        
+    </div>
+</div>
+
+    </div>
+
+                                            <div class="survey-group ">
+    <h2>Climate policy X</h2>
+    <div class="group-desc">
+        
+    </div>
+                    <div id="question" class="array-flexible-row mandatory question-wrapper">
+    <div class="q-text">
+        <h3> <p>Stelt u zich voor dat <strong>{TOKEN:FIRSTNAME}</strong> moet aangeven of hij/zij het eens is met de volgende stellingen.</p>
+
+<p>Wat denkt u dat deze persoon zou antwoorden?</p>
+
+            <span class="mandatory">*</span>
+        </h3>
+        <p class="q-scenaria"></p>
+        <p class="q-type-help"><div class="tip-help">Kies het toepasselijke antwoord voor elk onderdeel:</div></p>
+        <p class="q-man-message"></p>
+        <p class="q-validation"></p>
+        <p class="q-fvalidation"></p>
+    </div>
+    <div class="q-answer">
+        
+<table class='table-print-answers table table-bordered'>
+    <thead>
+        <tr>
+            <td style='width:70%'><span></span></td>
+            <th style="width:8%;">Helemaal oneens</th>
+            <th style="width:8%;">Oneens</th>
+            <th style="width:8%;">Eens</th>
+            <th style="width:8%;">Helemaal eens</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr class="ls-odd">
+            <th class="answertext">Nederland moet een extra vliegbelasting invoeren voor korte afstandsvluchten.</th>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+        </tr>
+        <tr class="ls-even">
+            <th class="answertext">Er moet een extra belasting komen op het kopen van vlees.</th>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+        </tr>
+        <tr class="ls-odd">
+            <th class="answertext">Bestaande natuurgebieden moeten worden uitbreid, ook al is er dan minder grond beschikbaar voor landbouw, woningbouw en industrie.</th>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+        </tr>
+    </tbody>
+</table>
+
+    </div>
+    <div class="q-help">
+        
+    </div>
+</div>
+
+                    <div id="question" class="list-dropdown mandatory question-wrapper">
+    <div class="q-text">
+        <h3> <p>Hoe moeilijk vond u het om in te schatten hoe <strong>{TOKEN:FIRSTNAME} </strong>zou antwoorden op deze stellingen?</p>
+
+            <span class="mandatory">*</span>
+        </h3>
+        <p class="q-scenaria"></p>
+        <p class="q-type-help"><div class="tip-help">Kies één van de volgende mogelijkheden:</div></p>
+        <p class="q-man-message"></p>
+        <p class="q-validation"></p>
+        <p class="q-fvalidation"></p>
+    </div>
+    <div class="q-answer">
+        
+<ul class="list-print-answers list-unstyled colstyle-ul">
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Erg moeilijk
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Enigszins moeilijk
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Niet moeilijk, niet gemakkelijk
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Enigszins gemakkelijk
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Erg gemakkelijk
+    </li>
+</ul>
+
+    </div>
+    <div class="q-help">
+        
+    </div>
+</div>
+
+    </div>
+
+                                            <div class="survey-group ">
+    <h2>Migration X</h2>
+    <div class="group-desc">
+        
+    </div>
+                    <div id="question" class="array-flexible-row mandatory question-wrapper">
+    <div class="q-text">
+        <h3> <p>Stelt u zich voor dat <strong>{TOKEN:FIRSTNAME}</strong> moet aangeven of hij/zij het eens is met de volgende stellingen.</p>
+
+<p>Wat denkt u dat deze persoon zou antwoorden?</p>
+
+            <span class="mandatory">*</span>
+        </h3>
+        <p class="q-scenaria"></p>
+        <p class="q-type-help"><div class="tip-help">Kies het toepasselijke antwoord voor elk onderdeel:</div></p>
+        <p class="q-man-message"></p>
+        <p class="q-validation"></p>
+        <p class="q-fvalidation"></p>
+    </div>
+    <div class="q-answer">
+        
+<table class='table-print-answers table table-bordered'>
+    <thead>
+        <tr>
+            <td style='width:70%'><span></span></td>
+            <th style="width:8%;">Helemaal oneens</th>
+            <th style="width:8%;">Oneens</th>
+            <th style="width:8%;">Eens</th>
+            <th style="width:8%;">Helemaal eens</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr class="ls-odd">
+            <th class="answertext">Er moet een jaarlijkse bovengrens komen voor de opname van nieuwe asielzoekers.</th>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+        </tr>
+        <tr class="ls-even">
+            <th class="answertext">Buitenlandse studenten zijn een verrijking voor Nederlandse universiteiten.</th>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+        </tr>
+        <tr class="ls-odd">
+            <th class="answertext">De komst van migranten vormt een bedreiging voor de Nederlandse cultuur.</th>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+        </tr>
+    </tbody>
+</table>
+
+    </div>
+    <div class="q-help">
+        
+    </div>
+</div>
+
+                    <div id="question" class="list-dropdown mandatory question-wrapper">
+    <div class="q-text">
+        <h3> <p>Hoe moeilijk vond u het om in te schatten hoe <strong>{TOKEN:FIRSTNAME} </strong>zou antwoorden op deze stellingen?</p>
+
+            <span class="mandatory">*</span>
+        </h3>
+        <p class="q-scenaria"></p>
+        <p class="q-type-help"><div class="tip-help">Kies één van de volgende mogelijkheden:</div></p>
+        <p class="q-man-message"></p>
+        <p class="q-validation"></p>
+        <p class="q-fvalidation"></p>
+    </div>
+    <div class="q-answer">
+        
+<ul class="list-print-answers list-unstyled colstyle-ul">
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Erg moeilijk
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Enigszins moeilijk
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Niet moeilijk, niet gemakkelijk
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Enigszins gemakkelijk
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Erg gemakkelijk
+    </li>
+</ul>
+
+    </div>
+    <div class="q-help">
+        
+    </div>
+</div>
+
+    </div>
+
+                                            <div class="survey-group ">
+    <h2>General X</h2>
+    <div class="group-desc">
+        
+    </div>
+                    <div id="question" class="list-dropdown mandatory question-wrapper">
+    <div class="q-text">
+        <h3> <p>Stel, we vragen<strong> </strong><strong>{TOKEN:FIRSTNAME}</strong> om zich te plaatsen op het links-rechts (0-10) politieke spectrum.</p>
+
+<p>Wat denkt u dat deze persoon zou antwoorden?</p>
+
+            <span class="mandatory">*</span>
+        </h3>
+        <p class="q-scenaria"></p>
+        <p class="q-type-help"><div class="tip-help">Kies één van de volgende mogelijkheden:</div></p>
+        <p class="q-man-message"></p>
+        <p class="q-validation"></p>
+        <p class="q-fvalidation"></p>
+    </div>
+    <div class="q-answer">
+        
+<ul class="list-print-answers list-unstyled colstyle-ul">
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            0 - Links
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            1
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            2
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            3
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            4
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            5
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            6
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            7
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            8
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            9
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            10 - Rechts
+    </li>
+</ul>
+
+    </div>
+    <div class="q-help">
+        
+    </div>
+</div>
+
+                    <div id="question" class="array-flexible-row mandatory question-wrapper">
+    <div class="q-text">
+        <h3> <p>Stel, we vragen <strong>{TOKEN:FIRSTNAME}</strong> hoe belangrijk het is dat de Nederlandse overheid aandacht besteedt aan de volgende thema's.</p>
+
+<p>Wat denkt u dat deze persoon zou antwoorden?</p>
+
+            <span class="mandatory">*</span>
+        </h3>
+        <p class="q-scenaria"></p>
+        <p class="q-type-help"><div class="tip-help">Kies het toepasselijke antwoord voor elk onderdeel:</div></p>
+        <p class="q-man-message"></p>
+        <p class="q-validation"></p>
+        <p class="q-fvalidation"></p>
+    </div>
+    <div class="q-answer">
+        
+<table class='table-print-answers table table-bordered'>
+    <thead>
+        <tr>
+            <td style='width:70%'><span></span></td>
+            <th style="width:8%;">Niet belangrijk</th>
+            <th style="width:8%;">Niet belangrijk, maar ook niet onbelangrijk</th>
+            <th style="width:8%;">Belangrijk</th>
+            <th style="width:8%;">Zeer belangrijk</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr class="ls-odd">
+            <th class="answertext">Criminaliteit</th>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+        </tr>
+        <tr class="ls-even">
+            <th class="answertext">Klimaat en milieu</th>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+        </tr>
+        <tr class="ls-odd">
+            <th class="answertext">Discriminatie</th>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+        </tr>
+        <tr class="ls-even">
+            <th class="answertext">Woningtekort</th>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+        </tr>
+        <tr class="ls-odd">
+            <th class="answertext">Vluchtelingenopvang</th>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+            <td><div class="input-radio"><span></span></div></td>
+        </tr>
+    </tbody>
+</table>
+
+    </div>
+    <div class="q-help">
+        
+    </div>
+</div>
+
+    </div>
+
+                                            <div class="survey-group ">
+    <h2>Sport X</h2>
+    <div class="group-desc">
+        
+    </div>
+                    <div id="question" class="list-dropdown mandatory question-wrapper">
+    <div class="q-text">
+        <h3> <p>Tot slot volgt nog een paar vragen over sport.</p>
+
+<p>Stelt u zich voor dat <strong>{TOKEN:FIRSTNAME} </strong>moet aangeven hoe vaak hij/zij de volgende sport beoefent: <strong>{TOKEN:ATTRIBUTE_1}</strong>.</p>
+
+<p>Wat zou deze persoon volgens u dan antwoorden?</p>
+
+            <span class="mandatory">*</span>
+        </h3>
+        <p class="q-scenaria"></p>
+        <p class="q-type-help"><div class="tip-help">Kies één van de volgende mogelijkheden:</div></p>
+        <p class="q-man-message"></p>
+        <p class="q-validation"></p>
+        <p class="q-fvalidation"></p>
+    </div>
+    <div class="q-answer">
+        
+<ul class="list-print-answers list-unstyled colstyle-ul">
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Niet
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            Minder dan 1 keer per maand
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            1 of 2 keer per maand
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            1 keer per week
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            2 of 3 keer per week
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            4 of 5 keer per week
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            6 keer per week of vaker
+    </li>
+</ul>
+
+    </div>
+    <div class="q-help">
+        
+    </div>
+</div>
+
+                    <div id="question" class="list-dropdown mandatory question-wrapper">
+    <div class="q-text">
+        <h3> <p>Als u <strong>{TOKEN:FIRSTNAME}</strong> een cijfer zou moeten geven voor hoe goed deze persoon is in de volgende sport: <strong>{TOKEN:ATTRIBUTE_1}</strong>. Wat zou dat cijfer dan zijn?</p>
+
+            <span class="mandatory">*</span>
+        </h3>
+        <p class="q-scenaria"></p>
+        <p class="q-type-help"><div class="tip-help">Kies één van de volgende mogelijkheden:</div></p>
+        <p class="q-man-message"></p>
+        <p class="q-validation"></p>
+        <p class="q-fvalidation"></p>
+    </div>
+    <div class="q-answer">
+        
+<ul class="list-print-answers list-unstyled colstyle-ul">
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            1
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            2
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            3
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            4
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            5
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            6
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            7
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            8
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            9
+    </li>
+        <li class="">
+        <div class="input-radio"><span></span></div>
+            10
+    </li>
+</ul>
+
+    </div>
+    <div class="q-help">
+        
+    </div>
+</div>
+
+    </div>
+
+                                            <div class="survey-group ">
+    <h2>Email</h2>
+    <div class="group-desc">
+        
+    </div>
+                    <div id="question" class="yes-no mandatory question-wrapper">
+    <div class="q-text">
+        <h3> <p>Dankuwel voor het beantwoorden van de vragen. Wilt u kans maken op het winnen van een digitale BOL-bon ter waarde van 5 euro?</p>
+
+            <span class="mandatory">*</span>
+        </h3>
+        <p class="q-scenaria"></p>
+        <p class="q-type-help"><div class="tip-help">Kies één van de volgende mogelijkheden:</div></p>
+        <p class="q-man-message"></p>
+        <p class="q-validation"></p>
+        <p class="q-fvalidation"></p>
+    </div>
+    <div class="q-answer">
+        
+<ul class='list-print-answers list-unstyled'>
+    <li>
+        <div class="input-radio"><span></span></div>
+        Ja
+    </li>
+
+    <li>
+        <div class="input-radio"><span></span></div>
+        Nee
+    </li>
+</ul>
+
+    </div>
+    <div class="q-help">
+        
+    </div>
+</div>
+
+                    <div id="question" class="multiple-short-txt mandatory question-wrapper">
+    <div class="q-text">
+        <h3> <p>Zou u hieronder uw e-mailadres willen opgeven, zodat we u de bon kunnen sturen als u wint. </p>
+
+<p>We zullen uw e-mailadres uitsluitend voor het versturen van de bon gebruiken en verwijderen na afloop van het onderzoek!</p>
+
+<p>We sturen u zo snel mogelijk de bon, maar houd er rekening mee dat dit ongeveer 2-3 weken kan duren.</p>
+
+            <span class="mandatory">*</span>
+        </h3>
+        <p class="q-scenaria"></p>
+        <p class="q-type-help"></p>
+        <p class="q-man-message"></p>
+        <p class="q-validation"></p>
+        <p class="q-fvalidation"></p>
+    </div>
+    <div class="q-answer">
+        
+    </div>
+    <div class="q-help">
+        
+    </div>
+</div>
+
+    </div>
+
+                                            <div class="survey-group ">
+    <h2>Eind</h2>
+    <div class="group-desc">
+        
+    </div>
+                    <div id="question" class="boilerplate question-wrapper">
+    <div class="q-text">
+        <h3> Dit is het einde van de vragenlijst. Door op 'Verzenden' te klikken verstuurt u uw antwoorden.
+            <span class="mandatory"></span>
+        </h3>
+        <p class="q-scenaria"></p>
+        <p class="q-type-help"></p>
+        <p class="q-man-message"></p>
+        <p class="q-validation"></p>
+        <p class="q-fvalidation"></p>
+    </div>
+    <div class="q-answer">
+        
+    </div>
+    <div class="q-help">
+        
+    </div>
+</div>
+
+    </div>
+
+            
+            
+            
+            <p class="submit-by">
+                <p>Hartelijk dank voor het invullen van de vragenlijst!</p>
+
+<p>U kunt het venster sluiten.</p>
+
+<p>Voor vragen/opmerkingen over deze studie, neem contact op met Rob Franken (rob.franken@ru.nl). </p>
+<br />
+                07.05.2023 &ndash; 13:58<br />
+                <br />
+                Verzend uw enquête.<br />
+                Bedankt voor uw deelname aan deze enquête.<br />
+            </p>
+
+        </div>
+    </body>
+</html>
+
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkFsdGVyIHF1ZXN0aW9ubmFpcmUiDQpiaWJsaW9ncmFwaHk6IHJlZmVyZW5jZXMuYmliDQpvdXRwdXQ6IA0KICBodG1sX2RvY3VtZW50Og0KICAgIGNzczogdHdlYWtzLmNzcw0KICAgIHRvYzogIGZhbHNlDQogICAgdG9jX2Zsb2F0OiBmYWxzZQ0KICAgIG51bWJlcl9zZWN0aW9uczogZmFsc2UNCiAgICB0b2NfZGVwdGg6IDENCg0KLS0tDQoNCmBgYHtyLCBnbG9iYWxzZXR0aW5ncywgZWNobz1GQUxTRSwgd2FybmluZz1GQUxTRSwgcmVzdWx0cz0naGlkZSd9DQpsaWJyYXJ5KGtuaXRyKQ0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGVjaG8gPSBUUlVFKQ0Kb3B0c19jaHVuayRzZXQodGlkeS5vcHRzPWxpc3Qod2lkdGguY3V0b2ZmPTEwMCksdGlkeT1UUlVFLCB3YXJuaW5nID0gRkFMU0UsIG1lc3NhZ2UgPSBGQUxTRSxjb21tZW50ID0gIiM+IiwgY2FjaGU9VFJVRSwgY2xhc3Muc291cmNlPWMoInRlc3QiKSwgY2xhc3Mub3V0cHV0PWMoInRlc3QzIikpDQpvcHRpb25zKHdpZHRoID0gMTAwKQ0KcmdsOjpzZXR1cEtuaXRyKCkNCg0KY29sb3JpemUgPC0gZnVuY3Rpb24oeCwgY29sb3IpIHtzcHJpbnRmKCI8c3BhbiBzdHlsZT0nY29sb3I6ICVzOyc+JXM8L3NwYW4+IiwgY29sb3IsIHgpIH0NCmBgYA0KDQoNCmBgYHtyIGtsaXBweSwgZWNobz1GQUxTRSwgaW5jbHVkZT1UUlVFfQ0Ka2xpcHB5OjprbGlwcHkocG9zaXRpb24gPSBjKCd0b3AnLCAncmlnaHQnKSkNCiNrbGlwcHk6OmtsaXBweShjb2xvciA9ICdkYXJrcmVkJykNCiNrbGlwcHk6OmtsaXBweSh0b29sdGlwX21lc3NhZ2UgPSAnQ2xpY2sgdG8gY29weScsIHRvb2x0aXBfc3VjY2VzcyA9ICdEb25lJykNCmBgYA0KDQpUaGUgc3VydmV5IGFkbWluaXN0ZXJlZCB0byBhbHRlcnMsIGluIER1dGNoOg0KDQotLS0tDQoNCjxicj4NCg0KYGBge3IsIGVjaG89RkFMU0V9DQpodG1sdG9vbHM6OmluY2x1ZGVIVE1MKCIuL3N1cnZleS9zcG9ydHMtZnJpZW5kc2hpcHMvcXVlc3Rpb25uYWlyZV82NTkxMTlfbmwuaHRtbCIpDQpgYGANCg==</div>
+<style>
+.center {
+  text-align: center;
+  color: red;
+}
+</style>
+<hr>
+<br>
+<p id="yearPlaceholder" <p class="center">
+  &copy; <span id="currentYear"></span>
+  <span>Rob Franken</span>, 
+  <span>Tom Nijs</span>, 
+  <span>Eva Jaspers</span>, 
+  <span>Jochem Tolsma</span>, 
+  <span>Tobias Stark</span>
+</p>
+
+<script>
+  // JavaScript code to get and display the current year
+  var currentYear = new Date().getFullYear();
+  document.getElementById("currentYear").innerHTML = currentYear;
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("alterquestionnaire.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

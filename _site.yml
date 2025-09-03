@@ -1,0 +1,78 @@
+name: "Replication website"
+author: 
+- "Rob Franken"
+- "Tom Nijs"
+- "Eva Jaspers"
+- "Jochem Tolsma"
+- "Tobias Stark"
+date: "Last compiled on `r format(Systime(), '%B, %Y')"
+output_dir: "docs"
+exclude: 
+  - "data"
+  - "rawdata"
+  - "processed"
+  - "local"
+bibliography: references.bib
+navbar:
+  left:
+    - icon: fa-info
+      text: "About"
+      href: index.html
+    - icon: far fa-file-code  
+      text: "Preparation"
+      menu:
+      - icon: fa-user-friends
+        text: "Dyads"
+        href: prep_liss.html
+      - icon: fa-bullseye
+        text: "Ego-nets"
+        href: prep_ego.html
+      - icon: fa-project-diagram
+        text: "Socio-nets"
+        href: prep_socio.html
+    - icon: fa fa-bar-chart
+      text: "Analyses"
+      menu:
+      - text: "1. Describing accuracy and bias"
+        href: des.html
+      - text: "2. Predictors of accuracy and bias"
+        href: analyse.html
+      - text: "3. Social influence on perception"
+        href: saom.html
+    - icon: fa fa-wrench
+      text: "Study design"
+      menu:
+      - text: "Dyads"
+        menu:
+        - text: "Questionnaire (LISS)"
+      - text: "Ego-nets"
+        menu:
+        - text: "Ego-questionnaire"
+          href: egoquestionnaire.html
+        - text: "Alter-questionnaire"
+          href: alterquestionnaire.html
+        - text: "Selecting alters"
+          href: alters.html
+      - text: "Socio-nets"
+        menu:
+        - text: "Questionnaire 1"
+        - text: "Questionnaire 2"
+  right:
+    - icon: fab fa-github
+      href: https://github.com/robfranken/perceptions_of_opinions
+output:
+  html_document:
+    theme: flatly
+    highlight: default
+    toc: true
+    toc_float: true
+    number_sections: true
+    code_folding: show
+    code_download: true
+    css: tweaks.css
+    include:
+      after_body: footer.html
+
+
+
+

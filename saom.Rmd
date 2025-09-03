@@ -1,0 +1,170 @@
+---
+title: "Social influence on (mis)perception"
+bibliography: references.bib
+link-citations: true
+author: "Rob Franken"
+output: 
+  html_document:
+    css: tweaks.css
+    toc:  true
+    toc_float: true
+    number_sections: false
+    toc_depth: 1
+    code_folding: show
+    code_download: yes
+---
+
+```{r, globalsettings, echo=FALSE, warning=FALSE, results='hide'}
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE)
+opts_chunk$set(tidy.opts=list(width.cutoff=100),tidy=TRUE, warning = FALSE, message = FALSE,comment = "#>", cache=TRUE, class.source=c("test"), class.output=c("test3"))
+options(width = 100)
+rgl::setupKnitr()
+```
+
+
+```{r klippy, echo=FALSE, include=TRUE}
+klippy::klippy(position = c('top', 'right'))
+#klippy::klippy(color = 'darkred')
+#klippy::klippy(tooltip_message = 'Click to copy', tooltip_success = 'Done')
+```
+
+Last compiled on `r format(Sys.time(), '%d-%m-%Y')`
+
+---  
+
+# Getting started
+
+To copy the code, click the button in the upper right corner of the code-chunks.
+
+## clean up
+
+```{r, results='hide'}
+rm(list=ls())
+gc()
+```
+
+<br>
+
+
+## general custom functions
+
+- `fpackage.check`: Check if packages are installed (and install if not) in R
+- `fsave`: Function to save data with time stamp in correct directory
+- `fload`: Function to load R-objects under new names
+- `fshowdf`: Print objects (`tibble` / `data.frame`) nicely on screen in `.Rmd`
+
+```{r, fun}
+fpackage.check <- function(packages) {
+    lapply(packages, FUN = function(x) {
+        if (!require(x, character.only = TRUE)) {
+            install.packages(x, dependencies = TRUE)
+            library(x, character.only = TRUE)
+        }
+    })
+}
+
+fsave <- function(x, location = "./data/processed/") {
+  if (location == "./data/processed/") {
+  ifelse(!dir.exists("data"), dir.create("data"), FALSE)
+  ifelse(!dir.exists("data/processed"), dir.create("data/processed"), FALSE)
+  }
+
+  object = deparse(substitute(x))
+  datename <- substr(gsub("[:-]", "", Sys.time()), 1, 8)
+  totalname <- paste(location, object, "_", datename,  ".rda", sep = "")
+  assign(eval(object), x, envir = .GlobalEnv)
+  print(paste("SAVED: ", totalname, sep = ""))
+  save(list = object, file = totalname)  
+}
+
+fload  <- function(fileName){
+  load(fileName)
+  get(ls()[ls() != "fileName"])
+}
+
+fshowdf <- function(x, caption = NULL, digits = 2, footnote = NULL, ...) {
+    knitr::kable(x, digits = digits, "html", caption = caption, ...) %>%
+        kableExtra::footnote(general = footnote) %>%
+        kableExtra::kable_styling(bootstrap_options = c("striped", "hover")) %>%
+        kableExtra::scroll_box(width = "100%", height = "300px")
+}
+```
+
+<br>
+
+## necessary packages
+
+- `tidyverse`: data wrangling
+- `RSiena`: stochastic actor-oriented model
+
+
+```{r, packages, message=FALSE, results='hide'}
+packages = c("tidyverse", "RSiena")
+fpackage.check(packages)
+rm(packages)
+```
+
+<br>
+
+---
+
+# Import
+
+Import the replicated data-sets. You may obtain it by downloading: `r xfun::embed_file("./data_shared/zieelkaar_siena.Rda")` 
+
+```{r, data}
+#list.files("./data/processed")
+today <- gsub("-", "", Sys.Date())
+today <- "20250903" #latest updated dataset
+
+class_data <- fload(paste0("./data/processed/", today, "zieelkaar_siena.Rda"))
+```
+
+---
+
+# stationary SAOM
+
+See @krause2018; @snijders2013
+
+```{r, saomE}
+#get one class, and take the perceive-as-right network
+mydata <- class_data[[1]]$right
+
+#inspect
+#print01Report(class, modelname="test")
+
+# define a model
+myeff <- getEffects(mydata)
+
+#include effects:
+# tendency to perceive those as "right", who are perceived by many others as right
+myeff <- includeEffects(myeff, inPop, name = "perception")
+
+# tendency for those perceiving many others as "right" to perceive alter also as "right"
+myeff <- includeEffects(myeff, outAct, name = "perception")
+
+# tendency for self-reported "rights" to perceive more others as right (projection)
+myeff <- includeEffects(myeff, egoX, name = "perception", interaction1 = "self")
+
+# tendency for self-reported rights to be perceived as such
+myeff <- includeEffects(myeff, altX, name = "perception", interaction1 = "self")
+
+# friendship effects:
+myeff <- includeEffects(myeff, transTrip, outAct, inPop, name = "friend")
+myeff <- includeEffects(myeff, egoX, altX, egoXaltX, outAct, inPop, name = "friend")
+
+# !! fix the rate parameter to a high value (for the stationary saom)
+rate = 50
+myeff <- setEffect(myeff, Rate, type = "rate", fix = TRUE, initialValue = rate, name = "friend")
+myeff <- setEffect(myeff, Rate, type = "rate", fix = TRUE, initialValue = rate, name = "perception")
+
+myalgo <- sienaAlgorithmCreate(projname = "stationary_saom_class1_right", nsub=4, n3 = 1e3)
+ans <- siena07(myalgo, data = mydata, effects = myeff)
+summary(ans)
+```
+
+
+----
+
+## References

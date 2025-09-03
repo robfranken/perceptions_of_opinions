@@ -1,0 +1,2019 @@
+
+
+-----------------------------------
+New Analysis started.
+Date and time: 03/09/2025 16:06:35
+New results follow.
+-----------------------------------
+
+RSiena version 1.4.7 (20 feb 24)
+
+
+@1
+Estimation by stochastic approximation algorithm.
+=================================================
+
+Random initialization of random number stream.
+Current random number seed is 911887.
+Effects object used: myeff 
+Model Type:
+Network 1 friend : Standard actor-oriented model 
+Network 2 perception : Standard actor-oriented model 
+Estimation method: unconditional moment estimation
+.
+
+Time duration for simulations is 1.0.
+Standard errors are estimated with the likelihood ratio method.
+Dolby method (regression on scores) is used.
+Initial value of gain parameter is  0.2000000.
+Reduction factor for gain parameter is  0.5000000.
+Number of subphases in Phase 2 is 3.
+
+Initial parameter values are 
+  1. rate:  basic rate parameter friend                    20.0000  (fixed) 
+  2. eval:  friend: outdegree (density)                     0.0000
+  3. eval:  friend: reciprocity                             0.0000
+  4. eval:  friend: transitive triplets                     0.0000
+  5. eval:  friend: indegree - popularity                   0.0000
+  6. eval:  friend: outdegree - activity                    0.0000
+  7. rate:  basic rate parameter perception                20.0000  (fixed) 
+  8. eval:  perception: outdegree (density)                 0.0000
+  9. eval:  perception: reciprocity                         0.0000
+ 10. eval:  perception: indegree - popularity               0.0000
+ 11. eval:  perception: outdegree - activity                0.0000
+ 12. eval:  perception: self alter                          0.0000
+ 13. eval:  perception: self ego                            0.0000
+ 14. eval:  perception: self ego x friend                   0.0000
+ 15. eval:  perception: self alter x friend                 0.0000
+ 16. eval:  perception: friend                              0.0000
+ 17. eval:  perception: indeg.^(1/2) friend popularity      0.0000
+ 18. eval:  perception: indeg.^(1/2) friend activity        0.0000
+ 19. eval:  perception: outdeg.^(1/2) friend activity       0.0000
+ 20. eval:  perception: friend to agreement                 0.0000
+ 21. eval:  perception: XWX closure1 of friend              0.0000
+
+
+Values of target statistics are
+  1. Amount of network change                                             0.0000
+  2. friend: Number of ties                                              37.0000
+  3. friend: Number of reciprocated ties                                 30.0000
+  4. friend: Number of transitive triplets                               71.0000
+  5. friend: Sum of squared indegrees                                   135.0000
+  6. friend: Sum of squared outdegrees                                  135.0000
+  7. Amount of network change                                             0.0000
+  8. perception: Number of ties                                         122.0000
+  9. perception: Number of reciprocated ties                             80.0000
+ 10. perception: Sum of squared indegrees                              1116.0000
+ 11. perception: Sum of squared outdegrees                             1250.0000
+ 12. perception: Sum indegrees x self                                     9.1429
+ 13. perception: Sum outdegrees x self                                    1.1429
+ 14. perception: self ego x friend                                        0.6429
+ 15. perception: self alter x friend                                      2.6429
+ 16. perception: sum crprod. with friend                                 31.0000
+ 17. perception: sum indeg. x centrd indeg.^(1/2) friend                -12.8502
+ 18. perception: sum outdeg. x centrd indeg.^(1/2) friend               -16.1658
+ 19. perception: sum outdeg. x centrd outdeg.^(1/2) friend              -25.8731
+ 20. perception: mixed triplets W->X=>X, W = friend                     180.0000
+ 21. perception: mixed triplets X->W=>X, W = friend                     244.0000
+These were calculated from the data.
+
+ 21 parameters, 21 statistics
+
+Estimation problem with parameter(s) 17 18 19 this/these parameter(s) is/are fixed.
+Estimation of derivatives by the LR method (type 1).
+
+
+@2
+End of stochastic approximation algorithm, phase 3.
+---------------------------------------------------
+
+Total of 3059 iterations.
+Parameter estimates based on 2059 iterations,
+convergence diagnostics, covariance and derivative matrices based on 1000 iterations.
+
+Information for convergence diagnosis.
+Averages, standard deviations, and t-ratios for deviations from targets:
+  1.  35.4030   8.4340   4.1977     (fixed parameter)
+  2.  -0.6370   8.3011  -0.0767                      
+  3.  -0.7220   9.1546  -0.0789                      
+  4.  -6.1900  46.5366  -0.1330                      
+  5.  -2.8290  55.9318  -0.0506                      
+  6.  -3.5190  56.0776  -0.0628                      
+  7.  53.4420   8.0108   6.6712     (fixed parameter)
+  8.  -5.6920   7.1515  -0.7959                      
+  9.  -6.9600  10.0703  -0.6911                      
+ 10. -90.4000 119.0211  -0.7595                      
+ 11. -80.2800 133.4682  -0.6015                      
+ 12.  -0.2197   2.1918  -0.1002                      
+ 13.   4.3353   4.5639   0.9499                      
+ 14.   1.3926   1.0891   1.2787                      
+ 15.   0.0106   1.0748   0.0099                      
+ 16.  -3.1050   2.6917  -1.1535                      
+ 17.   2.1768   2.5841   0.8424     (fixed parameter)
+ 18.  -0.6823   5.5560  -0.1228     (fixed parameter)
+ 19.   3.3341   5.7196   0.5829     (fixed parameter)
+ 20. -13.7130  24.6450  -0.5564                      
+ 21. -12.4400  26.1389  -0.4759                      
+
+Good convergence is indicated by the t-ratios of non-fixed parameters being close to zero.
+
+Overall maximum convergence ratio =  2.4407 .
+One or more of the t-statistics are rather large.
+Convergence of the algorithm is doubtful.
+
+
+
+@2
+Estimation Results.
+-------------------
+
+Regular end of estimation algorithm.
+Total of 3059 iteration steps.
+
+
+@3
+Estimates and standard errors
+                             
+ 1. rate:  basic rate parameter friend                            20.0000  (  fixed  )
+ 2. eval:  friend: outdegree (density)                            -0.6414  (   1.0855)
+ 3. eval:  friend: reciprocity                                     2.1294  (   1.3866)
+ 4. eval:  friend: transitive triplets                             0.5126  (   0.1276)
+ 5. eval:  friend: indegree - popularity                          -0.2616  (   0.2894)
+ 6. eval:  friend: outdegree - activity                           -0.1741  (   0.1861)
+ 7. rate:  basic rate parameter perception                        20.0000  (  fixed  )
+ 8. eval:  perception: outdegree (density)                        -0.7260  (   5.7321)
+ 9. eval:  perception: reciprocity                                -2.8824  (   7.6770)
+10. eval:  perception: indegree - popularity                      -0.0504  (   0.4996)
+11. eval:  perception: outdegree - activity                        0.4654  (   1.2246)
+12. eval:  perception: self alter                                  6.2460  (  12.6587)
+13. eval:  perception: self ego                                    1.9958  (   2.7105)
+14. eval:  perception: self ego x friend                        -118.1667  ( 215.1091)
+15. eval:  perception: self alter x friend                        26.3242  ( 137.6411)
+16. eval:  perception: friend                                     55.3694  ( 167.5811)
+17. eval:  perception: indeg.^(1/2) friend popularity              0.0000  (  fixed  )
+18. eval:  perception: indeg.^(1/2) friend activity                0.0000  (  fixed  )
+19. eval:  perception: outdeg.^(1/2) friend activity               0.0000  (  fixed  )
+20. eval:  perception: friend to agreement                        -2.3135  (   4.7481)
+21. eval:  perception: XWX closure1 of friend                     -1.0040  (   4.1621)
+
+
+@3
+Covariance matrices
+                   
+Covariance matrix of estimates (correlations below diagonal):
+        NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA
+        NA      1.178     -1.287      0.073     -0.210      0.027         NA     -1.018     -5.262     -0.107      0.852      8.490      1.547    -97.217     67.483     95.685         NA         NA         NA     -3.153     -2.759
+        NA     -0.855      1.923     -0.048      0.235     -0.101         NA      1.109      8.308      0.230     -1.346    -13.642     -2.479    155.480    -95.709   -142.401         NA         NA         NA      5.043      4.359
+        NA      0.524     -0.270      0.016     -0.009     -0.011         NA     -0.068     -0.068      0.007      0.009      0.084      0.032      1.541      2.022      1.509         NA         NA         NA     -0.043     -0.031
+        NA     -0.670      0.585     -0.256      0.084     -0.036         NA      0.590      1.322      0.009     -0.227     -1.995     -0.271     37.461    -13.507    -24.956         NA         NA         NA      0.708      0.789
+        NA      0.135     -0.392     -0.444     -0.662      0.035         NA     -0.273     -0.837     -0.018      0.143      1.300      0.174    -25.586      6.714     14.691         NA         NA         NA     -0.450     -0.496
+        NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA
+        NA     -0.164      0.139     -0.093      0.356     -0.256         NA     32.857      5.008     -2.190     -1.322      2.782      3.944    589.264   -357.686   -474.335         NA         NA         NA     -2.026      5.324
+        NA     -0.631      0.780     -0.070      0.595     -0.586         NA      0.114     58.937      1.732     -9.275    -95.041    -17.928   1220.485   -635.836  -1004.446         NA         NA         NA     34.789     31.052
+        NA     -0.197      0.333      0.117      0.065     -0.193         NA     -0.765      0.452      0.250     -0.245     -3.714     -0.821      6.902     -0.014     -5.772         NA         NA         NA      1.300      0.730
+        NA      0.641     -0.793      0.059     -0.640      0.627         NA     -0.188     -0.987     -0.400      1.500     14.976      2.691   -204.544    101.965    163.435         NA         NA         NA     -5.507     -5.054
+        NA      0.618     -0.777      0.052     -0.545      0.552         NA      0.038     -0.978     -0.587      0.966    160.243     30.832  -1820.112    934.769   1505.037         NA         NA         NA    -58.599    -49.450
+        NA      0.526     -0.660      0.092     -0.346      0.344         NA      0.254     -0.862     -0.606      0.811      0.899      7.347   -242.035    134.958    221.048         NA         NA         NA    -11.871     -8.763
+        NA     -0.416      0.521      0.056      0.602     -0.639         NA      0.478      0.739      0.064     -0.776     -0.668     -0.415  46271.907 -16504.352 -28986.421         NA         NA         NA    620.354    717.428
+        NA      0.452     -0.501      0.115     -0.339      0.262         NA     -0.453     -0.602      0.000      0.605      0.536      0.362     -0.557  18945.059  21593.506         NA         NA         NA   -300.496   -342.343
+        NA      0.526     -0.613      0.071     -0.515      0.471         NA     -0.494     -0.781     -0.069      0.796      0.709      0.487     -0.804      0.936  28083.412         NA         NA         NA   -505.010   -557.113
+        NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA
+        NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA
+        NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA
+        NA     -0.612      0.766     -0.071      0.515     -0.509         NA     -0.074      0.954      0.548     -0.947     -0.975     -0.922      0.607     -0.460     -0.635         NA         NA         NA     22.544     18.323
+        NA     -0.611      0.755     -0.059      0.655     -0.641         NA      0.223      0.972      0.351     -0.992     -0.939     -0.777      0.801     -0.598     -0.799         NA         NA         NA      0.927     17.323
+
+Derivative matrix of expected statistics X by parameters and
+covariance/correlation matrix of X can be found using
+summary(ans) within R, or by using the 'verbose' option in Siena07.
+ 
+Total computation time 31.39 seconds.
+
+
+-----------------------------------
+New Analysis started.
+Date and time: 03/09/2025 16:10:17
+New results follow.
+-----------------------------------
+
+RSiena version 1.4.7 (20 feb 24)
+
+
+@1
+Estimation by stochastic approximation algorithm.
+=================================================
+
+Random initialization of random number stream.
+Current random number seed is 77221.
+Effects object used: myeff 
+Model Type:
+Network 1 friend : Standard actor-oriented model 
+Network 2 perception : Standard actor-oriented model 
+Estimation method: unconditional moment estimation
+.
+
+Time duration for simulations is 1.0.
+Standard errors are estimated with the likelihood ratio method.
+Dolby method (regression on scores) is used.
+Initial value of gain parameter is  0.2000000.
+Reduction factor for gain parameter is  0.5000000.
+Number of subphases in Phase 2 is 3.
+
+Initial parameter values are 
+  1. rate:  basic rate parameter friend                    20.0000  (fixed) 
+  2. eval:  friend: outdegree (density)                     0.0000
+  3. eval:  friend: reciprocity                             0.0000
+  4. eval:  friend: transitive triplets                     0.0000
+  5. eval:  friend: indegree - popularity                   0.0000
+  6. eval:  friend: outdegree - activity                    0.0000
+  7. rate:  basic rate parameter perception                20.0000  (fixed) 
+  8. eval:  perception: outdegree (density)                 0.0000
+  9. eval:  perception: reciprocity                         0.0000
+ 10. eval:  perception: indegree - popularity               0.0000
+ 11. eval:  perception: outdegree - activity                0.0000
+ 12. eval:  perception: self alter                          0.0000
+ 13. eval:  perception: self ego                            0.0000
+
+
+Values of target statistics are
+  1. Amount of network change                                             0.0000
+  2. friend: Number of ties                                              37.0000
+  3. friend: Number of reciprocated ties                                 30.0000
+  4. friend: Number of transitive triplets                               71.0000
+  5. friend: Sum of squared indegrees                                   135.0000
+  6. friend: Sum of squared outdegrees                                  135.0000
+  7. Amount of network change                                             0.0000
+  8. perception: Number of ties                                         122.0000
+  9. perception: Number of reciprocated ties                             80.0000
+ 10. perception: Sum of squared indegrees                              1116.0000
+ 11. perception: Sum of squared outdegrees                             1250.0000
+ 12. perception: Sum indegrees x self                                     9.1429
+ 13. perception: Sum outdegrees x self                                    1.1429
+These were calculated from the data.
+
+ 13 parameters, 13 statistics
+
+Estimation of derivatives by the LR method (type 1).
+
+
+@2
+End of stochastic approximation algorithm, phase 3.
+---------------------------------------------------
+
+Total of 2143 iterations.
+Parameter estimates based on 1143 iterations,
+convergence diagnostics, covariance and derivative matrices based on 1000 iterations.
+
+Information for convergence diagnosis.
+Averages, standard deviations, and t-ratios for deviations from targets:
+  1.  34.4650   8.7193   3.9527     (fixed parameter)
+  2.  -0.3710   8.0564  -0.0461                      
+  3.  -0.5180   9.1954  -0.0563                      
+  4.  -2.3920  46.3687  -0.0516                      
+  5.  -1.4930  54.2391  -0.0275                      
+  6.  -1.8610  54.9319  -0.0339                      
+  7.  55.8270   6.7227   8.3043     (fixed parameter)
+  8.  -0.1150   5.5883  -0.0206                      
+  9.   0.1480   8.7489   0.0169                      
+ 10.   0.3270  99.5600   0.0033                      
+ 11.   0.0930  86.4815   0.0011                      
+ 12.   0.1634   1.8079   0.0904                      
+ 13.   0.1484   4.5899   0.0323                      
+
+Good convergence is indicated by the t-ratios of non-fixed parameters being close to zero.
+
+Overall maximum convergence ratio =  0.287 .
+
+
+
+@2
+Estimation Results.
+-------------------
+
+Regular end of estimation algorithm.
+Total of 2143 iteration steps.
+
+
+@3
+Estimates and standard errors
+                             
+ 1. rate:  basic rate parameter friend                            20.0000  (  fixed  )
+ 2. eval:  friend: outdegree (density)                            -0.4207  (   0.7031)
+ 3. eval:  friend: reciprocity                                     1.9679  (   0.6726)
+ 4. eval:  friend: transitive triplets                             0.5580  (   0.1359)
+ 5. eval:  friend: indegree - popularity                          -0.2978  (   0.1923)
+ 6. eval:  friend: outdegree - activity                           -0.1990  (   0.1363)
+ 7. rate:  basic rate parameter perception                        20.0000  (  fixed  )
+ 8. eval:  perception: outdegree (density)                         0.3330  (   1.6031)
+ 9. eval:  perception: reciprocity                                -0.2475  (   0.3811)
+10. eval:  perception: indegree - popularity                      -0.1753  (   0.1655)
+11. eval:  perception: outdegree - activity                        0.1163  (   0.0175)
+12. eval:  perception: self alter                                  1.8232  (   0.7989)
+13. eval:  perception: self ego                                    0.1718  (   0.2353)
+
+
+@3
+Covariance matrices
+                   
+Covariance matrix of estimates (correlations below diagonal):
+        NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA
+        NA      0.494     -0.237      0.056     -0.037     -0.065         NA      0.033      0.037     -0.010      0.002      0.053     -0.008
+        NA     -0.501      0.452     -0.008     -0.018      0.010         NA      0.099      0.001     -0.006     -0.003     -0.009      0.011
+        NA      0.585     -0.084      0.018     -0.014     -0.010         NA     -0.001      0.010     -0.001      0.000      0.001      0.001
+        NA     -0.270     -0.138     -0.529      0.037     -0.006         NA      0.046     -0.004     -0.005      0.000      0.027     -0.002
+        NA     -0.683      0.113     -0.543     -0.228      0.019         NA     -0.038     -0.010      0.005      0.000     -0.021      0.000
+        NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA
+        NA      0.030      0.092     -0.003      0.150     -0.174         NA      2.570     -0.204     -0.259     -0.003      1.083      0.042
+        NA      0.137      0.005      0.202     -0.051     -0.188         NA     -0.333      0.145      0.013     -0.001     -0.095     -0.043
+        NA     -0.083     -0.052     -0.027     -0.154      0.217         NA     -0.977      0.206      0.027      0.000     -0.116     -0.002
+        NA      0.144     -0.247     -0.035      0.041      0.003         NA     -0.102     -0.169     -0.027      0.000      0.003      0.000
+        NA      0.094     -0.016      0.005      0.177     -0.193         NA      0.846     -0.311     -0.879      0.243      0.638      0.036
+        NA     -0.047      0.069      0.028     -0.034      0.006         NA      0.111     -0.479     -0.049      0.099      0.194      0.055
+
+Derivative matrix of expected statistics X by parameters and
+covariance/correlation matrix of X can be found using
+summary(ans) within R, or by using the 'verbose' option in Siena07.
+ 
+Total computation time 4.34 seconds.
+
+
+-----------------------------------
+New Analysis started.
+Date and time: 03/09/2025 16:10:39
+New results follow.
+-----------------------------------
+
+RSiena version 1.4.7 (20 feb 24)
+
+
+@1
+Estimation by stochastic approximation algorithm.
+=================================================
+
+Random initialization of random number stream.
+Current random number seed is 792814.
+Effects object used: myeff 
+Model Type:
+Network 1 friend : Standard actor-oriented model 
+Network 2 perception : Standard actor-oriented model 
+Estimation method: unconditional moment estimation
+.
+
+Time duration for simulations is 1.0.
+Standard errors are estimated with the likelihood ratio method.
+Dolby method (regression on scores) is used.
+Initial value of gain parameter is  0.2000000.
+Reduction factor for gain parameter is  0.5000000.
+Number of subphases in Phase 2 is 3.
+
+Initial parameter values are 
+  1. rate:  basic rate parameter friend                    20.0000  (fixed) 
+  2. eval:  friend: outdegree (density)                     0.0000
+  3. eval:  friend: reciprocity                             0.0000
+  4. eval:  friend: transitive triplets                     0.0000
+  5. eval:  friend: indegree - popularity                   0.0000
+  6. eval:  friend: outdegree - activity                    0.0000
+  7. rate:  basic rate parameter perception                20.0000  (fixed) 
+  8. eval:  perception: outdegree (density)                 0.0000
+  9. eval:  perception: reciprocity                         0.0000
+ 10. eval:  perception: indegree - popularity               0.0000
+ 11. eval:  perception: outdegree - activity                0.0000
+ 12. eval:  perception: self alter                          0.0000
+ 13. eval:  perception: self ego                            0.0000
+
+
+Values of target statistics are
+  1. Amount of network change                                             0.0000
+  2. friend: Number of ties                                              37.0000
+  3. friend: Number of reciprocated ties                                 30.0000
+  4. friend: Number of transitive triplets                               71.0000
+  5. friend: Sum of squared indegrees                                   135.0000
+  6. friend: Sum of squared outdegrees                                  135.0000
+  7. Amount of network change                                             0.0000
+  8. perception: Number of ties                                         122.0000
+  9. perception: Number of reciprocated ties                             80.0000
+ 10. perception: Sum of squared indegrees                              1116.0000
+ 11. perception: Sum of squared outdegrees                             1250.0000
+ 12. perception: Sum indegrees x self                                     9.1429
+ 13. perception: Sum outdegrees x self                                    1.1429
+These were calculated from the data.
+
+ 13 parameters, 13 statistics
+
+Estimation of derivatives by the LR method (type 1).
+
+
+@2
+End of stochastic approximation algorithm, phase 3.
+---------------------------------------------------
+
+Total of 11143 iterations.
+Parameter estimates based on 1143 iterations,
+convergence diagnostics, covariance and derivative matrices based on 10000 iterations.
+
+Information for convergence diagnosis.
+Averages, standard deviations, and t-ratios for deviations from targets:
+  1.  34.2798   8.4525   4.0556     (fixed parameter)
+  2.   0.2894   8.1633   0.0355                      
+  3.   0.1170   9.1674   0.0128                      
+  4.   1.0599  47.3651   0.0224                      
+  5.   4.5280  55.9607   0.0809                      
+  6.   3.3124  56.0210   0.0591                      
+  7.  55.8984   6.8387   8.1738     (fixed parameter)
+  8.  -0.3848   5.8191  -0.0661                      
+  9.  -0.8496   8.9745  -0.0947                      
+ 10.  -5.7084 102.1354  -0.0559                      
+ 11.  -2.5516  93.7388  -0.0272                      
+ 12.  -0.1749   1.9631  -0.0891                      
+ 13.  -0.1315   4.5862  -0.0287                      
+
+Good convergence is indicated by the t-ratios of non-fixed parameters being close to zero.
+
+Overall maximum convergence ratio =  0.4956 .
+
+
+
+@2
+Estimation Results.
+-------------------
+
+Regular end of estimation algorithm.
+Total of 11143 iteration steps.
+
+
+@3
+Estimates and standard errors
+                             
+ 1. rate:  basic rate parameter friend                            20.0000  (  fixed  )
+ 2. eval:  friend: outdegree (density)                            -0.5593  (   0.6722)
+ 3. eval:  friend: reciprocity                                     2.0208  (   0.6668)
+ 4. eval:  friend: transitive triplets                             0.5302  (   0.1304)
+ 5. eval:  friend: indegree - popularity                          -0.2610  (   0.1809)
+ 6. eval:  friend: outdegree - activity                           -0.1861  (   0.1239)
+ 7. rate:  basic rate parameter perception                        20.0000  (  fixed  )
+ 8. eval:  perception: outdegree (density)                         0.2108  (   1.4657)
+ 9. eval:  perception: reciprocity                                -0.2723  (   0.3429)
+10. eval:  perception: indegree - popularity                      -0.1594  (   0.1519)
+11. eval:  perception: outdegree - activity                        0.1156  (   0.0160)
+12. eval:  perception: self alter                                  1.7053  (   0.6753)
+13. eval:  perception: self ego                                    0.1644  (   0.2221)
+
+
+@3
+Covariance matrices
+                   
+Covariance matrix of estimates (correlations below diagonal):
+        NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA
+        NA      0.452     -0.292      0.049     -0.054     -0.040         NA     -0.039      0.001      0.004      0.000     -0.024     -0.004
+        NA     -0.651      0.445     -0.022      0.016      0.010         NA      0.059      0.007     -0.007      0.000      0.043      0.002
+        NA      0.559     -0.252      0.017     -0.008     -0.010         NA     -0.006      0.000      0.001      0.000     -0.004      0.000
+        NA     -0.443      0.130     -0.343      0.033     -0.007         NA     -0.002      0.000      0.000      0.000      0.001      0.000
+        NA     -0.481      0.123     -0.635     -0.319      0.015         NA      0.006     -0.001     -0.001      0.000      0.001      0.001
+        NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA
+        NA     -0.040      0.061     -0.032     -0.009      0.033         NA      2.148     -0.157     -0.217     -0.004      0.797      0.047
+        NA      0.003      0.029      0.006      0.002     -0.030         NA     -0.313      0.118      0.009      0.000     -0.049     -0.037
+        NA      0.044     -0.072      0.037      0.003     -0.028         NA     -0.973      0.164      0.023      0.000     -0.087     -0.002
+        NA     -0.017      0.032     -0.031      0.041     -0.021         NA     -0.161     -0.037      0.015      0.000      0.003      0.000
+        NA     -0.052      0.096     -0.042      0.007      0.016         NA      0.805     -0.212     -0.851      0.236      0.456      0.027
+        NA     -0.029      0.011     -0.004     -0.003      0.023         NA      0.144     -0.483     -0.069      0.020      0.177      0.049
+
+Derivative matrix of expected statistics X by parameters and
+covariance/correlation matrix of X can be found using
+summary(ans) within R, or by using the 'verbose' option in Siena07.
+ 
+Total computation time 23.62 seconds.
+
+
+-----------------------------------
+New Analysis started.
+Date and time: 03/09/2025 16:11:14
+New results follow.
+-----------------------------------
+
+RSiena version 1.4.7 (20 feb 24)
+
+
+@1
+Estimation by stochastic approximation algorithm.
+=================================================
+
+Random initialization of random number stream.
+Current random number seed is 438977.
+Effects object used: myeff 
+Model Type:
+Network 1 friend : Standard actor-oriented model 
+Network 2 perception : Standard actor-oriented model 
+Estimation method: unconditional moment estimation
+.
+
+Time duration for simulations is 1.0.
+Standard errors are estimated with the likelihood ratio method.
+Dolby method (regression on scores) is used.
+Initial value of gain parameter is  0.2000000.
+Reduction factor for gain parameter is  0.5000000.
+Number of subphases in Phase 2 is 2.
+
+Initial parameter values are 
+  1. rate:  basic rate parameter friend                    20.0000  (fixed) 
+  2. eval:  friend: outdegree (density)                     0.0000
+  3. eval:  friend: reciprocity                             0.0000
+  4. eval:  friend: transitive triplets                     0.0000
+  5. eval:  friend: indegree - popularity                   0.0000
+  6. eval:  friend: outdegree - activity                    0.0000
+  7. rate:  basic rate parameter perception                20.0000  (fixed) 
+  8. eval:  perception: outdegree (density)                 0.0000
+  9. eval:  perception: reciprocity                         0.0000
+ 10. eval:  perception: indegree - popularity               0.0000
+ 11. eval:  perception: outdegree - activity                0.0000
+ 12. eval:  perception: self alter                          0.0000
+ 13. eval:  perception: self ego                            0.0000
+
+
+Values of target statistics are
+  1. Amount of network change                                             0.0000
+  2. friend: Number of ties                                              37.0000
+  3. friend: Number of reciprocated ties                                 30.0000
+  4. friend: Number of transitive triplets                               71.0000
+  5. friend: Sum of squared indegrees                                   135.0000
+  6. friend: Sum of squared outdegrees                                  135.0000
+  7. Amount of network change                                             0.0000
+  8. perception: Number of ties                                         122.0000
+  9. perception: Number of reciprocated ties                             80.0000
+ 10. perception: Sum of squared indegrees                              1116.0000
+ 11. perception: Sum of squared outdegrees                             1250.0000
+ 12. perception: Sum indegrees x self                                     9.1429
+ 13. perception: Sum outdegrees x self                                    1.1429
+These were calculated from the data.
+
+ 13 parameters, 13 statistics
+
+Estimation of derivatives by the LR method (type 1).
+
+
+@2
+End of stochastic approximation algorithm, phase 3.
+---------------------------------------------------
+
+Total of 1626 iterations.
+Parameter estimates based on 626 iterations,
+convergence diagnostics, covariance and derivative matrices based on 1000 iterations.
+
+Information for convergence diagnosis.
+Averages, standard deviations, and t-ratios for deviations from targets:
+  1.  34.3120   8.4154   4.0773     (fixed parameter)
+  2.  -0.4360   8.2190  -0.0530                      
+  3.  -0.4180   9.1385  -0.0457                      
+  4.  -1.3610  46.9481  -0.0290                      
+  5.   1.0400  55.7181   0.0187                      
+  6.   1.1660  56.6560   0.0206                      
+  7.  55.9730   6.7565   8.2844     (fixed parameter)
+  8.  -0.2430   5.9239  -0.0410                      
+  9.  -0.1460   8.9415  -0.0163                      
+ 10.  -1.4750 104.2726  -0.0141                      
+ 11.  -4.2610  94.0730  -0.0453                      
+ 12.   0.0789   1.9382   0.0407                      
+ 13.   0.0799   4.3275   0.0185                      
+
+Good convergence is indicated by the t-ratios of non-fixed parameters being close to zero.
+
+Overall maximum convergence ratio =  0.6295 .
+
+
+
+@2
+Estimation Results.
+-------------------
+
+Regular end of estimation algorithm.
+Total of 1626 iteration steps.
+
+
+@3
+Estimates and standard errors
+                             
+ 1. rate:  basic rate parameter friend                            20.0000  (  fixed  )
+ 2. eval:  friend: outdegree (density)                            -0.7150  (   0.7367)
+ 3. eval:  friend: reciprocity                                     2.0927  (   0.7621)
+ 4. eval:  friend: transitive triplets                             0.5021  (   0.1391)
+ 5. eval:  friend: indegree - popularity                          -0.2651  (   0.2062)
+ 6. eval:  friend: outdegree - activity                           -0.1519  (   0.1278)
+ 7. rate:  basic rate parameter perception                        20.0000  (  fixed  )
+ 8. eval:  perception: outdegree (density)                         0.1895  (   1.7390)
+ 9. eval:  perception: reciprocity                                -0.2466  (   0.3227)
+10. eval:  perception: indegree - popularity                      -0.1581  (   0.1830)
+11. eval:  perception: outdegree - activity                        0.1152  (   0.0171)
+12. eval:  perception: self alter                                  1.7252  (   0.7904)
+13. eval:  perception: self ego                                    0.1699  (   0.2343)
+
+
+@3
+Covariance matrices
+                   
+Covariance matrix of estimates (correlations below diagonal):
+        NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA
+        NA      0.543     -0.374      0.063     -0.050     -0.058         NA      0.180     -0.013     -0.018     -0.001      0.023      0.023
+        NA     -0.666      0.581     -0.040     -0.024      0.044         NA     -0.274     -0.015      0.031      0.000     -0.105     -0.006
+        NA      0.611     -0.377      0.019     -0.010     -0.011         NA     -0.001     -0.001      0.000      0.000     -0.005      0.004
+        NA     -0.326     -0.150     -0.350      0.043     -0.009         NA      0.043     -0.003     -0.005      0.000      0.021      0.003
+        NA     -0.611      0.455     -0.598     -0.349      0.016         NA     -0.030      0.006      0.003      0.000     -0.004     -0.007
+        NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA
+        NA      0.141     -0.207     -0.003      0.120     -0.137         NA      3.024     -0.128     -0.312     -0.006      1.191      0.067
+        NA     -0.053     -0.060     -0.020     -0.041      0.136         NA     -0.228      0.104      0.006      0.000     -0.023     -0.036
+        NA     -0.131      0.220     -0.001     -0.136      0.138         NA     -0.981      0.105      0.033      0.000     -0.131     -0.004
+        NA     -0.080      0.028      0.080      0.070     -0.059         NA     -0.216     -0.010      0.085      0.000      0.002      0.000
+        NA      0.039     -0.174     -0.048      0.132     -0.045         NA      0.866     -0.091     -0.907      0.112      0.625      0.024
+        NA      0.132     -0.032      0.114      0.061     -0.238         NA      0.164     -0.474     -0.103     -0.016      0.127      0.055
+
+Derivative matrix of expected statistics X by parameters and
+covariance/correlation matrix of X can be found using
+summary(ans) within R, or by using the 'verbose' option in Siena07.
+ 
+Total computation time 3.5 seconds.
+
+
+-----------------------------------
+New Analysis started.
+Date and time: 03/09/2025 16:11:23
+New results follow.
+-----------------------------------
+
+RSiena version 1.4.7 (20 feb 24)
+
+
+@1
+Estimation by stochastic approximation algorithm.
+=================================================
+
+Random initialization of random number stream.
+Current random number seed is 571196.
+Effects object used: myeff 
+Model Type:
+Network 1 friend : Standard actor-oriented model 
+Network 2 perception : Standard actor-oriented model 
+Estimation method: unconditional moment estimation
+.
+
+Time duration for simulations is 1.0.
+Standard errors are estimated with the likelihood ratio method.
+Dolby method (regression on scores) is used.
+Initial value of gain parameter is  0.2000000.
+Reduction factor for gain parameter is  0.5000000.
+Number of subphases in Phase 2 is 4.
+
+Initial parameter values are 
+  1. rate:  basic rate parameter friend                    20.0000  (fixed) 
+  2. eval:  friend: outdegree (density)                     0.0000
+  3. eval:  friend: reciprocity                             0.0000
+  4. eval:  friend: transitive triplets                     0.0000
+  5. eval:  friend: indegree - popularity                   0.0000
+  6. eval:  friend: outdegree - activity                    0.0000
+  7. rate:  basic rate parameter perception                20.0000  (fixed) 
+  8. eval:  perception: outdegree (density)                 0.0000
+  9. eval:  perception: reciprocity                         0.0000
+ 10. eval:  perception: indegree - popularity               0.0000
+ 11. eval:  perception: outdegree - activity                0.0000
+ 12. eval:  perception: self alter                          0.0000
+ 13. eval:  perception: self ego                            0.0000
+
+
+Values of target statistics are
+  1. Amount of network change                                             0.0000
+  2. friend: Number of ties                                              37.0000
+  3. friend: Number of reciprocated ties                                 30.0000
+  4. friend: Number of transitive triplets                               71.0000
+  5. friend: Sum of squared indegrees                                   135.0000
+  6. friend: Sum of squared outdegrees                                  135.0000
+  7. Amount of network change                                             0.0000
+  8. perception: Number of ties                                         122.0000
+  9. perception: Number of reciprocated ties                             80.0000
+ 10. perception: Sum of squared indegrees                              1116.0000
+ 11. perception: Sum of squared outdegrees                             1250.0000
+ 12. perception: Sum indegrees x self                                     9.1429
+ 13. perception: Sum outdegrees x self                                    1.1429
+These were calculated from the data.
+
+ 13 parameters, 13 statistics
+
+Estimation of derivatives by the LR method (type 1).
+
+
+@2
+End of stochastic approximation algorithm, phase 3.
+---------------------------------------------------
+
+Total of 2941 iterations.
+Parameter estimates based on 1941 iterations,
+convergence diagnostics, covariance and derivative matrices based on 1000 iterations.
+
+Information for convergence diagnosis.
+Averages, standard deviations, and t-ratios for deviations from targets:
+  1.  34.0560   8.6315   3.9455     (fixed parameter)
+  2.   0.1460   7.9939   0.0183                      
+  3.   0.0320   9.1526   0.0035                      
+  4.  -0.1270  46.1174  -0.0028                      
+  5.   1.3360  53.8543   0.0248                      
+  6.   1.4220  54.5670   0.0261                      
+  7.  56.0830   6.7266   8.3375     (fixed parameter)
+  8.  -0.1730   5.5174  -0.0314                      
+  9.  -0.1260   8.6533  -0.0146                      
+ 10.  -2.5910  96.3333  -0.0269                      
+ 11.  -0.9290  90.5851  -0.0103                      
+ 12.  -0.0821   1.9514  -0.0421                      
+ 13.   0.0769   4.5186   0.0170                      
+
+Good convergence is indicated by the t-ratios of non-fixed parameters being close to zero.
+
+Overall maximum convergence ratio =  0.2377 .
+
+
+
+@2
+Estimation Results.
+-------------------
+
+Regular end of estimation algorithm.
+Total of 2941 iteration steps.
+
+
+@3
+Estimates and standard errors
+                             
+ 1. rate:  basic rate parameter friend                            20.0000  (  fixed  )
+ 2. eval:  friend: outdegree (density)                            -0.4557  (   0.8406)
+ 3. eval:  friend: reciprocity                                     2.0107  (   0.6932)
+ 4. eval:  friend: transitive triplets                             0.5566  (   0.1604)
+ 5. eval:  friend: indegree - popularity                          -0.3035  (   0.2007)
+ 6. eval:  friend: outdegree - activity                           -0.1917  (   0.1611)
+ 7. rate:  basic rate parameter perception                        20.0000  (  fixed  )
+ 8. eval:  perception: outdegree (density)                         0.4237  (   2.0661)
+ 9. eval:  perception: reciprocity                                -0.2488  (   0.3470)
+10. eval:  perception: indegree - popularity                      -0.1836  (   0.2156)
+11. eval:  perception: outdegree - activity                        0.1152  (   0.0175)
+12. eval:  perception: self alter                                  1.8129  (   0.8685)
+13. eval:  perception: self ego                                    0.1627  (   0.2517)
+
+
+@3
+Covariance matrices
+                   
+Covariance matrix of estimates (correlations below diagonal):
+        NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA
+        NA      0.707     -0.369      0.073     -0.083     -0.069         NA     -0.036     -0.022      0.009     -0.001     -0.089     -0.013
+        NA     -0.633      0.481     -0.011      0.023      0.007         NA     -0.069      0.005      0.002      0.003      0.057      0.004
+        NA      0.543     -0.102      0.026     -0.008     -0.020         NA      0.037     -0.006     -0.004      0.000      0.012     -0.006
+        NA     -0.495      0.166     -0.257      0.040     -0.007         NA      0.028      0.013     -0.004      0.000      0.019     -0.005
+        NA     -0.512      0.066     -0.776     -0.224      0.026         NA     -0.021     -0.001      0.002      0.000     -0.008      0.008
+        NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA
+        NA     -0.021     -0.048      0.113      0.068     -0.062         NA      4.269     -0.165     -0.439     -0.013      1.572     -0.039
+        NA     -0.076      0.022     -0.102      0.191     -0.018         NA     -0.231      0.120      0.009      0.000     -0.044     -0.049
+        NA      0.048      0.016     -0.107     -0.099      0.070         NA     -0.984      0.114      0.046      0.001     -0.170      0.008
+        NA     -0.064      0.236      0.031      0.026     -0.083         NA     -0.370      0.052      0.256      0.000     -0.001      0.000
+        NA     -0.122      0.094      0.087      0.110     -0.058         NA      0.876     -0.147     -0.907     -0.035      0.754     -0.018
+        NA     -0.060      0.022     -0.154     -0.093      0.185         NA     -0.076     -0.556      0.154     -0.038     -0.083      0.063
+
+Derivative matrix of expected statistics X by parameters and
+covariance/correlation matrix of X can be found using
+summary(ans) within R, or by using the 'verbose' option in Siena07.
+ 
+Total computation time 6.15 seconds.
+
+
+-----------------------------------
+New Analysis started.
+Date and time: 03/09/2025 16:11:35
+New results follow.
+-----------------------------------
+
+RSiena version 1.4.7 (20 feb 24)
+
+
+@1
+Estimation by stochastic approximation algorithm.
+=================================================
+
+Random initialization of random number stream.
+Current random number seed is 85851.
+Effects object used: myeff 
+Model Type:
+Network 1 friend : Standard actor-oriented model 
+Network 2 perception : Standard actor-oriented model 
+Estimation method: unconditional moment estimation
+.
+
+Time duration for simulations is 1.0.
+Standard errors are estimated with the likelihood ratio method.
+Dolby method (regression on scores) is used.
+Initial value of gain parameter is  0.2000000.
+Reduction factor for gain parameter is  0.5000000.
+Number of subphases in Phase 2 is 4.
+
+Initial parameter values are 
+  1. rate:  basic rate parameter friend                    20.0000  (fixed) 
+  2. eval:  friend: outdegree (density)                     0.0000
+  3. eval:  friend: reciprocity                             0.0000
+  4. eval:  friend: transitive triplets                     0.0000
+  5. eval:  friend: indegree - popularity                   0.0000
+  6. eval:  friend: outdegree - activity                    0.0000
+  7. rate:  basic rate parameter perception                20.0000  (fixed) 
+  8. eval:  perception: outdegree (density)                 0.0000
+  9. eval:  perception: reciprocity                         0.0000
+ 10. eval:  perception: indegree - popularity               0.0000
+ 11. eval:  perception: outdegree - activity                0.0000
+ 12. eval:  perception: self alter                          0.0000
+ 13. eval:  perception: self ego                            0.0000
+
+
+Values of target statistics are
+  1. Amount of network change                                             0.0000
+  2. friend: Number of ties                                              37.0000
+  3. friend: Number of reciprocated ties                                 30.0000
+  4. friend: Number of transitive triplets                               71.0000
+  5. friend: Sum of squared indegrees                                   135.0000
+  6. friend: Sum of squared outdegrees                                  135.0000
+  7. Amount of network change                                             0.0000
+  8. perception: Number of ties                                         122.0000
+  9. perception: Number of reciprocated ties                             80.0000
+ 10. perception: Sum of squared indegrees                              1116.0000
+ 11. perception: Sum of squared outdegrees                             1250.0000
+ 12. perception: Sum indegrees x self                                     9.1429
+ 13. perception: Sum outdegrees x self                                    1.1429
+These were calculated from the data.
+
+ 13 parameters, 13 statistics
+
+Estimation of derivatives by the LR method (type 1).
+
+
+@2
+End of stochastic approximation algorithm, phase 3.
+---------------------------------------------------
+
+Total of 12141 iterations.
+Parameter estimates based on 2141 iterations,
+convergence diagnostics, covariance and derivative matrices based on 10000 iterations.
+
+Information for convergence diagnosis.
+Averages, standard deviations, and t-ratios for deviations from targets:
+  1.  33.8760   8.3940   4.0357     (fixed parameter)
+  2.  -0.2448   8.0713  -0.0303                      
+  3.  -0.0592   9.0258  -0.0066                      
+  4.  -0.0840  45.9457  -0.0018                      
+  5.   1.0516  54.2224   0.0194                      
+  6.   0.4766  54.5514   0.0087                      
+  7.  55.8794   6.7911   8.2283     (fixed parameter)
+  8.  -0.2198   5.5444  -0.0396                      
+  9.  -0.4182   8.6602  -0.0483                      
+ 10.  -2.7730  97.5191  -0.0284                      
+ 11.  -1.8812  90.3669  -0.0208                      
+ 12.  -0.0506   1.9198  -0.0264                      
+ 13.  -0.0392   4.5562  -0.0086                      
+
+Good convergence is indicated by the t-ratios of non-fixed parameters being close to zero.
+
+Overall maximum convergence ratio =  0.378 .
+
+
+
+@2
+Estimation Results.
+-------------------
+
+Regular end of estimation algorithm.
+Total of 12141 iteration steps.
+
+
+@3
+Estimates and standard errors
+                             
+ 1. rate:  basic rate parameter friend                            20.0000  (  fixed  )
+ 2. eval:  friend: outdegree (density)                            -0.5883  (   0.6882)
+ 3. eval:  friend: reciprocity                                     2.0949  (   0.6907)
+ 4. eval:  friend: transitive triplets                             0.5411  (   0.1305)
+ 5. eval:  friend: indegree - popularity                          -0.2830  (   0.1894)
+ 6. eval:  friend: outdegree - activity                           -0.1828  (   0.1279)
+ 7. rate:  basic rate parameter perception                        20.0000  (  fixed  )
+ 8. eval:  perception: outdegree (density)                         0.3333  (   1.6261)
+ 9. eval:  perception: reciprocity                                -0.2588  (   0.3442)
+10. eval:  perception: indegree - popularity                      -0.1734  (   0.1687)
+11. eval:  perception: outdegree - activity                        0.1155  (   0.0159)
+12. eval:  perception: self alter                                  1.7750  (   0.7310)
+13. eval:  perception: self ego                                    0.1649  (   0.2246)
+
+
+@3
+Covariance matrices
+                   
+Covariance matrix of estimates (correlations below diagonal):
+        NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA
+        NA      0.474     -0.282      0.051     -0.066     -0.039         NA      0.020     -0.004     -0.002      0.000     -0.007      0.005
+        NA     -0.593      0.477     -0.015      0.021      0.000         NA     -0.020     -0.005      0.002      0.000      0.006      0.000
+        NA      0.572     -0.165      0.017     -0.009     -0.011         NA     -0.010     -0.001      0.001      0.000     -0.004      0.001
+        NA     -0.509      0.157     -0.361      0.036     -0.007         NA      0.001     -0.001      0.000      0.000      0.002      0.002
+        NA     -0.448     -0.002     -0.643     -0.285      0.016         NA      0.003      0.003     -0.001      0.000      0.001     -0.003
+        NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA
+        NA      0.017     -0.017     -0.049      0.004      0.014         NA      2.644     -0.171     -0.268     -0.004      0.992      0.040
+        NA     -0.016     -0.021     -0.019     -0.011      0.057         NA     -0.306      0.118      0.010      0.000     -0.053     -0.038
+        NA     -0.014      0.017      0.056     -0.001     -0.026         NA     -0.978      0.174      0.028      0.000     -0.108     -0.002
+        NA      0.003      0.027      0.010     -0.004     -0.017         NA     -0.174     -0.038      0.041      0.000      0.002      0.000
+        NA     -0.013      0.013     -0.047      0.012      0.015         NA      0.835     -0.210     -0.875      0.199      0.534      0.021
+        NA      0.032      0.000      0.043      0.041     -0.093         NA      0.110     -0.486     -0.041      0.020      0.126      0.050
+
+Derivative matrix of expected statistics X by parameters and
+covariance/correlation matrix of X can be found using
+summary(ans) within R, or by using the 'verbose' option in Siena07.
+ 
+Total computation time 25.73 seconds.
+
+
+-----------------------------------
+New Analysis started.
+Date and time: 03/09/2025 16:12:07
+New results follow.
+-----------------------------------
+
+RSiena version 1.4.7 (20 feb 24)
+
+
+@1
+Estimation by stochastic approximation algorithm.
+=================================================
+
+Random initialization of random number stream.
+Current random number seed is 667333.
+Effects object used: myeff 
+Model Type:
+Network 1 friend : Standard actor-oriented model 
+Network 2 perception : Standard actor-oriented model 
+Estimation method: unconditional moment estimation
+.
+
+Time duration for simulations is 1.0.
+Standard errors are estimated with the likelihood ratio method.
+Dolby method (regression on scores) is used.
+Initial value of gain parameter is  0.2000000.
+Reduction factor for gain parameter is  0.5000000.
+Number of subphases in Phase 2 is 4.
+
+Initial parameter values are 
+  1. rate:  basic rate parameter friend                    20.0000  (fixed) 
+  2. eval:  friend: outdegree (density)                     0.0000
+  3. eval:  friend: reciprocity                             0.0000
+  4. eval:  friend: transitive triplets                     0.0000
+  5. eval:  friend: indegree - popularity                   0.0000
+  6. eval:  friend: outdegree - activity                    0.0000
+  7. rate:  basic rate parameter perception                20.0000  (fixed) 
+  8. eval:  perception: outdegree (density)                 0.0000
+  9. eval:  perception: reciprocity                         0.0000
+ 10. eval:  perception: indegree - popularity               0.0000
+ 11. eval:  perception: outdegree - activity                0.0000
+ 12. eval:  perception: self alter                          0.0000
+ 13. eval:  perception: self ego                            0.0000
+
+
+Values of target statistics are
+  1. Amount of network change                                             0.0000
+  2. friend: Number of ties                                              37.0000
+  3. friend: Number of reciprocated ties                                 30.0000
+  4. friend: Number of transitive triplets                               71.0000
+  5. friend: Sum of squared indegrees                                   135.0000
+  6. friend: Sum of squared outdegrees                                  135.0000
+  7. Amount of network change                                             0.0000
+  8. perception: Number of ties                                         122.0000
+  9. perception: Number of reciprocated ties                             80.0000
+ 10. perception: Sum of squared indegrees                              1116.0000
+ 11. perception: Sum of squared outdegrees                             1250.0000
+ 12. perception: Sum indegrees x self                                     9.1429
+ 13. perception: Sum outdegrees x self                                    1.1429
+These were calculated from the data.
+
+ 13 parameters, 13 statistics
+
+Estimation of derivatives by the LR method (type 1).
+
+
+@2
+End of stochastic approximation algorithm, phase 3.
+---------------------------------------------------
+
+Total of 3103 iterations.
+Parameter estimates based on 2103 iterations,
+convergence diagnostics, covariance and derivative matrices based on 1000 iterations.
+
+Information for convergence diagnosis.
+Averages, standard deviations, and t-ratios for deviations from targets:
+  1.  33.3110   8.1339   4.0953     (fixed parameter)
+  2.   0.1490   7.8598   0.0190                      
+  3.   0.2560   8.9245   0.0287                      
+  4.   1.6580  44.7259   0.0371                      
+  5.   1.3790  51.8456   0.0266                      
+  6.   2.4510  52.6008   0.0466                      
+  7.  55.8660   6.7048   8.3322     (fixed parameter)
+  8.   0.3940   5.6484   0.0698                      
+  9.   0.8260   8.7872   0.0940                      
+ 10.   8.6780  99.9787   0.0868                      
+ 11.   7.6700  90.9020   0.0844                      
+ 12.   0.0624   1.8806   0.0332                      
+ 13.  -0.0866   4.4780  -0.0193                      
+
+Good convergence is indicated by the t-ratios of non-fixed parameters being close to zero.
+
+Overall maximum convergence ratio =  0.3044 .
+
+
+
+@2
+Estimation Results.
+-------------------
+
+Regular end of estimation algorithm.
+Total of 3103 iteration steps.
+
+
+@3
+Estimates and standard errors
+                             
+ 1. rate:  basic rate parameter friend                            20.0000  (  fixed  )
+ 2. eval:  friend: outdegree (density)                            -0.4380  (   0.7617)
+ 3. eval:  friend: reciprocity                                     2.0110  (   0.7327)
+ 4. eval:  friend: transitive triplets                             0.5627  (   0.1507)
+ 5. eval:  friend: indegree - popularity                          -0.3329  (   0.2222)
+ 6. eval:  friend: outdegree - activity                           -0.1816  (   0.1449)
+ 7. rate:  basic rate parameter perception                        20.0000  (  fixed  )
+ 8. eval:  perception: outdegree (density)                         0.2188  (   1.4995)
+ 9. eval:  perception: reciprocity                                -0.2162  (   0.3490)
+10. eval:  perception: indegree - popularity                      -0.1636  (   0.1536)
+11. eval:  perception: outdegree - activity                        0.1157  (   0.0169)
+12. eval:  perception: self alter                                  1.7533  (   0.6473)
+13. eval:  perception: self ego                                    0.1620  (   0.2298)
+
+
+@3
+Covariance matrices
+                   
+Covariance matrix of estimates (correlations below diagonal):
+        NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA
+        NA      0.580     -0.374      0.076     -0.066     -0.064         NA      0.130      0.023     -0.015     -0.001      0.033      0.010
+        NA     -0.670      0.537     -0.053      0.000      0.042         NA     -0.028      0.001      0.002      0.000     -0.039     -0.028
+        NA      0.666     -0.480      0.023     -0.009     -0.014         NA      0.036      0.005     -0.004      0.000      0.012     -0.001
+        NA     -0.388      0.003     -0.267      0.049     -0.012         NA     -0.053     -0.017      0.007      0.000     -0.007      0.007
+        NA     -0.576      0.394     -0.650     -0.379      0.021         NA     -0.004      0.003      0.000      0.000     -0.004     -0.003
+        NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA
+        NA      0.114     -0.026      0.160     -0.160     -0.018         NA      2.248     -0.147     -0.223     -0.008      0.762      0.056
+        NA      0.087      0.005      0.101     -0.219      0.066         NA     -0.281      0.122      0.006      0.000     -0.043     -0.038
+        NA     -0.124      0.020     -0.174      0.196      0.007         NA     -0.970      0.107      0.024      0.000     -0.082     -0.003
+        NA     -0.067     -0.008     -0.108      0.090      0.024         NA     -0.304      0.079      0.147      0.000      0.001      0.000
+        NA      0.067     -0.082      0.126     -0.046     -0.044         NA      0.785     -0.189     -0.827      0.132      0.419      0.031
+        NA      0.058     -0.164     -0.020      0.140     -0.089         NA      0.162     -0.478     -0.076     -0.046      0.210      0.053
+
+Derivative matrix of expected statistics X by parameters and
+covariance/correlation matrix of X can be found using
+summary(ans) within R, or by using the 'verbose' option in Siena07.
+ 
+Total computation time 6.45 seconds.
+
+
+-----------------------------------
+New Analysis started.
+Date and time: 03/09/2025 16:18:09
+New results follow.
+-----------------------------------
+
+RSiena version 1.4.7 (20 feb 24)
+
+
+@1
+Estimation by stochastic approximation algorithm.
+=================================================
+
+Random initialization of random number stream.
+Current random number seed is 349636.
+Effects object used: myeff 
+Model Type:
+Network 1 friend : Standard actor-oriented model 
+Network 2 perception : Standard actor-oriented model 
+Estimation method: unconditional moment estimation
+.
+
+Time duration for simulations is 1.0.
+Standard errors are estimated with the likelihood ratio method.
+Dolby method (regression on scores) is used.
+Initial value of gain parameter is  0.2000000.
+Reduction factor for gain parameter is  0.5000000.
+Number of subphases in Phase 2 is 4.
+
+Initial parameter values are 
+  1. rate:  basic rate parameter friend                    20.0000  (fixed) 
+  2. eval:  friend: outdegree (density)                     0.0000
+  3. eval:  friend: reciprocity                             0.0000
+  4. eval:  friend: transitive triplets                     0.0000
+  5. eval:  friend: indegree - popularity                   0.0000
+  6. eval:  friend: outdegree - activity                    0.0000
+  7. rate:  basic rate parameter perception                20.0000  (fixed) 
+  8. eval:  perception: outdegree (density)                 0.0000
+  9. eval:  perception: reciprocity                         0.0000
+ 10. eval:  perception: indegree - popularity               0.0000
+ 11. eval:  perception: outdegree - activity                0.0000
+ 12. eval:  perception: self alter                          0.0000
+ 13. eval:  perception: self ego                            0.0000
+
+
+Values of target statistics are
+  1. Amount of network change                                             0.0000
+  2. friend: Number of ties                                              37.0000
+  3. friend: Number of reciprocated ties                                 30.0000
+  4. friend: Number of transitive triplets                               71.0000
+  5. friend: Sum of squared indegrees                                   135.0000
+  6. friend: Sum of squared outdegrees                                  135.0000
+  7. Amount of network change                                             0.0000
+  8. perception: Number of ties                                         122.0000
+  9. perception: Number of reciprocated ties                             80.0000
+ 10. perception: Sum of squared indegrees                              1116.0000
+ 11. perception: Sum of squared outdegrees                             1250.0000
+ 12. perception: Sum indegrees x self                                     9.1429
+ 13. perception: Sum outdegrees x self                                    1.1429
+These were calculated from the data.
+
+ 13 parameters, 13 statistics
+
+Estimation of derivatives by the LR method (type 1).
+
+
+@2
+End of stochastic approximation algorithm, phase 3.
+---------------------------------------------------
+
+Total of 2751 iterations.
+Parameter estimates based on 1751 iterations,
+convergence diagnostics, covariance and derivative matrices based on 1000 iterations.
+
+Information for convergence diagnosis.
+Averages, standard deviations, and t-ratios for deviations from targets:
+  1.  34.7630   8.4292   4.1241     (fixed parameter)
+  2.  -0.6170   8.1164  -0.0760                      
+  3.  -0.2860   8.9596  -0.0319                      
+  4.  -2.1250  47.9299  -0.0443                      
+  5.  -0.2690  56.6500  -0.0047                      
+  6.  -0.7990  56.8409  -0.0141                      
+  7.  56.2980   6.9406   8.1114     (fixed parameter)
+  8.  -0.1240   6.4562  -0.0192                      
+  9.   0.1160  10.1805   0.0114                      
+ 10.   1.0020 114.3871   0.0088                      
+ 11.  -0.0520  99.9815  -0.0005                      
+ 12.  -0.1296   2.0448  -0.0634                      
+ 13.   0.0684   4.6962   0.0146                      
+
+Good convergence is indicated by the t-ratios of non-fixed parameters being close to zero.
+
+Overall maximum convergence ratio =  0.7697 .
+
+
+
+@2
+Estimation Results.
+-------------------
+
+Regular end of estimation algorithm.
+Total of 2751 iteration steps.
+
+
+@3
+Estimates and standard errors
+                             
+ 1. rate:  basic rate parameter friend                            20.0000  (  fixed  )
+ 2. eval:  friend: outdegree (density)                            -0.7143  (   0.7065)
+ 3. eval:  friend: reciprocity                                     2.1574  (   0.8350)
+ 4. eval:  friend: transitive triplets                             0.5180  (   0.1356)
+ 5. eval:  friend: indegree - popularity                          -0.2538  (   0.2374)
+ 6. eval:  friend: outdegree - activity                           -0.1721  (   0.1531)
+ 7. rate:  basic rate parameter perception                        20.0000  (  fixed  )
+ 8. eval:  perception: outdegree (density)                        -0.2043  (   1.3555)
+ 9. eval:  perception: reciprocity                                -0.2050  (   0.4001)
+10. eval:  perception: indegree - popularity                      -0.1179  (   0.1393)
+11. eval:  perception: outdegree - activity                        0.1152  (   0.0163)
+12. eval:  perception: self alter                                  1.5571  (   0.5878)
+13. eval:  perception: self ego                                    0.1550  (   0.2289)
+
+
+@3
+Covariance matrices
+                   
+Covariance matrix of estimates (correlations below diagonal):
+        NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA
+        NA      0.499     -0.379      0.046     -0.018     -0.058         NA     -0.084     -0.042      0.013     -0.001     -0.053      0.034
+        NA     -0.642      0.697     -0.004     -0.044      0.031         NA      0.210     -0.030     -0.023      0.002      0.111     -0.026
+        NA      0.478     -0.032      0.018     -0.010     -0.010         NA      0.004     -0.012      0.000      0.000      0.008      0.005
+        NA     -0.110     -0.223     -0.297      0.056     -0.020         NA     -0.045      0.002      0.005      0.000     -0.010     -0.009
+        NA     -0.534      0.239     -0.505     -0.562      0.023         NA      0.021      0.013     -0.003      0.000      0.002     -0.001
+        NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA
+        NA     -0.088      0.185      0.023     -0.140      0.099         NA      1.837     -0.149     -0.182     -0.004      0.595      0.028
+        NA     -0.149     -0.090     -0.223      0.021      0.218         NA     -0.275      0.160      0.005     -0.001     -0.044     -0.042
+        NA      0.128     -0.197     -0.007      0.164     -0.150         NA     -0.966      0.095      0.019      0.000     -0.066      0.000
+        NA     -0.052      0.136      0.143     -0.044     -0.043         NA     -0.181     -0.088      0.031      0.000      0.003      0.000
+        NA     -0.129      0.226      0.101     -0.073      0.025         NA      0.746     -0.189     -0.805      0.305      0.345      0.015
+        NA      0.212     -0.135      0.167     -0.166     -0.015         NA      0.089     -0.463     -0.005      0.003      0.115      0.052
+
+Derivative matrix of expected statistics X by parameters and
+covariance/correlation matrix of X can be found using
+summary(ans) within R, or by using the 'verbose' option in Siena07.
+ 
+Total computation time 6.48 seconds.
+
+
+-----------------------------------
+New Analysis started.
+Date and time: 03/09/2025 16:25:46
+New results follow.
+-----------------------------------
+
+RSiena version 1.4.7 (20 feb 24)
+
+
+@1
+Estimation by stochastic approximation algorithm.
+=================================================
+
+Random initialization of random number stream.
+Current random number seed is 271741.
+Effects object used: myeff 
+Model Type:
+Network 1 friend : Standard actor-oriented model 
+Network 2 perception : Standard actor-oriented model 
+Estimation method: unconditional moment estimation
+.
+
+Time duration for simulations is 1.0.
+Standard errors are estimated with the likelihood ratio method.
+Dolby method (regression on scores) is used.
+Initial value of gain parameter is  0.2000000.
+Reduction factor for gain parameter is  0.5000000.
+Number of subphases in Phase 2 is 4.
+
+Initial parameter values are 
+  1. rate:  basic rate parameter friend                    20.0000  (fixed) 
+  2. eval:  friend: outdegree (density)                     0.0000
+  3. eval:  friend: reciprocity                             0.0000
+  4. eval:  friend: transitive triplets                     0.0000
+  5. eval:  friend: indegree - popularity                   0.0000
+  6. eval:  friend: outdegree - activity                    0.0000
+  7. rate:  basic rate parameter perception                20.0000  (fixed) 
+  8. eval:  perception: outdegree (density)                 0.0000
+  9. eval:  perception: reciprocity                         0.0000
+ 10. eval:  perception: indegree - popularity               0.0000
+ 11. eval:  perception: outdegree - activity                0.0000
+ 12. eval:  perception: self alter                          0.0000
+ 13. eval:  perception: self ego                            0.0000
+
+
+Values of target statistics are
+  1. Amount of network change                                             0.0000
+  2. friend: Number of ties                                              37.0000
+  3. friend: Number of reciprocated ties                                 30.0000
+  4. friend: Number of transitive triplets                               71.0000
+  5. friend: Sum of squared indegrees                                   135.0000
+  6. friend: Sum of squared outdegrees                                  135.0000
+  7. Amount of network change                                             0.0000
+  8. perception: Number of ties                                         122.0000
+  9. perception: Number of reciprocated ties                             80.0000
+ 10. perception: Sum of squared indegrees                              1116.0000
+ 11. perception: Sum of squared outdegrees                             1250.0000
+ 12. perception: Sum indegrees x self                                     9.1429
+ 13. perception: Sum outdegrees x self                                    1.1429
+These were calculated from the data.
+
+ 13 parameters, 13 statistics
+
+
+
+-----------------------------------
+New Analysis started.
+Date and time: 03/09/2025 16:25:58
+New results follow.
+-----------------------------------
+
+RSiena version 1.4.7 (20 feb 24)
+
+
+@1
+Estimation by stochastic approximation algorithm.
+=================================================
+
+Random initialization of random number stream.
+Current random number seed is 997874.
+Effects object used: myeff 
+Model Type:
+Network 1 friend : Standard actor-oriented model 
+Network 2 perception : Standard actor-oriented model 
+Estimation method: unconditional moment estimation
+.
+
+Time duration for simulations is 1.0.
+Standard errors are estimated with the likelihood ratio method.
+Dolby method (regression on scores) is used.
+Initial value of gain parameter is  0.2000000.
+Reduction factor for gain parameter is  0.5000000.
+Number of subphases in Phase 2 is 4.
+
+Initial parameter values are 
+  1. rate:  basic rate parameter friend                    20.0000  (fixed) 
+  2. eval:  friend: outdegree (density)                     0.0000
+  3. eval:  friend: reciprocity                             0.0000
+  4. eval:  friend: transitive triplets                     0.0000
+  5. eval:  friend: indegree - popularity                   0.0000
+  6. eval:  friend: outdegree - activity                    0.0000
+  7. rate:  basic rate parameter perception                20.0000  (fixed) 
+  8. eval:  perception: outdegree (density)                 0.0000
+  9. eval:  perception: reciprocity                         0.0000
+ 10. eval:  perception: indegree - popularity               0.0000
+ 11. eval:  perception: outdegree - activity                0.0000
+ 12. eval:  perception: self alter                          0.0000
+ 13. eval:  perception: self ego                            0.0000
+
+
+Values of target statistics are
+  1. Amount of network change                                             0.0000
+  2. friend: Number of ties                                              37.0000
+  3. friend: Number of reciprocated ties                                 30.0000
+  4. friend: Number of transitive triplets                               71.0000
+  5. friend: Sum of squared indegrees                                   135.0000
+  6. friend: Sum of squared outdegrees                                  135.0000
+  7. Amount of network change                                             0.0000
+  8. perception: Number of ties                                         122.0000
+  9. perception: Number of reciprocated ties                             80.0000
+ 10. perception: Sum of squared indegrees                              1116.0000
+ 11. perception: Sum of squared outdegrees                             1250.0000
+ 12. perception: Sum indegrees x self                                     9.1429
+ 13. perception: Sum outdegrees x self                                    1.1429
+These were calculated from the data.
+
+ 13 parameters, 13 statistics
+
+Estimation of derivatives by the LR method (type 1).
+
+
+@2
+End of stochastic approximation algorithm, phase 3.
+---------------------------------------------------
+
+Total of 3141 iterations.
+Parameter estimates based on 2141 iterations,
+convergence diagnostics, covariance and derivative matrices based on 1000 iterations.
+
+Information for convergence diagnosis.
+Averages, standard deviations, and t-ratios for deviations from targets:
+  1.  33.8340   8.6390   3.9164     (fixed parameter)
+  2.   0.3160   7.9711   0.0396                      
+  3.   0.1540   9.0677   0.0170                      
+  4.   2.4260  45.8151   0.0530                      
+  5.   3.0260  53.1651   0.0569                      
+  6.   2.7280  53.9392   0.0506                      
+  7.  56.3200   6.7258   8.3737     (fixed parameter)
+  8.   0.0140   5.7889   0.0024                      
+  9.   0.1520   8.9219   0.0170                      
+ 10.   2.8180 101.8677   0.0277                      
+ 11.  -5.1140  93.8214  -0.0545                      
+ 12.   0.0840   1.9720   0.0426                      
+ 13.   0.1130   4.7334   0.0239                      
+
+Good convergence is indicated by the t-ratios of non-fixed parameters being close to zero.
+
+Overall maximum convergence ratio =  0.3125 .
+
+
+
+@2
+Estimation Results.
+-------------------
+
+Regular end of estimation algorithm.
+Total of 3141 iteration steps.
+
+
+@3
+Estimates and standard errors
+                             
+ 1. rate:  basic rate parameter friend                            20.0000  (  fixed  )
+ 2. eval:  friend: outdegree (density)                            -0.3660  (   0.7001)
+ 3. eval:  friend: reciprocity                                     1.9704  (   0.6070)
+ 4. eval:  friend: transitive triplets                             0.5718  (   0.1237)
+ 5. eval:  friend: indegree - popularity                          -0.3159  (   0.1972)
+ 6. eval:  friend: outdegree - activity                           -0.2036  (   0.1043)
+ 7. rate:  basic rate parameter perception                        20.0000  (  fixed  )
+ 8. eval:  perception: outdegree (density)                         0.3291  (   1.5655)
+ 9. eval:  perception: reciprocity                                -0.2351  (   0.3879)
+10. eval:  perception: indegree - popularity                      -0.1730  (   0.1609)
+11. eval:  perception: outdegree - activity                        0.1142  (   0.0158)
+12. eval:  perception: self alter                                  1.7708  (   0.7059)
+13. eval:  perception: self ego                                    0.1655  (   0.2115)
+
+
+@3
+Covariance matrices
+                   
+Covariance matrix of estimates (correlations below diagonal):
+        NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA
+        NA      0.490     -0.283      0.052     -0.079     -0.035         NA      0.034     -0.014     -0.002     -0.001      0.028     -0.005
+        NA     -0.666      0.368     -0.026      0.036      0.006         NA      0.010      0.005     -0.002      0.000     -0.010      0.005
+        NA      0.596     -0.350      0.015     -0.015     -0.005         NA      0.010      0.003     -0.001      0.000      0.008     -0.002
+        NA     -0.574      0.299     -0.611      0.039     -0.005         NA     -0.015      0.001      0.001      0.000     -0.010      0.003
+        NA     -0.479      0.100     -0.419     -0.222      0.011         NA      0.000      0.000      0.000      0.000     -0.001     -0.001
+        NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA
+        NA      0.031      0.011      0.053     -0.050      0.000         NA      2.451     -0.214     -0.245     -0.005      0.894      0.036
+        NA     -0.050      0.021      0.053      0.009      0.008         NA     -0.352      0.150      0.012      0.000     -0.044     -0.035
+        NA     -0.014     -0.016     -0.047      0.043     -0.017         NA     -0.972      0.190      0.026      0.000     -0.099     -0.001
+        NA     -0.061     -0.017     -0.107      0.069      0.075         NA     -0.195     -0.017      0.051      0.000      0.002      0.000
+        NA      0.058     -0.022      0.091     -0.072     -0.008         NA      0.809     -0.160     -0.869      0.181      0.498      0.022
+        NA     -0.036      0.038     -0.086      0.068     -0.029         NA      0.109     -0.422     -0.044      0.053      0.150      0.045
+
+Derivative matrix of expected statistics X by parameters and
+covariance/correlation matrix of X can be found using
+summary(ans) within R, or by using the 'verbose' option in Siena07.
+ 
+Total computation time 6.41 seconds.
+
+
+-----------------------------------
+New Analysis started.
+Date and time: 03/09/2025 16:26:15
+New results follow.
+-----------------------------------
+
+RSiena version 1.4.7 (20 feb 24)
+
+
+@1
+Estimation by stochastic approximation algorithm.
+=================================================
+
+Random initialization of random number stream.
+Current random number seed is 629607.
+Effects object used: myeff 
+Model Type:
+Network 1 friend : Standard actor-oriented model 
+Network 2 perception : Standard actor-oriented model 
+Estimation method: unconditional moment estimation
+.
+
+Time duration for simulations is 1.0.
+Standard errors are estimated with the likelihood ratio method.
+Dolby method (regression on scores) is used.
+Initial value of gain parameter is  0.2000000.
+Reduction factor for gain parameter is  0.5000000.
+Number of subphases in Phase 2 is 4.
+
+Initial parameter values are 
+  1. rate:  basic rate parameter friend                    50.0000  (fixed) 
+  2. eval:  friend: outdegree (density)                     0.0000
+  3. eval:  friend: reciprocity                             0.0000
+  4. eval:  friend: transitive triplets                     0.0000
+  5. eval:  friend: indegree - popularity                   0.0000
+  6. eval:  friend: outdegree - activity                    0.0000
+  7. rate:  basic rate parameter perception                50.0000  (fixed) 
+  8. eval:  perception: outdegree (density)                 0.0000
+  9. eval:  perception: reciprocity                         0.0000
+ 10. eval:  perception: indegree - popularity               0.0000
+ 11. eval:  perception: outdegree - activity                0.0000
+ 12. eval:  perception: self alter                          0.0000
+ 13. eval:  perception: self ego                            0.0000
+
+
+Values of target statistics are
+  1. Amount of network change                                             0.0000
+  2. friend: Number of ties                                              37.0000
+  3. friend: Number of reciprocated ties                                 30.0000
+  4. friend: Number of transitive triplets                               71.0000
+  5. friend: Sum of squared indegrees                                   135.0000
+  6. friend: Sum of squared outdegrees                                  135.0000
+  7. Amount of network change                                             0.0000
+  8. perception: Number of ties                                         122.0000
+  9. perception: Number of reciprocated ties                             80.0000
+ 10. perception: Sum of squared indegrees                              1116.0000
+ 11. perception: Sum of squared outdegrees                             1250.0000
+ 12. perception: Sum indegrees x self                                     9.1429
+ 13. perception: Sum outdegrees x self                                    1.1429
+These were calculated from the data.
+
+ 13 parameters, 13 statistics
+
+Estimation of derivatives by the LR method (type 1).
+
+
+@2
+End of stochastic approximation algorithm, phase 3.
+---------------------------------------------------
+
+Total of 3075 iterations.
+Parameter estimates based on 2075 iterations,
+convergence diagnostics, covariance and derivative matrices based on 1000 iterations.
+
+Information for convergence diagnosis.
+Averages, standard deviations, and t-ratios for deviations from targets:
+  1.  42.4570  11.0021   3.8590     (fixed parameter)
+  2.  -0.0710  10.4062  -0.0068                      
+  3.  -0.1360  11.5400  -0.0118                      
+  4.  -0.6320  64.5246  -0.0098                      
+  5.   2.3330  75.1409   0.0310                      
+  6.   0.2010  74.7805   0.0027                      
+  7.  64.1860   8.2429   7.7868     (fixed parameter)
+  8.   0.1200   5.3754   0.0223                      
+  9.  -0.2180   8.7531  -0.0249                      
+ 10.   2.6780  94.2933   0.0284                      
+ 11.   2.1820  88.8752   0.0246                      
+ 12.   0.0457   1.8751   0.0244                      
+ 13.  -0.4373   5.4828  -0.0798                      
+
+Good convergence is indicated by the t-ratios of non-fixed parameters being close to zero.
+
+Overall maximum convergence ratio =  0.3871 .
+
+
+
+@2
+Estimation Results.
+-------------------
+
+Regular end of estimation algorithm.
+Total of 3075 iteration steps.
+
+
+@3
+Estimates and standard errors
+                             
+ 1. rate:  basic rate parameter friend                            50.0000  (  fixed  )
+ 2. eval:  friend: outdegree (density)                            -0.4710  (   0.7968)
+ 3. eval:  friend: reciprocity                                     2.0822  (   0.6717)
+ 4. eval:  friend: transitive triplets                             0.5457  (   0.1567)
+ 5. eval:  friend: indegree - popularity                          -0.2682  (   0.1655)
+ 6. eval:  friend: outdegree - activity                           -0.2034  (   0.1568)
+ 7. rate:  basic rate parameter perception                        50.0000  (  fixed  )
+ 8. eval:  perception: outdegree (density)                         0.6838  (   1.6430)
+ 9. eval:  perception: reciprocity                                -0.2757  (   0.3160)
+10. eval:  perception: indegree - popularity                      -0.2108  (   0.1714)
+11. eval:  perception: outdegree - activity                        0.1150  (   0.0148)
+12. eval:  perception: self alter                                  1.9236  (   0.7556)
+13. eval:  perception: self ego                                    0.1752  (   0.1546)
+
+
+@3
+Covariance matrices
+                   
+Covariance matrix of estimates (correlations below diagonal):
+        NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA
+        NA      0.635     -0.266      0.083     -0.032     -0.102         NA     -0.329     -0.080      0.044     -0.004     -0.135      0.009
+        NA     -0.498      0.451     -0.023     -0.005      0.022         NA      0.207      0.006     -0.023      0.002      0.096      0.012
+        NA      0.668     -0.221      0.025     -0.014     -0.016         NA     -0.057     -0.003      0.007     -0.001     -0.036      0.000
+        NA     -0.243     -0.049     -0.530      0.027     -0.003         NA      0.013     -0.009     -0.001      0.000      0.019     -0.001
+        NA     -0.818      0.210     -0.665     -0.112      0.025         NA      0.055      0.019     -0.008      0.001      0.021     -0.002
+        NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA
+        NA     -0.251      0.187     -0.220      0.049      0.214         NA      2.699     -0.125     -0.277     -0.001      1.044      0.024
+        NA     -0.319      0.028     -0.066     -0.166      0.387         NA     -0.240      0.100      0.006      0.000     -0.059     -0.022
+        NA      0.325     -0.196      0.258     -0.034     -0.300         NA     -0.982      0.116      0.029      0.000     -0.111     -0.001
+        NA     -0.314      0.215     -0.271      0.000      0.328         NA     -0.027      0.007     -0.096      0.000      0.003      0.000
+        NA     -0.224      0.189     -0.308      0.154      0.178         NA      0.841     -0.246     -0.859      0.256      0.571      0.021
+        NA      0.074      0.119     -0.016     -0.022     -0.076         NA      0.094     -0.456     -0.031      0.034      0.177      0.024
+
+Derivative matrix of expected statistics X by parameters and
+covariance/correlation matrix of X can be found using
+summary(ans) within R, or by using the 'verbose' option in Siena07.
+ 
+Total computation time 13.93 seconds.
+
+
+-----------------------------------
+New Analysis started.
+Date and time: 03/09/2025 16:27:02
+New results follow.
+-----------------------------------
+
+RSiena version 1.4.7 (20 feb 24)
+
+
+@1
+Estimation by stochastic approximation algorithm.
+=================================================
+
+Random initialization of random number stream.
+Current random number seed is 97062.
+Effects object used: myeff 
+Model Type:
+Network 1 friend : Standard actor-oriented model 
+Network 2 perception : Standard actor-oriented model 
+Estimation method: unconditional moment estimation
+.
+
+Time duration for simulations is 1.0.
+Standard errors are estimated with the likelihood ratio method.
+Dolby method (regression on scores) is used.
+Initial value of gain parameter is  0.2000000.
+Reduction factor for gain parameter is  0.5000000.
+Number of subphases in Phase 2 is 4.
+
+Initial parameter values are 
+  1. rate:  basic rate parameter friend                    50.0000  (fixed) 
+  2. eval:  friend: outdegree (density)                     0.0000
+  3. eval:  friend: reciprocity                             0.0000
+  4. eval:  friend: transitive triplets                     0.0000
+  5. eval:  friend: indegree - popularity                   0.0000
+  6. eval:  friend: outdegree - activity                    0.0000
+  7. rate:  basic rate parameter perception                50.0000  (fixed) 
+  8. eval:  perception: outdegree (density)                 0.0000
+  9. eval:  perception: reciprocity                         0.0000
+ 10. eval:  perception: indegree - popularity               0.0000
+ 11. eval:  perception: outdegree - activity                0.0000
+ 12. eval:  perception: self alter                          0.0000
+ 13. eval:  perception: self ego                            0.0000
+
+
+Values of target statistics are
+  1. Amount of network change                                             0.0000
+  2. friend: Number of ties                                              37.0000
+  3. friend: Number of reciprocated ties                                 30.0000
+  4. friend: Number of transitive triplets                               71.0000
+  5. friend: Sum of squared indegrees                                   135.0000
+  6. friend: Sum of squared outdegrees                                  135.0000
+  7. Amount of network change                                             0.0000
+  8. perception: Number of ties                                         122.0000
+  9. perception: Number of reciprocated ties                             80.0000
+ 10. perception: Sum of squared indegrees                              1116.0000
+ 11. perception: Sum of squared outdegrees                             1250.0000
+ 12. perception: Sum indegrees x self                                     9.1429
+ 13. perception: Sum outdegrees x self                                    1.1429
+These were calculated from the data.
+
+ 13 parameters, 13 statistics
+
+Estimation of derivatives by the LR method (type 1).
+
+
+@2
+End of stochastic approximation algorithm, phase 3.
+---------------------------------------------------
+
+Total of 3141 iterations.
+Parameter estimates based on 2141 iterations,
+convergence diagnostics, covariance and derivative matrices based on 1000 iterations.
+
+Information for convergence diagnosis.
+Averages, standard deviations, and t-ratios for deviations from targets:
+  1.  42.6690  10.5970   4.0265     (fixed parameter)
+  2.   0.1090  10.5000   0.0104                      
+  3.   0.2120  11.7093   0.0181                      
+  4.   0.4100  64.4797   0.0064                      
+  5.   3.2450  74.8947   0.0433                      
+  6.   2.3250  74.8429   0.0311                      
+  7.  64.2890   8.5846   7.4889     (fixed parameter)
+  8.  -0.2190   5.7350  -0.0382                      
+  9.  -0.2000   9.3235  -0.0215                      
+ 10.  -2.5370 100.2099  -0.0253                      
+ 11.  -3.5850  91.8885  -0.0390                      
+ 12.  -0.0119   1.9141  -0.0062                      
+ 13.  -0.2169   5.6601  -0.0383                      
+
+Good convergence is indicated by the t-ratios of non-fixed parameters being close to zero.
+
+Overall maximum convergence ratio =  0.4469 .
+
+
+
+@2
+Estimation Results.
+-------------------
+
+Regular end of estimation algorithm.
+Total of 3141 iteration steps.
+
+
+@3
+Estimates and standard errors
+                             
+ 1. rate:  basic rate parameter friend                            50.0000  (  fixed  )
+ 2. eval:  friend: outdegree (density)                            -0.5425  (   0.7033)
+ 3. eval:  friend: reciprocity                                     2.1194  (   0.8157)
+ 4. eval:  friend: transitive triplets                             0.5380  (   0.1478)
+ 5. eval:  friend: indegree - popularity                          -0.2684  (   0.2220)
+ 6. eval:  friend: outdegree - activity                           -0.1909  (   0.1879)
+ 7. rate:  basic rate parameter perception                        50.0000  (  fixed  )
+ 8. eval:  perception: outdegree (density)                         0.3590  (   1.5307)
+ 9. eval:  perception: reciprocity                                -0.2236  (   0.4094)
+10. eval:  perception: indegree - popularity                      -0.1794  (   0.1744)
+11. eval:  perception: outdegree - activity                        0.1153  (   0.0135)
+12. eval:  perception: self alter                                  1.7941  (   0.9422)
+13. eval:  perception: self ego                                    0.1599  (   0.1646)
+
+
+@3
+Covariance matrices
+                   
+Covariance matrix of estimates (correlations below diagonal):
+        NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA
+        NA      0.495     -0.422      0.064      0.008     -0.083         NA     -0.185     -0.084      0.027     -0.001     -0.228      0.003
+        NA     -0.736      0.665     -0.066     -0.046      0.075         NA      0.306      0.122     -0.044      0.002      0.361      0.000
+        NA      0.620     -0.551      0.022      0.004     -0.019         NA     -0.081     -0.024      0.011      0.000     -0.071      0.003
+        NA      0.051     -0.253      0.120      0.049     -0.029         NA     -0.095     -0.052      0.014      0.000     -0.088      0.004
+        NA     -0.628      0.487     -0.677     -0.705      0.035         NA      0.103      0.048     -0.015      0.000      0.097     -0.005
+        NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA
+        NA     -0.172      0.245     -0.358     -0.279      0.359         NA      2.343      0.060     -0.261      0.000      1.239      0.017
+        NA     -0.293      0.366     -0.390     -0.572      0.621         NA      0.095      0.168     -0.018      0.000      0.114     -0.035
+        NA      0.221     -0.308      0.422      0.353     -0.448         NA     -0.979     -0.248      0.030      0.000     -0.149      0.001
+        NA     -0.132      0.201     -0.165     -0.050      0.117         NA      0.018     -0.007     -0.134      0.000      0.004      0.000
+        NA     -0.344      0.470     -0.513     -0.419      0.550         NA      0.859      0.295     -0.906      0.279      0.888      0.004
+        NA      0.027     -0.002      0.135      0.117     -0.158         NA      0.066     -0.518      0.025     -0.012      0.025      0.027
+
+Derivative matrix of expected statistics X by parameters and
+covariance/correlation matrix of X can be found using
+summary(ans) within R, or by using the 'verbose' option in Siena07.
+ 
+Total computation time 14.08 seconds.
+
+
+-----------------------------------
+New Analysis started.
+Date and time: 03/09/2025 16:27:19
+New results follow.
+-----------------------------------
+
+RSiena version 1.4.7 (20 feb 24)
+
+
+@1
+Estimation by stochastic approximation algorithm.
+=================================================
+
+Random initialization of random number stream.
+Current random number seed is 110120.
+Effects object used: myeff 
+Model Type:
+Network 1 friend : Standard actor-oriented model 
+Network 2 perception : Standard actor-oriented model 
+Estimation method: unconditional moment estimation
+.
+
+Time duration for simulations is 1.0.
+Standard errors are estimated with the likelihood ratio method.
+Dolby method (regression on scores) is used.
+Initial value of gain parameter is  0.2000000.
+Reduction factor for gain parameter is  0.5000000.
+Number of subphases in Phase 2 is 4.
+
+Initial parameter values are 
+  1. rate:  basic rate parameter friend                    50.0000  (fixed) 
+  2. eval:  friend: outdegree (density)                     0.0000
+  3. eval:  friend: reciprocity                             0.0000
+  4. eval:  friend: transitive triplets                     0.0000
+  5. eval:  friend: indegree - popularity                   0.0000
+  6. eval:  friend: outdegree - activity                    0.0000
+  7. rate:  basic rate parameter perception                50.0000  (fixed) 
+  8. eval:  perception: outdegree (density)                 0.0000
+  9. eval:  perception: reciprocity                         0.0000
+ 10. eval:  perception: indegree - popularity               0.0000
+ 11. eval:  perception: outdegree - activity                0.0000
+ 12. eval:  perception: self alter                          0.0000
+ 13. eval:  perception: self ego                            0.0000
+
+
+Values of target statistics are
+  1. Amount of network change                                             0.0000
+  2. friend: Number of ties                                              37.0000
+  3. friend: Number of reciprocated ties                                 30.0000
+  4. friend: Number of transitive triplets                               71.0000
+  5. friend: Sum of squared indegrees                                   135.0000
+  6. friend: Sum of squared outdegrees                                  135.0000
+  7. Amount of network change                                             0.0000
+  8. perception: Number of ties                                         122.0000
+  9. perception: Number of reciprocated ties                             80.0000
+ 10. perception: Sum of squared indegrees                              1116.0000
+ 11. perception: Sum of squared outdegrees                             1250.0000
+ 12. perception: Sum indegrees x self                                     9.1429
+ 13. perception: Sum outdegrees x self                                    1.1429
+These were calculated from the data.
+
+ 13 parameters, 13 statistics
+
+Estimation of derivatives by the LR method (type 1).
+
+
+@2
+End of stochastic approximation algorithm, phase 3.
+---------------------------------------------------
+
+Total of 3141 iterations.
+Parameter estimates based on 2141 iterations,
+convergence diagnostics, covariance and derivative matrices based on 1000 iterations.
+
+Information for convergence diagnosis.
+Averages, standard deviations, and t-ratios for deviations from targets:
+  1.  42.4060  11.0544   3.8361     (fixed parameter)
+  2.  -0.3420   9.7528  -0.0351                      
+  3.  -0.3760  10.9965  -0.0342                      
+  4.  -3.1320  60.7159  -0.0516                      
+  5.  -0.8420  69.5658  -0.0121                      
+  6.  -2.1760  69.9106  -0.0311                      
+  7.  64.4580   8.5707   7.5207     (fixed parameter)
+  8.  -0.2580   5.8670  -0.0440                      
+  9.  -0.4580   9.3609  -0.0489                      
+ 10.  -3.7100 103.1397  -0.0360                      
+ 11.  -2.3580  93.2964  -0.0253                      
+ 12.  -0.0873   1.9164  -0.0455                      
+ 13.  -0.1813   5.6290  -0.0322                      
+
+Good convergence is indicated by the t-ratios of non-fixed parameters being close to zero.
+
+Overall maximum convergence ratio =  0.3815 .
+
+
+
+@2
+Estimation Results.
+-------------------
+
+Regular end of estimation algorithm.
+Total of 3141 iteration steps.
+
+
+@3
+Estimates and standard errors
+                             
+ 1. rate:  basic rate parameter friend                            50.0000  (  fixed  )
+ 2. eval:  friend: outdegree (density)                            -0.4595  (   1.6317)
+ 3. eval:  friend: reciprocity                                     2.0976  (   1.6353)
+ 4. eval:  friend: transitive triplets                             0.5521  (   0.2147)
+ 5. eval:  friend: indegree - popularity                          -0.2851  (   0.2154)
+ 6. eval:  friend: outdegree - activity                           -0.1998  (   0.3245)
+ 7. rate:  basic rate parameter perception                        50.0000  (  fixed  )
+ 8. eval:  perception: outdegree (density)                         0.3275  (   1.2912)
+ 9. eval:  perception: reciprocity                                -0.2664  (   0.5001)
+10. eval:  perception: indegree - popularity                      -0.1730  (   0.1320)
+11. eval:  perception: outdegree - activity                        0.1153  (   0.0205)
+12. eval:  perception: self alter                                  1.7768  (   0.7425)
+13. eval:  perception: self ego                                    0.1799  (   0.1801)
+
+
+@3
+Covariance matrices
+                   
+Covariance matrix of estimates (correlations below diagonal):
+        NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA
+        NA      2.662     -2.504      0.272      0.153     -0.474         NA     -0.107     -0.464      0.016      0.022      0.690      0.001
+        NA     -0.938      2.674     -0.250     -0.184      0.446         NA      0.006      0.496     -0.007     -0.022     -0.742     -0.024
+        NA      0.775     -0.712      0.046      0.018     -0.061         NA      0.027     -0.045     -0.003      0.003      0.094     -0.005
+        NA      0.436     -0.523      0.385      0.046     -0.048         NA      0.049     -0.044     -0.005      0.002      0.097     -0.004
+        NA     -0.896      0.841     -0.877     -0.694      0.105         NA     -0.028      0.087      0.003     -0.005     -0.165      0.007
+        NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA
+        NA     -0.051      0.003      0.099      0.177     -0.067         NA      1.667     -0.136     -0.165     -0.003      0.544      0.016
+        NA     -0.569      0.607     -0.418     -0.410      0.538         NA     -0.211      0.250      0.004     -0.005     -0.211     -0.045
+        NA      0.074     -0.034     -0.111     -0.171      0.065         NA     -0.971      0.059      0.017      0.000     -0.056      0.001
+        NA      0.658     -0.657      0.625      0.500     -0.711         NA     -0.105     -0.525      0.044      0.000      0.010      0.000
+        NA      0.570     -0.611      0.592      0.606     -0.686         NA      0.568     -0.567     -0.575      0.636      0.551      0.014
+        NA      0.002     -0.081     -0.130     -0.098      0.120         NA      0.069     -0.497      0.043      0.079      0.105      0.032
+
+Derivative matrix of expected statistics X by parameters and
+covariance/correlation matrix of X can be found using
+summary(ans) within R, or by using the 'verbose' option in Siena07.
+ 
+Total computation time 14.98 seconds.
+
+
+-----------------------------------
+New Analysis started.
+Date and time: 03/09/2025 16:28:46
+New results follow.
+-----------------------------------
+
+RSiena version 1.4.7 (20 feb 24)
+
+
+@1
+Estimation by stochastic approximation algorithm.
+=================================================
+
+Random initialization of random number stream.
+Current random number seed is 594300.
+Effects object used: myeff 
+Model Type:
+Network 1 friend : Standard actor-oriented model 
+Network 2 perception : Standard actor-oriented model 
+Estimation method: unconditional moment estimation
+.
+
+Time duration for simulations is 1.0.
+Standard errors are estimated with the likelihood ratio method.
+Dolby method (regression on scores) is used.
+Initial value of gain parameter is  0.2000000.
+Reduction factor for gain parameter is  0.5000000.
+Number of subphases in Phase 2 is 4.
+
+Initial parameter values are 
+  1. rate:  basic rate parameter friend                    50.0000  (fixed) 
+  2. eval:  friend: outdegree (density)                     0.0000
+  3. eval:  friend: reciprocity                             0.0000
+  4. eval:  friend: transitive triplets                     0.0000
+  5. eval:  friend: indegree - popularity                   0.0000
+  6. eval:  friend: outdegree - activity                    0.0000
+  7. rate:  basic rate parameter perception                50.0000  (fixed) 
+  8. eval:  perception: outdegree (density)                 0.0000
+  9. eval:  perception: reciprocity                         0.0000
+ 10. eval:  perception: indegree - popularity               0.0000
+ 11. eval:  perception: outdegree - activity                0.0000
+ 12. eval:  perception: self alter                          0.0000
+ 13. eval:  perception: self ego                            0.0000
+
+
+Values of target statistics are
+  1. Amount of network change                                             0.0000
+  2. friend: Number of ties                                              37.0000
+  3. friend: Number of reciprocated ties                                 30.0000
+  4. friend: Number of transitive triplets                               71.0000
+  5. friend: Sum of squared indegrees                                   135.0000
+  6. friend: Sum of squared outdegrees                                  135.0000
+  7. Amount of network change                                             0.0000
+  8. perception: Number of ties                                         122.0000
+  9. perception: Number of reciprocated ties                             80.0000
+ 10. perception: Sum of squared indegrees                              1116.0000
+ 11. perception: Sum of squared outdegrees                             1250.0000
+ 12. perception: Sum indegrees x self                                     9.1429
+ 13. perception: Sum outdegrees x self                                    1.1429
+These were calculated from the data.
+
+ 13 parameters, 13 statistics
+
+Estimation of derivatives by the LR method (type 1).
+
+
+@2
+End of stochastic approximation algorithm, phase 3.
+---------------------------------------------------
+
+Total of 2963 iterations.
+Parameter estimates based on 1963 iterations,
+convergence diagnostics, covariance and derivative matrices based on 1000 iterations.
+
+Information for convergence diagnosis.
+Averages, standard deviations, and t-ratios for deviations from targets:
+  1.  41.4330  10.6821   3.8787     (fixed parameter)
+  2.   0.4630  10.2045   0.0454                      
+  3.   0.4420  11.3410   0.0390                      
+  4.   1.0180  61.1150   0.0167                      
+  5.   3.7430  71.8559   0.0521                      
+  6.   4.2810  72.0145   0.0594                      
+  7.  64.7460   8.5721   7.5531     (fixed parameter)
+  8.  -0.2700   5.8238  -0.0464                      
+  9.  -0.3060   9.3542  -0.0327                      
+ 10.  -4.2080 102.3602  -0.0411                      
+ 11.  -3.0600  92.1283  -0.0332                      
+ 12.  -0.0679   1.8853  -0.0360                      
+ 13.   0.1631   5.8766   0.0278                      
+
+Good convergence is indicated by the t-ratios of non-fixed parameters being close to zero.
+
+Overall maximum convergence ratio =  0.3514 .
+
+
+
+@2
+Estimation Results.
+-------------------
+
+Regular end of estimation algorithm.
+Total of 2963 iteration steps.
+
+
+@3
+Estimates and standard errors
+                             
+ 1. rate:  basic rate parameter friend                            50.0000  (  fixed  )
+ 2. eval:  friend: outdegree (density)                            -0.4744  (   0.5232)
+ 3. eval:  friend: reciprocity                                     2.0729  (   0.4566)
+ 4. eval:  friend: transitive triplets                             0.5469  (   0.1267)
+ 5. eval:  friend: indegree - popularity                          -0.3107  (   0.1892)
+ 6. eval:  friend: outdegree - activity                           -0.1762  (   0.1009)
+ 7. rate:  basic rate parameter perception                        50.0000  (  fixed  )
+ 8. eval:  perception: outdegree (density)                         0.4667  (   1.6568)
+ 9. eval:  perception: reciprocity                                -0.2603  (   0.4164)
+10. eval:  perception: indegree - popularity                      -0.1887  (   0.1607)
+11. eval:  perception: outdegree - activity                        0.1152  (   0.0150)
+12. eval:  perception: self alter                                  1.8304  (   0.8486)
+13. eval:  perception: self ego                                    0.1758  (   0.1823)
+
+
+@3
+Covariance matrices
+                   
+Covariance matrix of estimates (correlations below diagonal):
+        NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA
+        NA      0.274     -0.135      0.031     -0.056     -0.016         NA     -0.002     -0.010      0.000      0.000      0.052      0.010
+        NA     -0.563      0.208     -0.015      0.011      0.006         NA     -0.067      0.025      0.006      0.000     -0.018     -0.008
+        NA      0.464     -0.261      0.016     -0.009     -0.007         NA     -0.025      0.003      0.002      0.000      0.008      0.000
+        NA     -0.567      0.129     -0.374      0.036     -0.008         NA      0.006      0.000      0.000      0.000     -0.029     -0.005
+        NA     -0.301      0.134     -0.527     -0.411      0.010         NA      0.015     -0.002     -0.002      0.000      0.003      0.002
+        NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA         NA
+        NA     -0.002     -0.088     -0.117      0.021      0.091         NA      2.745     -0.461     -0.261     -0.005      1.039      0.149
+        NA     -0.045      0.132      0.063      0.002     -0.057         NA     -0.668      0.173      0.038      0.000     -0.159     -0.051
+        NA      0.000      0.078      0.107      0.002     -0.101         NA     -0.981      0.574      0.026      0.000     -0.110     -0.013
+        NA      0.050      0.001      0.092     -0.163      0.062         NA     -0.184     -0.005      0.056      0.000      0.003      0.000
+        NA      0.117     -0.046      0.078     -0.180      0.039         NA      0.739     -0.451     -0.803      0.264      0.720      0.078
+        NA      0.100     -0.102     -0.002     -0.154      0.105         NA      0.494     -0.672     -0.442      0.020      0.504      0.033
+
+Derivative matrix of expected statistics X by parameters and
+covariance/correlation matrix of X can be found using
+summary(ans) within R, or by using the 'verbose' option in Siena07.
+ 
+Total computation time 20.71 seconds.

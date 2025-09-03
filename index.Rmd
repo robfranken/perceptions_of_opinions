@@ -1,0 +1,63 @@
+---
+title: "Replication website"
+bibliography: references.bib
+
+output: 
+  html_document:
+    css: tweaks.css
+    toc:  false
+    toc_float: true
+    number_sections: false
+    code_download: false
+---
+
+
+```{r, globalsettings, echo=FALSE, warning=FALSE, results='hide'}
+library(knitr)
+
+knitr::opts_chunk$set(echo = TRUE)
+opts_chunk$set(tidy.opts=list(width.cutoff=100),tidy=TRUE, warning = FALSE, message = FALSE,comment = "#>", cache=TRUE, class.source=c("test"), class.output=c("test2"))
+options(width = 100)
+rgl::setupKnitr()
+
+colorize <- function(x, color) {sprintf("<span style='color: %s;'>%s</span>", color, x) }
+```
+
+```{r klippy, echo=FALSE, include=TRUE}
+klippy::klippy(position = c('top', 'right'))
+#klippy::klippy(color = 'darkred')
+#klippy::klippy(tooltip_message = 'Click to copy', tooltip_success = 'Done')
+```
+
+
+
+
+----
+
+
+# **Replication website**
+### *The social roots of misperceiving others' political attitudes*
+Last compiled on `r format(Sys.time(), '%d-%m-%Y')`
+
+<br>
+
+----
+  
+This website is a replication package/lab journal for the paper on (mis)perceptions in social networks by @authors. It contains R code. Use the top menu to navigate through the sections.
+
+----
+
+## Contact  
+
+Questions can be addressed to <a href="mailto:r.j.f.franken@uu.nl">Rob Franken</a>.
+
+  
+----
+
+## References
+
+
+
+
+
+
