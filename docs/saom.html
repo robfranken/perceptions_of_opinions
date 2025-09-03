@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Rob Franken" />
+
+
+<title>Social influence on (mis)perception</title>
+
+<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/clipboard-1.7.1/clipboard.min.js"></script>
+<link href="site_libs/primer-tooltips-1.4.0/build.css" rel="stylesheet" />
+<link href="site_libs/klippy-0.0.0.9500/css/klippy.min.css" rel="stylesheet" />
+<script src="site_libs/klippy-0.0.0.9500/js/klippy.min.js"></script>
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="tweaks.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-info"></span>
+     
+    About
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="far fa-file-code"></span>
+     
+    Preparation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="prep_liss.html">
+        <span class="fa fa-user-friends"></span>
+         
+        Dyads
+      </a>
+    </li>
+    <li>
+      <a href="prep_ego.html">
+        <span class="fa fa-bullseye"></span>
+         
+        Ego-nets
+      </a>
+    </li>
+    <li>
+      <a href="prep_socio.html">
+        <span class="fa fa-project-diagram"></span>
+         
+        Socio-nets
+      </a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-bar-chart"></span>
+     
+    Analyses
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="des.html">1. Describing accuracy and bias</a>
+    </li>
+    <li>
+      <a href="analyse.html">2. Predictors of accuracy and bias</a>
+    </li>
+    <li>
+      <a href="saom.html">3. Social influence on perception</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-wrench"></span>
+     
+    Study design
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-submenu">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Dyads</a>
+      <ul class="dropdown-menu" role="menu">
+        <li class="dropdown-header">Questionnaire (LISS)</li>
+      </ul>
+    </li>
+    <li class="dropdown-submenu">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Ego-nets</a>
+      <ul class="dropdown-menu" role="menu">
+        <li>
+          <a href="egoquestionnaire.html">Ego-questionnaire</a>
+        </li>
+        <li>
+          <a href="alterquestionnaire.html">Alter-questionnaire</a>
+        </li>
+        <li>
+          <a href="alters.html">Selecting alters</a>
+        </li>
+      </ul>
+    </li>
+    <li class="dropdown-submenu">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Socio-nets</a>
+      <ul class="dropdown-menu" role="menu">
+        <li class="dropdown-header">Questionnaire 1</li>
+        <li class="dropdown-header">Questionnaire 2</li>
+      </ul>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/robfranken/perceptions_of_opinions">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Social influence on (mis)perception</h1>
+<h4 class="author">Rob Franken</h4>
+
+</div>
+
+
+<script>
+  addClassKlippyTo("pre.r, pre.markdown");
+  addKlippy('right', 'top', 'auto', '1', 'Copy code', 'Copied!');
+</script>
+<p>Last compiled on 03-09-2025</p>
+<hr />
+<div id="getting-started" class="section level1">
+<h1>Getting started</h1>
+<p>To copy the code, click the button in the upper right corner of the
+code-chunks.</p>
+<div id="clean-up" class="section level2">
+<h2>clean up</h2>
+<pre class="r test"><code>rm(list = ls())
+gc()</code></pre>
+<p><br></p>
+</div>
+<div id="general-custom-functions" class="section level2">
+<h2>general custom functions</h2>
+<ul>
+<li><code>fpackage.check</code>: Check if packages are installed (and
+install if not) in R</li>
+<li><code>fsave</code>: Function to save data with time stamp in correct
+directory</li>
+<li><code>fload</code>: Function to load R-objects under new names</li>
+<li><code>fshowdf</code>: Print objects (<code>tibble</code> /
+<code>data.frame</code>) nicely on screen in <code>.Rmd</code></li>
+</ul>
+<pre class="r test"><code>fpackage.check &lt;- function(packages) {
+    lapply(packages, FUN = function(x) {
+        if (!require(x, character.only = TRUE)) {
+            install.packages(x, dependencies = TRUE)
+            library(x, character.only = TRUE)
+        }
+    })
+}
+
+fsave &lt;- function(x, location = &quot;./data/processed/&quot;) {
+    if (location == &quot;./data/processed/&quot;) {
+        ifelse(!dir.exists(&quot;data&quot;), dir.create(&quot;data&quot;), FALSE)
+        ifelse(!dir.exists(&quot;data/processed&quot;), dir.create(&quot;data/processed&quot;), FALSE)
+    }
+
+    object = deparse(substitute(x))
+    datename &lt;- substr(gsub(&quot;[:-]&quot;, &quot;&quot;, Sys.time()), 1, 8)
+    totalname &lt;- paste(location, object, &quot;_&quot;, datename, &quot;.rda&quot;, sep = &quot;&quot;)
+    assign(eval(object), x, envir = .GlobalEnv)
+    print(paste(&quot;SAVED: &quot;, totalname, sep = &quot;&quot;))
+    save(list = object, file = totalname)
+}
+
+fload &lt;- function(fileName) {
+    load(fileName)
+    get(ls()[ls() != &quot;fileName&quot;])
+}
+
+fshowdf &lt;- function(x, caption = NULL, digits = 2, footnote = NULL, ...) {
+    knitr::kable(x, digits = digits, &quot;html&quot;, caption = caption, ...) %&gt;%
+        kableExtra::footnote(general = footnote) %&gt;%
+        kableExtra::kable_styling(bootstrap_options = c(&quot;striped&quot;, &quot;hover&quot;)) %&gt;%
+        kableExtra::scroll_box(width = &quot;100%&quot;, height = &quot;300px&quot;)
+}</code></pre>
+<p><br></p>
+</div>
+<div id="necessary-packages" class="section level2">
+<h2>necessary packages</h2>
+<ul>
+<li><code>tidyverse</code>: data wrangling</li>
+<li><code>RSiena</code>: stochastic actor-oriented model</li>
+</ul>
+<pre class="r test"><code>packages = c(&quot;tidyverse&quot;, &quot;RSiena&quot;)
+fpackage.check(packages)
+rm(packages)</code></pre>
+<p><br></p>
+<hr />
+</div>
+</div>
+<div id="import" class="section level1">
+<h1>Import</h1>
+<p>Import the replicated data-sets. You may obtain it by downloading:
+<a href="data:application/octet-stream;base64,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" download="zieelkaar_siena.Rda">Download zieelkaar_siena.Rda</a></p>
+<pre class="r test"><code># list.files(&#39;./data/processed&#39;)
+today &lt;- gsub(&quot;-&quot;, &quot;&quot;, Sys.Date())
+today &lt;- &quot;20250903&quot;  #latest updated dataset
+
+class_data &lt;- fload(paste0(&quot;./data/processed/&quot;, today, &quot;zieelkaar_siena.Rda&quot;))</code></pre>
+<hr />
+</div>
+<div id="stationary-saom" class="section level1">
+<h1>stationary SAOM</h1>
+<p>See <span class="citation">Krause, Huisman, and Snijders (<a
+href="#ref-krause2018">2018</a>)</span>; <span class="citation">Snijders
+and Steglich (<a href="#ref-snijders2013">2013</a>)</span></p>
+<pre class="r test"><code># get one class, and take the perceive-as-right network
+mydata &lt;- class_data[[1]]$right
+
+# inspect print01Report(class, modelname=&#39;test&#39;)
+
+# define a model
+myeff &lt;- getEffects(mydata)
+
+# include effects: tendency to perceive those as &#39;right&#39;, who are perceived by many others as right
+myeff &lt;- includeEffects(myeff, inPop, name = &quot;perception&quot;)</code></pre>
+<pre class="test3"><code>#&gt;   effectName                        include fix   test  initialValue parm
+#&gt; 1 perception: indegree - popularity TRUE    FALSE FALSE          0   0</code></pre>
+<pre class="r test"><code># tendency for those perceiving many others as &#39;right&#39; to perceive alter also as &#39;right&#39;
+myeff &lt;- includeEffects(myeff, outAct, name = &quot;perception&quot;)</code></pre>
+<pre class="test3"><code>#&gt;   effectName                       include fix   test  initialValue parm
+#&gt; 1 perception: outdegree - activity TRUE    FALSE FALSE          0   0</code></pre>
+<pre class="r test"><code># tendency for self-reported &#39;rights&#39; to perceive more others as right (projection)
+myeff &lt;- includeEffects(myeff, egoX, name = &quot;perception&quot;, interaction1 = &quot;self&quot;)</code></pre>
+<pre class="test3"><code>#&gt;   effectName           include fix   test  initialValue parm
+#&gt; 1 perception: self ego TRUE    FALSE FALSE          0   0</code></pre>
+<pre class="r test"><code># tendency for self-reported rights to be perceived as such
+myeff &lt;- includeEffects(myeff, altX, name = &quot;perception&quot;, interaction1 = &quot;self&quot;)</code></pre>
+<pre class="test3"><code>#&gt;   effectName             include fix   test  initialValue parm
+#&gt; 1 perception: self alter TRUE    FALSE FALSE          0   0</code></pre>
+<pre class="r test"><code># friendship effects:
+myeff &lt;- includeEffects(myeff, transTrip, outAct, inPop, name = &quot;friend&quot;)</code></pre>
+<pre class="test3"><code>#&gt;   effectName                    include fix   test  initialValue parm
+#&gt; 1 friend: transitive triplets   TRUE    FALSE FALSE          0   0   
+#&gt; 2 friend: indegree - popularity TRUE    FALSE FALSE          0   0   
+#&gt; 3 friend: outdegree - activity  TRUE    FALSE FALSE          0   0</code></pre>
+<pre class="r test"><code>myeff &lt;- includeEffects(myeff, egoX, altX, egoXaltX, outAct, inPop, name = &quot;friend&quot;)</code></pre>
+<pre class="test3"><code>#&gt;   effectName                    include fix   test  initialValue parm
+#&gt; 1 friend: indegree - popularity TRUE    FALSE FALSE          0   0   
+#&gt; 2 friend: outdegree - activity  TRUE    FALSE FALSE          0   0</code></pre>
+<pre class="r test"><code># !! fix the rate parameter to a high value (for the stationary saom)
+rate = 50
+myeff &lt;- setEffect(myeff, Rate, type = &quot;rate&quot;, fix = TRUE, initialValue = rate, name = &quot;friend&quot;)</code></pre>
+<pre class="test3"><code>#&gt;   effectName                  include fix  test  initialValue parm
+#&gt; 1 basic rate parameter friend TRUE    TRUE FALSE         50   0</code></pre>
+<pre class="r test"><code>myeff &lt;- setEffect(myeff, Rate, type = &quot;rate&quot;, fix = TRUE, initialValue = rate, name = &quot;perception&quot;)</code></pre>
+<pre class="test3"><code>#&gt;   effectName                      include fix  test  initialValue parm
+#&gt; 1 basic rate parameter perception TRUE    TRUE FALSE         50   0</code></pre>
+<pre class="r test"><code>myalgo &lt;- sienaAlgorithmCreate(projname = &quot;stationary_saom_class1_right&quot;, nsub = 4, n3 = 1000)</code></pre>
+<pre class="test3"><code>#&gt; If you use this algorithm object, siena07 will create/use an output file stationary_saom_class1_right.txt .</code></pre>
+<pre class="r test"><code>ans &lt;- siena07(myalgo, data = mydata, effects = myeff)
+summary(ans)</code></pre>
+<pre class="test3"><code>#&gt; Estimates, standard errors and convergence t-ratios
+#&gt; 
+#&gt;                                              Estimate   Standard   Convergence 
+#&gt;                                                           Error      t-ratio   
+#&gt;    1. rate basic rate parameter friend       50.0000  (     NA   )    3.8787   
+#&gt;    2. eval friend: outdegree (density)       -0.4744  ( 0.5232   )    0.0454   
+#&gt;    3. eval friend: reciprocity                2.0729  ( 0.4566   )    0.0390   
+#&gt;    4. eval friend: transitive triplets        0.5469  ( 0.1267   )    0.0167   
+#&gt;    5. eval friend: indegree - popularity     -0.3107  ( 0.1892   )    0.0521   
+#&gt;    6. eval friend: outdegree - activity      -0.1762  ( 0.1009   )    0.0594   
+#&gt;    7. rate basic rate parameter perception   50.0000  (     NA   )    7.5531   
+#&gt;    8. eval perception: outdegree (density)    0.4667  ( 1.6568   )   -0.0464   
+#&gt;    9. eval perception: reciprocity           -0.2603  ( 0.4164   )   -0.0327   
+#&gt;   10. eval perception: indegree - popularity -0.1887  ( 0.1607   )   -0.0411   
+#&gt;   11. eval perception: outdegree - activity   0.1152  ( 0.0150   )   -0.0332   
+#&gt;   12. eval perception: self alter             1.8304  ( 0.8486   )   -0.0360   
+#&gt;   13. eval perception: self ego               0.1758  ( 0.1823   )    0.0278   
+#&gt; 
+#&gt; Overall maximum convergence ratio:    0.3514 
+#&gt; 
+#&gt; 
+#&gt; Total of 2963 iteration steps.
+#&gt; 
+#&gt; Covariance matrix of estimates (correlations below diagonal)
+#&gt; 
+#&gt;           NA           NA           NA           NA           NA           NA           NA           NA           NA           NA           NA           NA           NA
+#&gt;           NA        0.274       -0.135        0.031       -0.056       -0.016           NA       -0.002       -0.010        0.000        0.000        0.052        0.010
+#&gt;           NA       -0.563        0.208       -0.015        0.011        0.006           NA       -0.067        0.025        0.006        0.000       -0.018       -0.008
+#&gt;           NA        0.464       -0.261        0.016       -0.009       -0.007           NA       -0.025        0.003        0.002        0.000        0.008        0.000
+#&gt;           NA       -0.567        0.129       -0.374        0.036       -0.008           NA        0.006        0.000        0.000        0.000       -0.029       -0.005
+#&gt;           NA       -0.301        0.134       -0.527       -0.411        0.010           NA        0.015       -0.002       -0.002        0.000        0.003        0.002
+#&gt;           NA           NA           NA           NA           NA           NA           NA           NA           NA           NA           NA           NA           NA
+#&gt;           NA       -0.002       -0.088       -0.117        0.021        0.091           NA        2.745       -0.461       -0.261       -0.005        1.039        0.149
+#&gt;           NA       -0.045        0.132        0.063        0.002       -0.057           NA       -0.668        0.173        0.038        0.000       -0.159       -0.051
+#&gt;           NA        0.000        0.078        0.107        0.002       -0.101           NA       -0.981        0.574        0.026        0.000       -0.110       -0.013
+#&gt;           NA        0.050        0.001        0.092       -0.163        0.062           NA       -0.184       -0.005        0.056        0.000        0.003        0.000
+#&gt;           NA        0.117       -0.046        0.078       -0.180        0.039           NA        0.739       -0.451       -0.803        0.264        0.720        0.078
+#&gt;           NA        0.100       -0.102       -0.002       -0.154        0.105           NA        0.494       -0.672       -0.442        0.020        0.504        0.033
+#&gt; 
+#&gt; Derivative matrix of expected statistics X by parameters:
+#&gt; 
+#&gt;        1.000        0.000        0.000        0.000        0.000        0.000        0.000        0.000        0.000        0.000        0.000        0.000        0.000
+#&gt;        0.000       90.793       95.453      447.975      586.103      586.833       -1.467        4.174        7.341       81.688       40.158        1.071        3.758
+#&gt;        0.000       44.906       51.851      214.838      285.379      282.441       -4.145        0.619        1.838       16.003        1.331        0.700        2.690
+#&gt;        0.000      304.010      340.496     1810.814     2136.351     2142.959       -9.759        6.958       12.717      140.465       29.548        3.472       13.895
+#&gt;        0.000      337.863      359.409     1842.111     2329.926     2307.737       -2.110       13.654       24.085      278.183      135.561        5.460       15.285
+#&gt;        0.000      580.049      624.754     3222.466     3987.758     4045.186      -12.920       22.324       31.500      478.144      140.930       10.856       15.943
+#&gt;        0.000       -0.158       -0.175       -0.583       -0.656       -0.728        0.285        0.013       -0.107        0.803       -0.046        0.073       -0.238
+#&gt;        0.000       -5.327       -4.481      -22.248      -32.965      -34.339      -14.268       61.242       85.367     1073.938      843.159        2.119       -0.421
+#&gt;        0.000       -0.421       -0.138        6.602        0.786        4.145      -11.082       39.532       72.473      675.057      565.980        0.311       12.515
+#&gt;        0.000      -25.903      -22.292      -77.554     -124.325     -154.372      -94.020      565.101      766.426    10116.615     7471.450       36.782      -26.014
+#&gt;        0.000      -96.663      -73.428     -422.229     -688.659     -667.116     -646.444      890.678     1291.842    15146.161    15639.508      -20.755       83.525
+#&gt;        0.000        4.650        3.749       25.284       35.815       33.303        5.468        1.984       -0.318       75.886      -38.356        4.790       -6.108
+#&gt;        0.000        4.253        4.650       27.716       28.982       30.336       -5.902       -2.013       27.286      -76.657       21.074       -4.615       48.274
+#&gt; 
+#&gt; Covariance matrix of X (correlations below diagonal):
+#&gt; 
+#&gt;      114.108      -48.045      -56.200     -329.800     -358.962     -360.814       -0.775        1.429        0.217       21.629       38.024        0.176       -0.814
+#&gt;       -0.441      104.133      113.175      583.325      715.548      716.916       -3.732       -0.036        2.030        7.359      -10.695        0.638        3.231
+#&gt;       -0.464        0.978      128.617      651.610      783.415      785.535       -4.490       -0.017        2.081        7.267       -8.196        0.656        3.765
+#&gt;       -0.505        0.935        0.940     3735.045     4297.632     4313.569      -24.459        0.552       13.559       42.635      -11.592        3.009       19.695
+#&gt;       -0.468        0.976        0.961        0.979     5163.264     5137.525      -26.103       -0.485       11.919       39.031      -53.791        4.106       20.650
+#&gt;       -0.469        0.976        0.962        0.980        0.993     5186.094      -30.011        0.163       15.491       49.323      -43.184        4.306       21.138
+#&gt;       -0.008       -0.043       -0.046       -0.047       -0.042       -0.049       73.481       -8.007      -13.916     -138.814     -199.829       -0.303       -4.518
+#&gt;        0.023       -0.001        0.000        0.002       -0.001        0.000       -0.160       33.917       46.706      588.490      476.947        0.212       -0.902
+#&gt;        0.002        0.021        0.020        0.024        0.018        0.023       -0.174        0.857       87.502      792.199      671.409       -1.100       19.466
+#&gt;        0.020        0.007        0.006        0.007        0.005        0.007       -0.158        0.987        0.827    10477.614     7985.875       31.094      -47.159
+#&gt;        0.039       -0.011       -0.008       -0.002       -0.008       -0.007       -0.253        0.889        0.779        0.847     8487.620      -28.657       18.284
+#&gt;        0.009        0.033        0.031        0.026        0.030        0.032       -0.019        0.019       -0.062        0.161       -0.165        3.554       -3.536
+#&gt;       -0.013        0.054        0.056        0.055        0.049        0.050       -0.090       -0.026        0.354       -0.078        0.034       -0.319       34.535</code></pre>
+<hr />
+<div id="references" class="section level2 unnumbered">
+<h2 class="unnumbered">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-krause2018" class="csl-entry">
+Krause, Robert, Mark Huisman, and Tom Snijders. 2018. <span>“<a
+href="">Multiple Imputation for Longitudinal Network Data</a>.”</span>
+<em>Statistica Applicata</em> 30 (1): 33–57.
+</div>
+<div id="ref-snijders2013" class="csl-entry">
+Snijders, Tom, and Christian Steglich. 2013. <span>“<a
+href="">Representing Micro–Macro Linkages by Actor-Based Dynamic Network
+Models</a>.”</span> <em>Sociological Methods &amp; Research</em> 30 (1):
+222–71.
+</div>
+</div>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlNvY2lhbCBpbmZsdWVuY2Ugb24gKG1pcylwZXJjZXB0aW9uIg0KYmlibGlvZ3JhcGh5OiByZWZlcmVuY2VzLmJpYg0KbGluay1jaXRhdGlvbnM6IHRydWUNCmF1dGhvcjogIlJvYiBGcmFua2VuIg0Kb3V0cHV0OiANCiAgaHRtbF9kb2N1bWVudDoNCiAgICBjc3M6IHR3ZWFrcy5jc3MNCiAgICB0b2M6ICB0cnVlDQogICAgdG9jX2Zsb2F0OiB0cnVlDQogICAgbnVtYmVyX3NlY3Rpb25zOiBmYWxzZQ0KICAgIHRvY19kZXB0aDogMQ0KICAgIGNvZGVfZm9sZGluZzogc2hvdw0KICAgIGNvZGVfZG93bmxvYWQ6IHllcw0KLS0tDQoNCmBgYHtyLCBnbG9iYWxzZXR0aW5ncywgZWNobz1GQUxTRSwgd2FybmluZz1GQUxTRSwgcmVzdWx0cz0naGlkZSd9DQpsaWJyYXJ5KGtuaXRyKQ0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGVjaG8gPSBUUlVFKQ0Kb3B0c19jaHVuayRzZXQodGlkeS5vcHRzPWxpc3Qod2lkdGguY3V0b2ZmPTEwMCksdGlkeT1UUlVFLCB3YXJuaW5nID0gRkFMU0UsIG1lc3NhZ2UgPSBGQUxTRSxjb21tZW50ID0gIiM+IiwgY2FjaGU9VFJVRSwgY2xhc3Muc291cmNlPWMoInRlc3QiKSwgY2xhc3Mub3V0cHV0PWMoInRlc3QzIikpDQpvcHRpb25zKHdpZHRoID0gMTAwKQ0KcmdsOjpzZXR1cEtuaXRyKCkNCmBgYA0KDQoNCmBgYHtyIGtsaXBweSwgZWNobz1GQUxTRSwgaW5jbHVkZT1UUlVFfQ0Ka2xpcHB5OjprbGlwcHkocG9zaXRpb24gPSBjKCd0b3AnLCAncmlnaHQnKSkNCiNrbGlwcHk6OmtsaXBweShjb2xvciA9ICdkYXJrcmVkJykNCiNrbGlwcHk6OmtsaXBweSh0b29sdGlwX21lc3NhZ2UgPSAnQ2xpY2sgdG8gY29weScsIHRvb2x0aXBfc3VjY2VzcyA9ICdEb25lJykNCmBgYA0KDQpMYXN0IGNvbXBpbGVkIG9uIGByIGZvcm1hdChTeXMudGltZSgpLCAnJWQtJW0tJVknKWANCg0KLS0tICANCg0KIyBHZXR0aW5nIHN0YXJ0ZWQNCg0KVG8gY29weSB0aGUgY29kZSwgY2xpY2sgdGhlIGJ1dHRvbiBpbiB0aGUgdXBwZXIgcmlnaHQgY29ybmVyIG9mIHRoZSBjb2RlLWNodW5rcy4NCg0KIyMgY2xlYW4gdXANCg0KYGBge3IsIHJlc3VsdHM9J2hpZGUnfQ0Kcm0obGlzdD1scygpKQ0KZ2MoKQ0KYGBgDQoNCjxicj4NCg0KDQojIyBnZW5lcmFsIGN1c3RvbSBmdW5jdGlvbnMNCg0KLSBgZnBhY2thZ2UuY2hlY2tgOiBDaGVjayBpZiBwYWNrYWdlcyBhcmUgaW5zdGFsbGVkIChhbmQgaW5zdGFsbCBpZiBub3QpIGluIFINCi0gYGZzYXZlYDogRnVuY3Rpb24gdG8gc2F2ZSBkYXRhIHdpdGggdGltZSBzdGFtcCBpbiBjb3JyZWN0IGRpcmVjdG9yeQ0KLSBgZmxvYWRgOiBGdW5jdGlvbiB0byBsb2FkIFItb2JqZWN0cyB1bmRlciBuZXcgbmFtZXMNCi0gYGZzaG93ZGZgOiBQcmludCBvYmplY3RzIChgdGliYmxlYCAvIGBkYXRhLmZyYW1lYCkgbmljZWx5IG9uIHNjcmVlbiBpbiBgLlJtZGANCg0KYGBge3IsIGZ1bn0NCmZwYWNrYWdlLmNoZWNrIDwtIGZ1bmN0aW9uKHBhY2thZ2VzKSB7DQogICAgbGFwcGx5KHBhY2thZ2VzLCBGVU4gPSBmdW5jdGlvbih4KSB7DQogICAgICAgIGlmICghcmVxdWlyZSh4LCBjaGFyYWN0ZXIub25seSA9IFRSVUUpKSB7DQogICAgICAgICAgICBpbnN0YWxsLnBhY2thZ2VzKHgsIGRlcGVuZGVuY2llcyA9IFRSVUUpDQogICAgICAgICAgICBsaWJyYXJ5KHgsIGNoYXJhY3Rlci5vbmx5ID0gVFJVRSkNCiAgICAgICAgfQ0KICAgIH0pDQp9DQoNCmZzYXZlIDwtIGZ1bmN0aW9uKHgsIGxvY2F0aW9uID0gIi4vZGF0YS9wcm9jZXNzZWQvIikgew0KICBpZiAobG9jYXRpb24gPT0gIi4vZGF0YS9wcm9jZXNzZWQvIikgew0KICBpZmVsc2UoIWRpci5leGlzdHMoImRhdGEiKSwgZGlyLmNyZWF0ZSgiZGF0YSIpLCBGQUxTRSkNCiAgaWZlbHNlKCFkaXIuZXhpc3RzKCJkYXRhL3Byb2Nlc3NlZCIpLCBkaXIuY3JlYXRlKCJkYXRhL3Byb2Nlc3NlZCIpLCBGQUxTRSkNCiAgfQ0KDQogIG9iamVjdCA9IGRlcGFyc2Uoc3Vic3RpdHV0ZSh4KSkNCiAgZGF0ZW5hbWUgPC0gc3Vic3RyKGdzdWIoIls6LV0iLCAiIiwgU3lzLnRpbWUoKSksIDEsIDgpDQogIHRvdGFsbmFtZSA8LSBwYXN0ZShsb2NhdGlvbiwgb2JqZWN0LCAiXyIsIGRhdGVuYW1lLCAgIi5yZGEiLCBzZXAgPSAiIikNCiAgYXNzaWduKGV2YWwob2JqZWN0KSwgeCwgZW52aXIgPSAuR2xvYmFsRW52KQ0KICBwcmludChwYXN0ZSgiU0FWRUQ6ICIsIHRvdGFsbmFtZSwgc2VwID0gIiIpKQ0KICBzYXZlKGxpc3QgPSBvYmplY3QsIGZpbGUgPSB0b3RhbG5hbWUpICANCn0NCg0KZmxvYWQgIDwtIGZ1bmN0aW9uKGZpbGVOYW1lKXsNCiAgbG9hZChmaWxlTmFtZSkNCiAgZ2V0KGxzKClbbHMoKSAhPSAiZmlsZU5hbWUiXSkNCn0NCg0KZnNob3dkZiA8LSBmdW5jdGlvbih4LCBjYXB0aW9uID0gTlVMTCwgZGlnaXRzID0gMiwgZm9vdG5vdGUgPSBOVUxMLCAuLi4pIHsNCiAgICBrbml0cjo6a2FibGUoeCwgZGlnaXRzID0gZGlnaXRzLCAiaHRtbCIsIGNhcHRpb24gPSBjYXB0aW9uLCAuLi4pICU+JQ0KICAgICAgICBrYWJsZUV4dHJhOjpmb290bm90ZShnZW5lcmFsID0gZm9vdG5vdGUpICU+JQ0KICAgICAgICBrYWJsZUV4dHJhOjprYWJsZV9zdHlsaW5nKGJvb3RzdHJhcF9vcHRpb25zID0gYygic3RyaXBlZCIsICJob3ZlciIpKSAlPiUNCiAgICAgICAga2FibGVFeHRyYTo6c2Nyb2xsX2JveCh3aWR0aCA9ICIxMDAlIiwgaGVpZ2h0ID0gIjMwMHB4IikNCn0NCmBgYA0KDQo8YnI+DQoNCiMjIG5lY2Vzc2FyeSBwYWNrYWdlcw0KDQotIGB0aWR5dmVyc2VgOiBkYXRhIHdyYW5nbGluZw0KLSBgUlNpZW5hYDogc3RvY2hhc3RpYyBhY3Rvci1vcmllbnRlZCBtb2RlbA0KDQoNCmBgYHtyLCBwYWNrYWdlcywgbWVzc2FnZT1GQUxTRSwgcmVzdWx0cz0naGlkZSd9DQpwYWNrYWdlcyA9IGMoInRpZHl2ZXJzZSIsICJSU2llbmEiKQ0KZnBhY2thZ2UuY2hlY2socGFja2FnZXMpDQpybShwYWNrYWdlcykNCmBgYA0KDQo8YnI+DQoNCi0tLQ0KDQojIEltcG9ydA0KDQpJbXBvcnQgdGhlIHJlcGxpY2F0ZWQgZGF0YS1zZXRzLiBZb3UgbWF5IG9idGFpbiBpdCBieSBkb3dubG9hZGluZzogYHIgeGZ1bjo6ZW1iZWRfZmlsZSgiLi9kYXRhX3NoYXJlZC96aWVlbGthYXJfc2llbmEuUmRhIilgIA0KDQpgYGB7ciwgZGF0YX0NCiNsaXN0LmZpbGVzKCIuL2RhdGEvcHJvY2Vzc2VkIikNCnRvZGF5IDwtIGdzdWIoIi0iLCAiIiwgU3lzLkRhdGUoKSkNCnRvZGF5IDwtICIyMDI1MDkwMyIgI2xhdGVzdCB1cGRhdGVkIGRhdGFzZXQNCg0KY2xhc3NfZGF0YSA8LSBmbG9hZChwYXN0ZTAoIi4vZGF0YS9wcm9jZXNzZWQvIiwgdG9kYXksICJ6aWVlbGthYXJfc2llbmEuUmRhIikpDQpgYGANCg0KLS0tDQoNCiMgc3RhdGlvbmFyeSBTQU9NDQoNClNlZSBAa3JhdXNlMjAxODsgQHNuaWpkZXJzMjAxMw0KDQpgYGB7ciwgc2FvbUV9DQojZ2V0IG9uZSBjbGFzcywgYW5kIHRha2UgdGhlIHBlcmNlaXZlLWFzLXJpZ2h0IG5ldHdvcmsNCm15ZGF0YSA8LSBjbGFzc19kYXRhW1sxXV0kcmlnaHQNCg0KI2luc3BlY3QNCiNwcmludDAxUmVwb3J0KGNsYXNzLCBtb2RlbG5hbWU9InRlc3QiKQ0KDQojIGRlZmluZSBhIG1vZGVsDQpteWVmZiA8LSBnZXRFZmZlY3RzKG15ZGF0YSkNCg0KI2luY2x1ZGUgZWZmZWN0czoNCiMgdGVuZGVuY3kgdG8gcGVyY2VpdmUgdGhvc2UgYXMgInJpZ2h0Iiwgd2hvIGFyZSBwZXJjZWl2ZWQgYnkgbWFueSBvdGhlcnMgYXMgcmlnaHQNCm15ZWZmIDwtIGluY2x1ZGVFZmZlY3RzKG15ZWZmLCBpblBvcCwgbmFtZSA9ICJwZXJjZXB0aW9uIikNCg0KIyB0ZW5kZW5jeSBmb3IgdGhvc2UgcGVyY2VpdmluZyBtYW55IG90aGVycyBhcyAicmlnaHQiIHRvIHBlcmNlaXZlIGFsdGVyIGFsc28gYXMgInJpZ2h0Ig0KbXllZmYgPC0gaW5jbHVkZUVmZmVjdHMobXllZmYsIG91dEFjdCwgbmFtZSA9ICJwZXJjZXB0aW9uIikNCg0KIyB0ZW5kZW5jeSBmb3Igc2VsZi1yZXBvcnRlZCAicmlnaHRzIiB0byBwZXJjZWl2ZSBtb3JlIG90aGVycyBhcyByaWdodCAocHJvamVjdGlvbikNCm15ZWZmIDwtIGluY2x1ZGVFZmZlY3RzKG15ZWZmLCBlZ29YLCBuYW1lID0gInBlcmNlcHRpb24iLCBpbnRlcmFjdGlvbjEgPSAic2VsZiIpDQoNCiMgdGVuZGVuY3kgZm9yIHNlbGYtcmVwb3J0ZWQgcmlnaHRzIHRvIGJlIHBlcmNlaXZlZCBhcyBzdWNoDQpteWVmZiA8LSBpbmNsdWRlRWZmZWN0cyhteWVmZiwgYWx0WCwgbmFtZSA9ICJwZXJjZXB0aW9uIiwgaW50ZXJhY3Rpb24xID0gInNlbGYiKQ0KDQojIGZyaWVuZHNoaXAgZWZmZWN0czoNCm15ZWZmIDwtIGluY2x1ZGVFZmZlY3RzKG15ZWZmLCB0cmFuc1RyaXAsIG91dEFjdCwgaW5Qb3AsIG5hbWUgPSAiZnJpZW5kIikNCm15ZWZmIDwtIGluY2x1ZGVFZmZlY3RzKG15ZWZmLCBlZ29YLCBhbHRYLCBlZ29YYWx0WCwgb3V0QWN0LCBpblBvcCwgbmFtZSA9ICJmcmllbmQiKQ0KDQojICEhIGZpeCB0aGUgcmF0ZSBwYXJhbWV0ZXIgdG8gYSBoaWdoIHZhbHVlIChmb3IgdGhlIHN0YXRpb25hcnkgc2FvbSkNCnJhdGUgPSA1MA0KbXllZmYgPC0gc2V0RWZmZWN0KG15ZWZmLCBSYXRlLCB0eXBlID0gInJhdGUiLCBmaXggPSBUUlVFLCBpbml0aWFsVmFsdWUgPSByYXRlLCBuYW1lID0gImZyaWVuZCIpDQpteWVmZiA8LSBzZXRFZmZlY3QobXllZmYsIFJhdGUsIHR5cGUgPSAicmF0ZSIsIGZpeCA9IFRSVUUsIGluaXRpYWxWYWx1ZSA9IHJhdGUsIG5hbWUgPSAicGVyY2VwdGlvbiIpDQoNCm15YWxnbyA8LSBzaWVuYUFsZ29yaXRobUNyZWF0ZShwcm9qbmFtZSA9ICJzdGF0aW9uYXJ5X3Nhb21fY2xhc3MxX3JpZ2h0IiwgbnN1Yj00LCBuMyA9IDFlMykNCmFucyA8LSBzaWVuYTA3KG15YWxnbywgZGF0YSA9IG15ZGF0YSwgZWZmZWN0cyA9IG15ZWZmKQ0Kc3VtbWFyeShhbnMpDQpgYGANCg0KDQotLS0tDQoNCiMjIFJlZmVyZW5jZXM=</div>
+<style>
+.center {
+  text-align: center;
+  color: red;
+}
+</style>
+<hr>
+<br>
+<p id="yearPlaceholder" <p class="center">
+  &copy; <span id="currentYear"></span>
+  <span>Rob Franken</span>, 
+  <span>Tom Nijs</span>, 
+  <span>Eva Jaspers</span>, 
+  <span>Jochem Tolsma</span>, 
+  <span>Tobias Stark</span>
+</p>
+
+<script>
+  // JavaScript code to get and display the current year
+  var currentYear = new Date().getFullYear();
+  document.getElementById("currentYear").innerHTML = currentYear;
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("saom.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

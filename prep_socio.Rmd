@@ -1,0 +1,284 @@
+---
+title: "Data preparation"
+bibliography: references.bib
+link-citations: true
+author: "Rob Franken"
+output: 
+  html_document:
+    css: tweaks.css
+    toc:  true
+    toc_float: true
+    number_sections: false
+    toc_depth: 1
+    code_folding: show
+    code_download: yes
+---
+
+```{r, globalsettings, echo=FALSE, warning=FALSE, results='hide'}
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE)
+opts_chunk$set(tidy.opts=list(width.cutoff=100),tidy=TRUE, warning = FALSE, message = FALSE,comment = "#>", cache=TRUE, class.source=c("test"), class.output=c("test3"))
+options(width = 100)
+rgl::setupKnitr()
+
+```
+
+
+```{r klippy, echo=FALSE, include=TRUE}
+klippy::klippy(position = c('top', 'right'))
+#klippy::klippy(color = 'darkred')
+#klippy::klippy(tooltip_message = 'Click to copy', tooltip_success = 'Done')
+```
+
+Last compiled on `r format(Sys.time(), '%d-%m-%Y')`
+
+---  
+
+# Getting started
+
+To copy the code, click the button in the upper right corner of the code-chunks.
+
+## clean up
+
+```{r, results='hide'}
+rm(list=ls())
+gc()
+```
+
+<br>
+
+## general custom functions
+
+- `fpackage.check`: Check if packages are installed (and install if not) in R
+- `fsave`: Function to save data with time stamp in correct directory
+- `fload`: Function to load R-objects under new names
+- `fshowdf`: Print objects (`tibble` / `data.frame`) nicely on screen in `.Rmd`
+
+```{r}
+fpackage.check <- function(packages) {
+    lapply(packages, FUN = function(x) {
+        if (!require(x, character.only = TRUE)) {
+            install.packages(x, dependencies = TRUE)
+            library(x, character.only = TRUE)
+        }
+    })
+}
+
+fsave <- function(x, file, location = "./data/processed/", ...) {
+    if (!dir.exists(location))
+        dir.create(location)
+    datename <- substr(gsub("[:-]", "", Sys.time()), 1, 8)
+    totalname <- paste(location, datename, file, sep = "")
+    print(paste("SAVED: ", totalname, sep = ""))
+    save(x, file = totalname)
+}
+
+fload  <- function(fileName){
+  load(fileName)
+  get(ls()[ls() != "fileName"])
+}
+
+fshowdf <- function(x, ...) {
+    knitr::kable(x, digits = 2, "html", ...) %>%
+        kableExtra::kable_styling(bootstrap_options = c("striped", "hover")) %>%
+        kableExtra::scroll_box(width = "100%", height = "300px")
+}
+```
+
+<br>
+
+## necessary packages
+
+- `tidyverse`: data wrangling
+- `RSiena`: stochastic actor-oriented model
+
+```{r, packages, message=FALSE, results='hide'}
+packages = c("tidyverse", "RSiena")
+fpackage.check(packages)
+rm(packages)
+```
+
+<br>
+
+---
+
+# Download data files
+
+[Data files will be publicly accessible in a repository in the future [@zieelkaar].]
+
+Download the data-files, unzip them if needed, and put them in the `./data/` folder. But first, make a `./data/` folder:
+
+```{r, eval=FALSE}
+ifelse(!dir.exists("data"), dir.create("data"), FALSE)
+``` 
+
+---- 
+
+# Import data
+
+Now import the downloaded data.
+
+Here, I use data from two classes:
+
+```{r, import, eval=FALSE}
+data <- read.csv("./rawdata/zie-elkaar/two_classes.csv", stringsAsFactors = FALSE)
+``` 
+
+----
+
+# Wrangling data
+
+```{r, wrangle, eval=FALSE}
+# metadata
+respondents <- as.character(data$Respondent.code)
+nominations <- data$Eigen.vrienden...basis
+classes <- data$Klas.code
+
+# perception data
+alt_ids <- grep("Immigratie.houding...vrienden.ID\\.[A-Z]\\.ID", names(data), value = TRUE)
+val_ids <- grep("Immigratie.houding...vrienden.ID\\.[A-Z]\\.waarde", names(data), value = TRUE)
+
+perception_pairs <- data.frame(
+  alter_col = alt_ids,
+  value_col = val_ids,
+  stringsAsFactors = FALSE
+)
+
+# self-report (ground truth)
+self_report <- data$Immigratie.houding.eigen
+names(self_report) <- respondents
+
+# list to store class-level data
+class_data <- list()
+
+for (class_id in unique(classes)) {
+  
+  class_idx <- which(classes == class_id)
+  class_ids <- respondents[class_idx]
+  n <- length(class_ids)
+  
+  # friend network
+  friend_mat <- matrix(0, nrow = n, ncol = n, dimnames = list(class_ids, class_ids))
+  
+  for (i in seq_along(class_ids)) {
+    ego <- class_ids[i]
+    raw_friends <- nominations[class_idx[i]]
+    to_list <- unlist(strsplit(raw_friends, ",\\s*"))
+    to_list <- trimws(to_list)
+    
+    # add ties
+    for (to in to_list) {
+      if (to != "" && to %in% class_ids) {
+        friend_mat[ego, to] <- 1
+      }
+    }
+  }
+  
+  # perception network
+  percep_mat <- matrix(NA, nrow = n, ncol = n, dimnames = list(class_ids, class_ids))
+  
+  for (k in seq_len(nrow(perception_pairs))) {
+    alters <- data[[perception_pairs$alter_col[k]]]
+    guesses <- data[[perception_pairs$value_col[k]]]
+    
+    for (i in seq_along(class_ids)) {
+      ego_index <- class_idx[i]
+      ego <- respondents[ego_index]
+      alter <- as.character(alters[ego_index])
+      guess <- guesses[ego_index]
+      
+      if (!is.na(alter) && alter %in% class_ids && !is.na(guess)) {
+        percep_mat[ego, alter] <- guess
+      }
+    }
+  }
+  
+  # binarized networks (where perceiving someone as right/left constitues a tie)
+  right_percep <- ifelse(percep_mat > 3, 1, 0)
+  right_percep[percep_mat == 99] <- NA
+  diag(right_percep) <- 0
+  
+  left_percep <- ifelse(percep_mat < 3, 1, 0)
+  left_percep[percep_mat == 99] <- NA
+  diag(left_percep) <- 0
+  
+  # covariates
+  gender <- data$Geslacht[class_idx]
+  dutch <- ifelse(data$Herkomstland.ID[class_idx] == 1, 1, 0)
+  
+  # store in the list
+  class_data[[paste0("Class_", class_id)]] <- list(
+    friendship = friend_mat,
+    perception = percep_mat,
+    truth = self_report[class_idx],
+    right_percep = right_percep,
+    left_percep = left_percep,
+    ids = class_ids,
+    gender = gender,
+    dutch = dutch
+  )
+}
+
+class_data$Class_1
+``` 
+
+----
+
+# RSiena objects
+
+Now make a list of RSiena objects for all classes. For each class, we have a friendship network and a network in which perceiving someone else as agreeing or disagreeing with the statement constitutes a tie.
+
+```{r, rsienaobject, eval=FALSE}
+# function to create siena objects for a class, with either perceived-right or perceived-left network.
+# while theoretically it would be possible to estimate two disjoint perception networks (i.e., it is impossible to simultaneously rate someone right as left), we estimate two separate models and thus create two separate siena object (lists):
+
+create_siena_data <- function(classdat, perception_type = c("right", "left")) { 
+  perception_type <- match.arg(perception_type)
+  n <- length(classdat$ids)
+  
+  # friend network
+  #we have cross-sectional network data, which we take as start and end value of the simulation
+  fnet1 <- fnet2 <- classdat$friendship
+  friends <- array(c(fnet1, fnet2), dim = c(n, n, 2))
+  friend <- sienaDependent(friends, allowOnly = FALSE)
+  
+  # perception networks
+  if (perception_type == "right") {
+    pnet1 <- pnet2 <- classdat$right_percep
+    self_var <- ifelse(self_report[as.character(classdat$ids)] %in% c(4,5), 1, 0)  # right = 1
+  } else {
+    pnet1 <- pnet2 <- classdat$left_percep
+    self_var <- ifelse(self_report[as.character(classdat$ids)] %in% c(1,2), 1, 0)  # left = 1
+  }
+  perception_array <- array(c(pnet1, pnet2), dim = c(n, n, 2))
+  perception <- sienaDependent(perception_array, allowOnly = FALSE)
+  
+  # covariates
+  male <- coCovar(ifelse(classdat$gender == 1, 1, 0))
+  dutch <- coCovar(classdat$dutch)
+  self <- coCovar(self_var)
+  
+  # create Siena data object
+  sienaDataCreate(friend, perception, self, male, dutch)
+}
+
+# a list of lists: in each class two datasets
+class_list <- lapply(class_data, function(club) {
+  list(
+    right = create_siena_data(club, perception_type = "right"),
+    left  = create_siena_data(club, perception_type = "left")
+  )
+})
+```
+
+----
+
+# Save
+
+```{r, save, eval=FALSE}
+fsave(class_data, "zieelkaar_classdata.Rda")
+fsave(class_list, "zieelkaar_siena.Rda")
+```
+----
+
+## References
