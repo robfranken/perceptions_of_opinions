@@ -114,21 +114,13 @@ Import the replicated data-set.`
 ```{r, data}
 #list.files("./data/processed")
 today <- gsub("-", "", Sys.Date())
-today <- "20250903" #latest updated dataset
+today <- "20250904" #latest updated dataset
 class_data <- fload(paste0("./data/processed/", today, "zieelkaar_classdata.Rda"))
 ```
 
 ---
 
 # confusion matrix
-
-"Too many immigrants are coming to the Netherlands"
-
-(1 = completely disagree; 
-2 = disagree;
-3 = neither disagree, nor agree;
-4 = agree;
-5 = completely agree)
 
 ```{r, wrangle, fig.width=13}
 #all pairwise perceptions, pooled across classes
@@ -296,7 +288,7 @@ p3 <- ggplot(confusion_binned_facet, aes(x = Truth_bin, y = Perceived_bin, fill 
   theme(panel.grid = element_blank())
 
 #combine
-combi <- ggarrange(p1, p2, p3, ncol = 3, nrow = 1,  widths = c(1,1,1.25), labels = c("A. Raw scores", "B. Agree vs. disagree", "C. By raters' self-report"))
+combi <- ggarrange(p1, p2, p3, ncol = 3, nrow = 1,  widths = c(1,1,1.25), labels = c("A. Raw scores", "B. Agree (4/5) vs. disagree (1/2)", "C. By raters' self-report"))
   
 annotate_figure(
   combi,

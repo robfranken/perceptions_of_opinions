@@ -53,6 +53,8 @@ gc()
 - `fsave`: Function to save data with time stamp in correct directory
 - `fload`: Function to load R-objects under new names
 - `fshowdf`: Print objects (`tibble` / `data.frame`) nicely on screen in `.Rmd`
+- `fanscsv`: Tweaking Siena output ([source](https://jochemtolsma.github.io/Twitter/))
+
 
 ```{r, fun}
 fpackage.check <- function(packages) {
@@ -89,6 +91,20 @@ fshowdf <- function(x, caption = NULL, digits = 2, footnote = NULL, ...) {
         kableExtra::kable_styling(bootstrap_options = c("striped", "hover")) %>%
         kableExtra::scroll_box(width = "100%", height = "300px")
 }
+
+fanscsv <- function(ans = ans) {
+  ans1_mat <- matrix(NA, nrow = length(ans$effects[, 2]), ncol = 3)
+  row.names(ans1_mat) <- ans$effects[, 2]
+  ans1_mat[, 1] <- (ans$theta)
+  ans1_mat[, 2] <- (ans$se)
+  ans1_mat[, 3] <- (ans$tconv)
+  ans1_mat <- rbind(ans1_mat, c(ans$tconv.max))
+  row.names(ans1_mat)[length(row.names(ans1_mat))] <- "Overall maximum convergence ratio:"
+  colnames(ans1_mat) <- c("Estimate", "Standard Error", "Convergence t-ratio")
+  return(ans1_mat)
+  # print(ans1_mat)
+  # write.csv(ans1_mat, filename)
+}
 ```
 
 <br>
@@ -100,7 +116,7 @@ fshowdf <- function(x, caption = NULL, digits = 2, footnote = NULL, ...) {
 
 
 ```{r, packages, message=FALSE, results='hide'}
-packages = c("tidyverse", "RSiena")
+packages = c("tidyverse", "RSiena", "knitr", "kableExtra")
 fpackage.check(packages)
 rm(packages)
 ```
@@ -127,17 +143,22 @@ class_data <- fload(paste0("./data/processed/", today, "zieelkaar_siena.Rda"))
 
 See @krause2018; @snijders2013
 
-```{r, saom}
-#get one class, and take the perceive-as-right network
-mydata <- class_data[[1]]$right
+```{r}
+# get one class, and take the perceive-as-right network
+mydata <- class_data[[2]]$right
 
-#inspect
-#print01Report(class, modelname="test")
+# inspect print01Report(class, modelname='test')
+```
 
+<br>
+
+## effects
+
+```{r, saom, eval=FALSE}
 # define a model
 myeff <- getEffects(mydata)
 
-#include effects:
+# starting with simple model
 # tendency to perceive those as "right", who are perceived by many others as right
 myeff <- includeEffects(myeff, inPop, name = "perception")
 
@@ -154,14 +175,162 @@ myeff <- includeEffects(myeff, altX, name = "perception", interaction1 = "self")
 myeff <- includeEffects(myeff, transTrip, outAct, inPop, name = "friend")
 myeff <- includeEffects(myeff, egoX, altX, egoXaltX, outAct, inPop, name = "friend")
 
+# for more complex models, consider cross-network effects (friendship-->perception);
+# we fix and test them for now:
+
+# ego's tendency to perceive those as right who are befriended by many others whom ego perceives as right
+myeff <- includeEffects(myeff, cl.XWX1, name = "perception", interaction1 = "friend", fix = TRUE, test = TRUE)
+# ego's tendency to accept their friends' perceptions about alter
+myeff <- includeEffects(myeff, to, name = "perception", interaction1 = "friend",  fix = TRUE, test = TRUE)
+
 # !! fix the rate parameter to a high value (for the stationary saom)
-rate = 50
+# needs to be sufficiently high to give the simulation enough time to "get away" from the starting network and reach an equilibrium state.
+
+rate = 20
 myeff <- setEffect(myeff, Rate, type = "rate", fix = TRUE, initialValue = rate, name = "friend")
 myeff <- setEffect(myeff, Rate, type = "rate", fix = TRUE, initialValue = rate, name = "perception")
+``` 
+<br>
 
-myalgo <- sienaAlgorithmCreate(projname = "stationary_saom_class1_right", nsub=4, n3 = 1e3)
-ans <- siena07(myalgo, data = mydata, effects = myeff)
-summary(ans)
+## estimation
+
+```{r, eval = FALSE}
+myalgo <- sienaAlgorithmCreate(projname = "stationary_saom_class1_right", nsub = 5, n3 = 1e3)
+ncores <- parallel::detectCores()
+
+ans <- siena07(
+  myalgo,
+  data = mydata,
+  effects = myeff,
+  #returnDeps = TRUE,
+  useCluster = TRUE,
+  nbrNodes = ncores,
+  initC = TRUE,
+  batch = TRUE
+)
+
+save(ans, file = paste("./results/ans1.RDa"))
+
+#?score.Test
+#score.Test(ans, 14)
+#score.Test(ans, 15) # score-test suggest that these influence effects should be included!
+
+myeff2 <- includeEffects(myeff, cl.XWX1, name = "perception", interaction1 = "friend", fix = FALSE, test = FALSE)
+myeff2 <- includeEffects(myeff2, to, name = "perception", interaction1 = "friend",  fix = FALSE, test = FALSE)
+
+max_tries <- 10
+try_count <- 1
+converged <- FALSE
+
+ans_new <- siena07(
+  myalgo,
+  data = mydata,
+  effects = myeff2,
+  prevAns = ans,
+  #returnDeps = TRUE,
+  useCluster = TRUE,
+  nbrNodes = ncores,
+  initC = TRUE,
+  batch = TRUE
+)
+
+while (!converged && try_count <= max_tries) {
+  tconv <- ans_new$tconv.max
+  
+  if (tconv < 0.25) {
+    converged <- TRUE
+    message(paste("Model converges. Maximum convergence ratio:", round(tconv, 3)))
+    break
+  } else {
+    try_count <- try_count + 1
+    message(paste("Model did not converge adequately (", round(tconv, 3),
+                  "); repeating estimation (try ", try_count, ")", sep=""))
+    
+    ans_new <- siena07(
+      myalgo,
+      data = mydata,
+      effects = myeff2,
+      prevAns = ans_new,
+      #returnDeps = TRUE,
+      useCluster = TRUE,
+      nbrNodes = ncores,
+      initC = TRUE,
+      batch = TRUE
+    )
+  }
+}
+
+if (!converged) {
+  warning("Model did not converge after ", max_tries, " tries.")
+}
+
+ans2 <- siena07(
+  myalgo,
+  data = mydata,
+  effects = myeff,
+  #returnDeps = TRUE,
+  useCluster = TRUE,
+  nbrNodes = ncores,
+  initC = TRUE,
+  batch = TRUE
+)
+
+while (!converged && try_count <= max_tries) {
+  tconv <- ans2$tconv.max
+  
+  if (tconv < 0.25) {
+    converged <- TRUE
+    message(paste("Model converges. Maximum convergence ratio:", round(tconv, 3)))
+    break
+  } else {
+    try_count <- try_count + 1
+    message(paste("Model did not converge adequately (", round(tconv, 3),
+                  "); repeating estimation (try ", try_count, ")", sep=""))
+    
+    ans <- siena07(
+      myalgo,
+      data = mydata,
+      effects = myeff,
+      prevAns = ans,
+      #returnDeps = TRUE,
+      useCluster = TRUE,
+      nbrNodes = ncores,
+      initC = TRUE,
+      batch = TRUE
+    )
+  }
+}
+if (!converged) {
+  warning("Model did not converge after ", max_tries, " tries.")
+}
+``` 
+
+<br>
+
+## results
+
+```{r,  class.source = 'fold-hide'}
+ans <- fload("./results/ans1.Rda")
+
+#extract estimates
+res <- round(fanscsv(ans)[-c(14:16), 1:2], 5)  # exclude last rows (tested effects; convergence info)
+mc <- as.character(round(fanscsv(ans)[13, 1], 3))  # maximum convergence ratio
+
+# add row names
+row.names(res) <- c(
+  "rate ", "outdegree", "reciprocity",
+  "transitive triplets", "indegree popularity", "outdegree activity",
+  "rate", "outdegree", "reciprocity", "indegree popularity", "outdegree activity", "self-report (alter)", "self-report (ego)") 
+
+asmatkable <- kbl(res, booktabs = TRUE, digits = 3, caption = "Model 1", align = "c") %>%
+  kable_classic(full_width = F, html_font = "Cambria") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  column_spec(column = 1, width = "3in") %>%
+  #row_spec(c(11, 24, 41), bold = TRUE, color = "white", background = "#D7261E") %>%
+  group_rows(index = c("Friendship" = 6, "Perception" = 7)) %>%
+  footnote(general = paste("Overall maximum convergence ratio: ", mc, sep = ""))
+
+asmatkable
 ```
 
 

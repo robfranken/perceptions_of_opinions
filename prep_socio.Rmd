@@ -152,7 +152,6 @@ names(self_report) <- respondents
 class_data <- list()
 
 for (class_id in unique(classes)) {
-  
   class_idx <- which(classes == class_id)
   class_ids <- respondents[class_idx]
   n <- length(class_ids)
@@ -167,7 +166,7 @@ for (class_id in unique(classes)) {
     to_list <- trimws(to_list)
     
     # add ties
-    for (to in to_list) {
+    for (to in to_list) { 
       if (to != "" && to %in% class_ids) {
         friend_mat[ego, to] <- 1
       }
@@ -194,12 +193,13 @@ for (class_id in unique(classes)) {
   }
   
   # binarized networks (where perceiving someone as right/left constitues a tie)
-  right_percep <- ifelse(percep_mat > 3, 1, 0)
-  right_percep[percep_mat == 99] <- NA
-  diag(right_percep) <- 0
+  percep_mat2 <- percep_mat
+  percep_mat2[percep_mat2 == 99] <- NA #99s to NA
   
-  left_percep <- ifelse(percep_mat < 3, 1, 0)
-  left_percep[percep_mat == 99] <- NA
+  right_percep <- ifelse(percep_mat2 > 3, 1, 0)
+  left_percep  <- ifelse(percep_mat2 < 3, 1, 0)
+  
+  diag(right_percep) <- 0
   diag(left_percep) <- 0
   
   # covariates
@@ -219,7 +219,7 @@ for (class_id in unique(classes)) {
   )
 }
 
-class_data$Class_1
+class_data$Class_2
 ``` 
 
 ----
@@ -279,6 +279,7 @@ class_list <- lapply(class_data, function(club) {
 fsave(class_data, "zieelkaar_classdata.Rda")
 fsave(class_list, "zieelkaar_siena.Rda")
 ```
+
 ----
 
 ## References

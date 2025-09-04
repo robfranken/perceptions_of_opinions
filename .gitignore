@@ -46,3 +46,4 @@ po/*~
 #local files
 /local/
 
+*.out
