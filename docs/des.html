@@ -9,9 +9,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="Rob Franken" />
 
 
-<title>Data preparation</title>
+<title>Describing inaccuracy and bias</title>
 
 <script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -459,7 +460,8 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Data preparation</h1>
+<h1 class="title toc-ignore">Describing inaccuracy and bias</h1>
+<h4 class="author">Rob Franken</h4>
 
 </div>
 
@@ -468,7 +470,7 @@ div.tocify {
   addClassKlippyTo("pre.r, pre.markdown");
   addKlippy('right', 'top', 'auto', '1', 'Copy code', 'Copied!');
 </script>
-<p>Last compiled on 03-09-2025</p>
+<p>Last compiled on 04-09-2025</p>
 <hr />
 <div id="getting-started" class="section level1">
 <h1>Getting started</h1>
@@ -478,10 +480,182 @@ code-chunks.</p>
 <h2>clean up</h2>
 <pre class="r test"><code>rm(list = ls())
 gc()</code></pre>
+<p><br></p>
 </div>
+<div id="general-custom-functions" class="section level2">
+<h2>general custom functions</h2>
+<ul>
+<li><code>fpackage.check</code>: Check if packages are installed (and
+install if not) in R</li>
+<li><code>fsave</code>: Function to save data with time stamp in correct
+directory</li>
+<li><code>fload</code>: Function to load R-objects under new names</li>
+<li><code>fshowdf</code>: Print objects (<code>tibble</code> /
+<code>data.frame</code>) nicely on screen in <code>.Rmd</code></li>
+</ul>
+<pre class="r test"><code>fpackage.check &lt;- function(packages) {
+    lapply(packages, FUN = function(x) {
+        if (!require(x, character.only = TRUE)) {
+            install.packages(x, dependencies = TRUE)
+            library(x, character.only = TRUE)
+        }
+    })
+}
+
+fsave &lt;- function(x, location = &quot;./data/processed/&quot;) {
+    if (location == &quot;./data/processed/&quot;) {
+        ifelse(!dir.exists(&quot;data&quot;), dir.create(&quot;data&quot;), FALSE)
+        ifelse(!dir.exists(&quot;data/processed&quot;), dir.create(&quot;data/processed&quot;), FALSE)
+    }
+
+    object = deparse(substitute(x))
+    datename &lt;- substr(gsub(&quot;[:-]&quot;, &quot;&quot;, Sys.time()), 1, 8)
+    totalname &lt;- paste(location, object, &quot;_&quot;, datename, &quot;.rda&quot;, sep = &quot;&quot;)
+    assign(eval(object), x, envir = .GlobalEnv)
+    print(paste(&quot;SAVED: &quot;, totalname, sep = &quot;&quot;))
+    save(list = object, file = totalname)
+}
+
+fload &lt;- function(fileName) {
+    load(fileName)
+    get(ls()[ls() != &quot;fileName&quot;])
+}
+
+fshowdf &lt;- function(x, caption = NULL, digits = 2, footnote = NULL, ...) {
+    knitr::kable(x, digits = digits, &quot;html&quot;, caption = caption, ...) %&gt;%
+        kableExtra::footnote(general = footnote) %&gt;%
+        kableExtra::kable_styling(bootstrap_options = c(&quot;striped&quot;, &quot;hover&quot;)) %&gt;%
+        kableExtra::scroll_box(width = &quot;100%&quot;, height = &quot;300px&quot;)
+}</code></pre>
+<p><br></p>
+</div>
+<div id="necessary-packages" class="section level2">
+<h2>necessary packages</h2>
+<pre class="r test"><code>packages = c(&quot;tidyverse&quot;, &quot;dplyr&quot;, &quot;ggplot2&quot;, &quot;scales&quot;, &quot;purrr&quot;, &quot;ggpubr&quot;)
+fpackage.check(packages)
+rm(packages)</code></pre>
+<p><br></p>
+<hr />
+</div>
+</div>
+<div id="import" class="section level1">
+<h1>Import</h1>
+<p>Import the replicated data-set.`</p>
+<pre class="r test"><code># list.files(&#39;./data/processed&#39;)
+today &lt;- gsub(&quot;-&quot;, &quot;&quot;, Sys.Date())
+today &lt;- &quot;20250903&quot;  #latest updated dataset
+class_data &lt;- fload(paste0(&quot;./data/processed/&quot;, today, &quot;zieelkaar_classdata.Rda&quot;))</code></pre>
+<hr />
+</div>
+<div id="confusion-matrix" class="section level1">
+<h1>confusion matrix</h1>
+<p>“Too many immigrants are coming to the Netherlands”</p>
+<p>(1 = completely disagree; 2 = disagree; 3 = neither disagree, nor
+agree; 4 = agree; 5 = completely agree)</p>
+<pre class="r test"><code># all pairwise perceptions, pooled across classes
+perceptions &lt;- purrr::map2_dfr(class_data, names(class_data), function(class_obj, class_name) {
+    truth &lt;- class_obj$truth
+    percep &lt;- class_obj$perception
+
+    df &lt;- as.data.frame(as.table(percep)) %&gt;%
+        rename(Perceiver = Var1, Target = Var2, Perceived = Freq) %&gt;%
+        filter(!is.na(Perceived)) %&gt;%
+        mutate(Truth = truth[Target] |&gt;
+            unname(), Perceiver_self = truth[Perceiver] |&gt;
+            unname())
+    return(df)
+})
+
+# raw confusion matrix
+confusion_df &lt;- perceptions %&gt;%
+    filter(!is.na(Perceived), !is.na(Truth), Perceived %in% 1:5, Truth %in% 1:5) %&gt;%
+    count(Perceived, Truth, name = &quot;Freq&quot;) %&gt;%
+    complete(Perceived = 1:5, Truth = 1:5, fill = list(Freq = 0)) %&gt;%
+    group_by(Truth) %&gt;%
+    mutate(Percent = 100 * Freq/sum(Freq)) %&gt;%
+    ungroup() %&gt;%
+    mutate(Perceived = factor(Perceived, levels = 1:5), Truth = factor(Truth, levels = 1:5))
+
+# column counts
+col_counts1 &lt;- confusion_df %&gt;%
+    group_by(Truth) %&gt;%
+    summarise(Total_count = sum(Freq), .groups = &quot;drop&quot;)
+
+p1 &lt;- ggplot(confusion_df, aes(x = Truth, y = Perceived, fill = Percent)) + geom_tile(color = &quot;white&quot;,
+    linewidth = 0.2) + geom_text(aes(label = ifelse(Percent &gt;= 1, number(Percent, 0.1), &quot;&quot;)), size = 3) +
+    geom_text(data = col_counts1, aes(x = Truth, y = 0.5, label = Total_count), inherit.aes = FALSE,
+        vjust = 1, fontface = &quot;bold&quot;, size = 3) + scale_fill_viridis_c(option = &quot;plasma&quot;, direction = -1,
+    name = &quot;Column %&quot;) + labs(x = &quot;Self-report&quot;, y = &quot;Perception&quot;) + coord_equal() + expand_limits(y = 0.1) +
+    theme_minimal(base_size = 12) + theme(panel.grid = element_blank())
+
+# aggregated into disagree (1/2) and agree (3/4)
+perceptions_binned &lt;- perceptions %&gt;%
+    filter(!is.na(Perceived), !is.na(Truth), Perceived %in% 1:5, Truth %in% 1:5) %&gt;%
+    mutate(Truth_bin = case_when(Truth %in% 1:2 ~ &quot;Disagree&quot;, Truth %in% 4:5 ~ &quot;Agree&quot;), Perceived_bin = case_when(Perceived %in%
+        1:2 ~ &quot;Disagree&quot;, Perceived %in% 4:5 ~ &quot;Agree&quot;)) %&gt;%
+    filter(!is.na(Truth_bin), !is.na(Perceived_bin)) %&gt;%
+    mutate(Perceived_bin = factor(Perceived_bin, levels = c(&quot;Disagree&quot;, &quot;Agree&quot;)), Truth_bin = factor(Truth_bin,
+        levels = c(&quot;Disagree&quot;, &quot;Agree&quot;)))
+
+confusion_binned &lt;- perceptions_binned %&gt;%
+    count(Perceived_bin, Truth_bin, name = &quot;Freq&quot;) %&gt;%
+    complete(Perceived_bin = c(&quot;Disagree&quot;, &quot;Agree&quot;), Truth_bin = c(&quot;Disagree&quot;, &quot;Agree&quot;), fill = list(Freq = 0)) %&gt;%
+    group_by(Truth_bin) %&gt;%
+    mutate(Percent = 100 * Freq/sum(Freq)) %&gt;%
+    ungroup()
+
+col_counts2 &lt;- confusion_binned %&gt;%
+    group_by(Truth_bin) %&gt;%
+    summarise(Total_count = sum(Freq), .groups = &quot;drop&quot;)
+
+p2 &lt;- ggplot(confusion_binned, aes(x = Truth_bin, y = Perceived_bin, fill = Percent)) + geom_tile(color = &quot;white&quot;,
+    linewidth = 0.2) + geom_text(aes(label = ifelse(Percent &gt;= 1, number(Percent, 0.1), &quot;&quot;)), size = 4) +
+    geom_text(data = col_counts2, aes(x = Truth_bin, y = 0.5, label = Total_count), inherit.aes = FALSE,
+        vjust = 1, fontface = &quot;bold&quot;, size = 3) + scale_fill_viridis_c(option = &quot;plasma&quot;, direction = -1,
+    name = &quot;Column %&quot;) + scale_x_discrete(limits = c(&quot;Disagree&quot;, &quot;Agree&quot;)) + scale_y_discrete(limits = c(&quot;Disagree&quot;,
+    &quot;Agree&quot;)) + labs(x = &quot;Self-report&quot;, y = &quot;Perception&quot;) + coord_equal() + expand_limits(y = 0.1) +
+    theme_minimal(base_size = 12) + theme(panel.grid = element_blank())
+
+# disaggregated by the rater&#39;s self-report
+perceptions_binned_facet &lt;- perceptions %&gt;%
+    filter(!is.na(Perceived), !is.na(Truth), Perceived %in% 1:5, Truth %in% 1:5) %&gt;%
+    mutate(Truth_bin = case_when(Truth %in% 1:2 ~ &quot;Disagree&quot;, Truth %in% 4:5 ~ &quot;Agree&quot;), Perceived_bin = case_when(Perceived %in%
+        1:2 ~ &quot;Disagree&quot;, Perceived %in% 4:5 ~ &quot;Agree&quot;), Self_bin = case_when(Perceiver_self %in% 1:2 ~
+        &quot;Disagree&quot;, Perceiver_self %in% 4:5 ~ &quot;Agree&quot;)) %&gt;%
+    filter(!is.na(Truth_bin), !is.na(Perceived_bin), !is.na(Self_bin)) %&gt;%
+    mutate(Perceived_bin = factor(Perceived_bin, levels = c(&quot;Disagree&quot;, &quot;Agree&quot;)), Truth_bin = factor(Truth_bin,
+        levels = c(&quot;Disagree&quot;, &quot;Agree&quot;)), Self_bin = factor(Self_bin, levels = c(&quot;Disagree&quot;, &quot;Agree&quot;)))
+
+confusion_binned_facet &lt;- perceptions_binned_facet %&gt;%
+    count(Perceived_bin, Truth_bin, Self_bin, name = &quot;Freq&quot;) %&gt;%
+    complete(Perceived_bin = c(&quot;Disagree&quot;, &quot;Agree&quot;), Truth_bin = c(&quot;Disagree&quot;, &quot;Agree&quot;), Self_bin = c(&quot;Disagree&quot;,
+        &quot;Agree&quot;), fill = list(Freq = 0)) %&gt;%
+    group_by(Truth_bin, Self_bin) %&gt;%
+    mutate(Percent = 100 * Freq/sum(Freq)) %&gt;%
+    ungroup()
+
+col_counts3 &lt;- confusion_binned_facet %&gt;%
+    group_by(Truth_bin, Self_bin) %&gt;%
+    summarise(Total_count = sum(Freq), .groups = &quot;drop&quot;)
+
+p3 &lt;- ggplot(confusion_binned_facet, aes(x = Truth_bin, y = Perceived_bin, fill = Percent)) + geom_tile(color = &quot;white&quot;,
+    linewidth = 0.2) + geom_text(aes(label = ifelse(Percent &gt;= 1, number(Percent, 0.1), &quot;&quot;)), size = 3.5) +
+    geom_text(data = col_counts3, aes(x = Truth_bin, y = 0.5, label = Total_count), inherit.aes = FALSE,
+        vjust = 1, fontface = &quot;bold&quot;, size = 3) + scale_fill_viridis_c(option = &quot;plasma&quot;, direction = -1,
+    name = &quot;Column %&quot;) + scale_x_discrete(limits = c(&quot;Disagree&quot;, &quot;Agree&quot;)) + scale_y_discrete(limits = c(&quot;Disagree&quot;,
+    &quot;Agree&quot;)) + labs(x = &quot;Self-report&quot;, y = &quot;Perception&quot;) + coord_equal() + expand_limits(y = 0.1) +
+    facet_wrap(~Self_bin, nrow = 1) + theme_minimal(base_size = 12) + theme(panel.grid = element_blank())
+
+# combine
+combi &lt;- ggarrange(p1, p2, p3, ncol = 3, nrow = 1, widths = c(1, 1, 1.25), labels = c(&quot;A. Raw scores&quot;,
+    &quot;B. Agree vs. disagree&quot;, &quot;C. By raters&#39; self-report&quot;))
+
+annotate_figure(combi, bottom = text_grob(&quot;“Too many immigrants are coming to the Netherlands” (1 = completely disagree; 2 = disagree; 3 = neither disagree nor agree; 4 = agree; 5 = completely agree)&quot;,
+    hjust = 0, x = 0, face = &quot;italic&quot;, size = 12))</code></pre>
+<p><img src="des_files/figure-html/wrangle-1.png" width="1248" /></p>
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkRhdGEgcHJlcGFyYXRpb24iDQpiaWJsaW9ncmFwaHk6IHJlZmVyZW5jZXMuYmliDQpsaW5rLWNpdGF0aW9uczogdHJ1ZQ0KI2F1dGhvcjogIllvdXJuYW1lIg0Kb3V0cHV0OiANCiAgaHRtbF9kb2N1bWVudDoNCiAgICBjc3M6IHR3ZWFrcy5jc3MNCiAgICB0b2M6ICB0cnVlDQogICAgdG9jX2Zsb2F0OiB0cnVlDQogICAgbnVtYmVyX3NlY3Rpb25zOiBmYWxzZQ0KICAgIHRvY19kZXB0aDogMQ0KICAgIGNvZGVfZm9sZGluZzogc2hvdw0KICAgIGNvZGVfZG93bmxvYWQ6IHllcw0KLS0tDQoNCmBgYHtyLCBnbG9iYWxzZXR0aW5ncywgZWNobz1GQUxTRSwgd2FybmluZz1GQUxTRSwgcmVzdWx0cz0naGlkZSd9DQpsaWJyYXJ5KGtuaXRyKQ0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGVjaG8gPSBUUlVFKQ0Kb3B0c19jaHVuayRzZXQodGlkeS5vcHRzPWxpc3Qod2lkdGguY3V0b2ZmPTEwMCksdGlkeT1UUlVFLCB3YXJuaW5nID0gRkFMU0UsIG1lc3NhZ2UgPSBGQUxTRSxjb21tZW50ID0gIiM+IiwgY2FjaGU9VFJVRSwgY2xhc3Muc291cmNlPWMoInRlc3QiKSwgY2xhc3Mub3V0cHV0PWMoInRlc3QzIikpDQpvcHRpb25zKHdpZHRoID0gMTAwKQ0KcmdsOjpzZXR1cEtuaXRyKCkNCg0KYGBgDQoNCg0KYGBge3Iga2xpcHB5LCBlY2hvPUZBTFNFLCBpbmNsdWRlPVRSVUV9DQprbGlwcHk6OmtsaXBweShwb3NpdGlvbiA9IGMoJ3RvcCcsICdyaWdodCcpKQ0KI2tsaXBweTo6a2xpcHB5KGNvbG9yID0gJ2RhcmtyZWQnKQ0KI2tsaXBweTo6a2xpcHB5KHRvb2x0aXBfbWVzc2FnZSA9ICdDbGljayB0byBjb3B5JywgdG9vbHRpcF9zdWNjZXNzID0gJ0RvbmUnKQ0KYGBgDQoNCkxhc3QgY29tcGlsZWQgb24gYHIgZm9ybWF0KFN5cy50aW1lKCksICclZC0lbS0lWScpYA0KDQotLS0gIA0KDQojIEdldHRpbmcgc3RhcnRlZA0KDQpUbyBjb3B5IHRoZSBjb2RlLCBjbGljayB0aGUgYnV0dG9uIGluIHRoZSB1cHBlciByaWdodCBjb3JuZXIgb2YgdGhlIGNvZGUtY2h1bmtzLg0KDQojIyBjbGVhbiB1cA0KDQpgYGB7ciwgcmVzdWx0cz0naGlkZSd9DQpybShsaXN0PWxzKCkpDQpnYygpDQpgYGANCg0KDQoNCg==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkRlc2NyaWJpbmcgaW5hY2N1cmFjeSBhbmQgYmlhcyINCmJpYmxpb2dyYXBoeTogcmVmZXJlbmNlcy5iaWINCmxpbmstY2l0YXRpb25zOiB0cnVlDQphdXRob3I6ICJSb2IgRnJhbmtlbiINCm91dHB1dDogDQogIGh0bWxfZG9jdW1lbnQ6DQogICAgY3NzOiB0d2Vha3MuY3NzDQogICAgdG9jOiAgdHJ1ZQ0KICAgIHRvY19mbG9hdDogdHJ1ZQ0KICAgIG51bWJlcl9zZWN0aW9uczogZmFsc2UNCiAgICB0b2NfZGVwdGg6IDENCiAgICBjb2RlX2ZvbGRpbmc6IHNob3cNCiAgICBjb2RlX2Rvd25sb2FkOiB5ZXMNCi0tLQ0KDQpgYGB7ciwgZ2xvYmFsc2V0dGluZ3MsIGVjaG89RkFMU0UsIHdhcm5pbmc9RkFMU0UsIHJlc3VsdHM9J2hpZGUnfQ0KbGlicmFyeShrbml0cikNCmtuaXRyOjpvcHRzX2NodW5rJHNldChlY2hvID0gVFJVRSkNCm9wdHNfY2h1bmskc2V0KHRpZHkub3B0cz1saXN0KHdpZHRoLmN1dG9mZj0xMDApLHRpZHk9VFJVRSwgd2FybmluZyA9IEZBTFNFLCBtZXNzYWdlID0gRkFMU0UsY29tbWVudCA9ICIjPiIsIGNhY2hlPVRSVUUsIGNsYXNzLnNvdXJjZT1jKCJ0ZXN0IiksIGNsYXNzLm91dHB1dD1jKCJ0ZXN0MyIpKQ0Kb3B0aW9ucyh3aWR0aCA9IDEwMCkNCnJnbDo6c2V0dXBLbml0cigpDQoNCmBgYA0KDQoNCmBgYHtyIGtsaXBweSwgZWNobz1GQUxTRSwgaW5jbHVkZT1UUlVFfQ0Ka2xpcHB5OjprbGlwcHkocG9zaXRpb24gPSBjKCd0b3AnLCAncmlnaHQnKSkNCiNrbGlwcHk6OmtsaXBweShjb2xvciA9ICdkYXJrcmVkJykNCiNrbGlwcHk6OmtsaXBweSh0b29sdGlwX21lc3NhZ2UgPSAnQ2xpY2sgdG8gY29weScsIHRvb2x0aXBfc3VjY2VzcyA9ICdEb25lJykNCmBgYA0KDQpMYXN0IGNvbXBpbGVkIG9uIGByIGZvcm1hdChTeXMudGltZSgpLCAnJWQtJW0tJVknKWANCg0KLS0tICANCg0KIyBHZXR0aW5nIHN0YXJ0ZWQNCg0KVG8gY29weSB0aGUgY29kZSwgY2xpY2sgdGhlIGJ1dHRvbiBpbiB0aGUgdXBwZXIgcmlnaHQgY29ybmVyIG9mIHRoZSBjb2RlLWNodW5rcy4NCg0KIyMgY2xlYW4gdXANCg0KYGBge3IsIHJlc3VsdHM9J2hpZGUnfQ0Kcm0obGlzdD1scygpKQ0KZ2MoKQ0KYGBgDQoNCg0KPGJyPg0KDQojIyBnZW5lcmFsIGN1c3RvbSBmdW5jdGlvbnMNCg0KLSBgZnBhY2thZ2UuY2hlY2tgOiBDaGVjayBpZiBwYWNrYWdlcyBhcmUgaW5zdGFsbGVkIChhbmQgaW5zdGFsbCBpZiBub3QpIGluIFINCi0gYGZzYXZlYDogRnVuY3Rpb24gdG8gc2F2ZSBkYXRhIHdpdGggdGltZSBzdGFtcCBpbiBjb3JyZWN0IGRpcmVjdG9yeQ0KLSBgZmxvYWRgOiBGdW5jdGlvbiB0byBsb2FkIFItb2JqZWN0cyB1bmRlciBuZXcgbmFtZXMNCi0gYGZzaG93ZGZgOiBQcmludCBvYmplY3RzIChgdGliYmxlYCAvIGBkYXRhLmZyYW1lYCkgbmljZWx5IG9uIHNjcmVlbiBpbiBgLlJtZGANCg0KYGBge3IsIGZ1bn0NCmZwYWNrYWdlLmNoZWNrIDwtIGZ1bmN0aW9uKHBhY2thZ2VzKSB7DQogICAgbGFwcGx5KHBhY2thZ2VzLCBGVU4gPSBmdW5jdGlvbih4KSB7DQogICAgICAgIGlmICghcmVxdWlyZSh4LCBjaGFyYWN0ZXIub25seSA9IFRSVUUpKSB7DQogICAgICAgICAgICBpbnN0YWxsLnBhY2thZ2VzKHgsIGRlcGVuZGVuY2llcyA9IFRSVUUpDQogICAgICAgICAgICBsaWJyYXJ5KHgsIGNoYXJhY3Rlci5vbmx5ID0gVFJVRSkNCiAgICAgICAgfQ0KICAgIH0pDQp9DQoNCmZzYXZlIDwtIGZ1bmN0aW9uKHgsIGxvY2F0aW9uID0gIi4vZGF0YS9wcm9jZXNzZWQvIikgew0KICBpZiAobG9jYXRpb24gPT0gIi4vZGF0YS9wcm9jZXNzZWQvIikgew0KICBpZmVsc2UoIWRpci5leGlzdHMoImRhdGEiKSwgZGlyLmNyZWF0ZSgiZGF0YSIpLCBGQUxTRSkNCiAgaWZlbHNlKCFkaXIuZXhpc3RzKCJkYXRhL3Byb2Nlc3NlZCIpLCBkaXIuY3JlYXRlKCJkYXRhL3Byb2Nlc3NlZCIpLCBGQUxTRSkNCiAgfQ0KDQogIG9iamVjdCA9IGRlcGFyc2Uoc3Vic3RpdHV0ZSh4KSkNCiAgZGF0ZW5hbWUgPC0gc3Vic3RyKGdzdWIoIls6LV0iLCAiIiwgU3lzLnRpbWUoKSksIDEsIDgpDQogIHRvdGFsbmFtZSA8LSBwYXN0ZShsb2NhdGlvbiwgb2JqZWN0LCAiXyIsIGRhdGVuYW1lLCAgIi5yZGEiLCBzZXAgPSAiIikNCiAgYXNzaWduKGV2YWwob2JqZWN0KSwgeCwgZW52aXIgPSAuR2xvYmFsRW52KQ0KICBwcmludChwYXN0ZSgiU0FWRUQ6ICIsIHRvdGFsbmFtZSwgc2VwID0gIiIpKQ0KICBzYXZlKGxpc3QgPSBvYmplY3QsIGZpbGUgPSB0b3RhbG5hbWUpICANCn0NCg0KZmxvYWQgIDwtIGZ1bmN0aW9uKGZpbGVOYW1lKXsNCiAgbG9hZChmaWxlTmFtZSkNCiAgZ2V0KGxzKClbbHMoKSAhPSAiZmlsZU5hbWUiXSkNCn0NCg0KZnNob3dkZiA8LSBmdW5jdGlvbih4LCBjYXB0aW9uID0gTlVMTCwgZGlnaXRzID0gMiwgZm9vdG5vdGUgPSBOVUxMLCAuLi4pIHsNCiAgICBrbml0cjo6a2FibGUoeCwgZGlnaXRzID0gZGlnaXRzLCAiaHRtbCIsIGNhcHRpb24gPSBjYXB0aW9uLCAuLi4pICU+JQ0KICAgICAgICBrYWJsZUV4dHJhOjpmb290bm90ZShnZW5lcmFsID0gZm9vdG5vdGUpICU+JQ0KICAgICAgICBrYWJsZUV4dHJhOjprYWJsZV9zdHlsaW5nKGJvb3RzdHJhcF9vcHRpb25zID0gYygic3RyaXBlZCIsICJob3ZlciIpKSAlPiUNCiAgICAgICAga2FibGVFeHRyYTo6c2Nyb2xsX2JveCh3aWR0aCA9ICIxMDAlIiwgaGVpZ2h0ID0gIjMwMHB4IikNCn0NCmBgYA0KDQo8YnI+DQoNCiMjIG5lY2Vzc2FyeSBwYWNrYWdlcw0KDQpgYGB7ciwgcGFja2FnZXMsIG1lc3NhZ2U9RkFMU0UsIHJlc3VsdHM9J2hpZGUnfQ0KcGFja2FnZXMgPSBjKCJ0aWR5dmVyc2UiLCAiZHBseXIiLCAiZ2dwbG90MiIsICJzY2FsZXMiLCAicHVycnIiLCAiZ2dwdWJyIikNCmZwYWNrYWdlLmNoZWNrKHBhY2thZ2VzKQ0Kcm0ocGFja2FnZXMpDQpgYGANCg0KDQo8YnI+DQoNCi0tLQ0KDQojIEltcG9ydA0KDQpJbXBvcnQgdGhlIHJlcGxpY2F0ZWQgZGF0YS1zZXQuYCANCg0KYGBge3IsIGRhdGF9DQojbGlzdC5maWxlcygiLi9kYXRhL3Byb2Nlc3NlZCIpDQp0b2RheSA8LSBnc3ViKCItIiwgIiIsIFN5cy5EYXRlKCkpDQp0b2RheSA8LSAiMjAyNTA5MDMiICNsYXRlc3QgdXBkYXRlZCBkYXRhc2V0DQpjbGFzc19kYXRhIDwtIGZsb2FkKHBhc3RlMCgiLi9kYXRhL3Byb2Nlc3NlZC8iLCB0b2RheSwgInppZWVsa2Fhcl9jbGFzc2RhdGEuUmRhIikpDQpgYGANCg0KLS0tDQoNCiMgY29uZnVzaW9uIG1hdHJpeA0KDQoiVG9vIG1hbnkgaW1taWdyYW50cyBhcmUgY29taW5nIHRvIHRoZSBOZXRoZXJsYW5kcyINCg0KKDEgPSBjb21wbGV0ZWx5IGRpc2FncmVlOyANCjIgPSBkaXNhZ3JlZTsNCjMgPSBuZWl0aGVyIGRpc2FncmVlLCBub3IgYWdyZWU7DQo0ID0gYWdyZWU7DQo1ID0gY29tcGxldGVseSBhZ3JlZSkNCg0KYGBge3IsIHdyYW5nbGUsIGZpZy53aWR0aD0xM30NCiNhbGwgcGFpcndpc2UgcGVyY2VwdGlvbnMsIHBvb2xlZCBhY3Jvc3MgY2xhc3Nlcw0KcGVyY2VwdGlvbnMgPC0gcHVycnI6Om1hcDJfZGZyKGNsYXNzX2RhdGEsIG5hbWVzKGNsYXNzX2RhdGEpLCBmdW5jdGlvbihjbGFzc19vYmosIGNsYXNzX25hbWUpIHsNCiAgdHJ1dGggPC0gY2xhc3Nfb2JqJHRydXRoDQogIHBlcmNlcCA8LSBjbGFzc19vYmokcGVyY2VwdGlvbg0KICANCiAgZGYgPC0gYXMuZGF0YS5mcmFtZShhcy50YWJsZShwZXJjZXApKSAlPiUNCiAgICByZW5hbWUoUGVyY2VpdmVyID0gVmFyMSwgVGFyZ2V0ID0gVmFyMiwgUGVyY2VpdmVkID0gRnJlcSkgJT4lDQogICAgZmlsdGVyKCFpcy5uYShQZXJjZWl2ZWQpKSAlPiUNCiAgICBtdXRhdGUoDQogICAgICBUcnV0aCA9IHRydXRoW1RhcmdldF0gfD4gdW5uYW1lKCksDQogICAgICBQZXJjZWl2ZXJfc2VsZiA9IHRydXRoW1BlcmNlaXZlcl0gfD4gdW5uYW1lKCkgDQogICAgKQ0KICByZXR1cm4oZGYpDQp9KQ0KDQojcmF3IGNvbmZ1c2lvbiBtYXRyaXgNCmNvbmZ1c2lvbl9kZiA8LSBwZXJjZXB0aW9ucyAlPiUNCiAgZmlsdGVyKCFpcy5uYShQZXJjZWl2ZWQpLCAhaXMubmEoVHJ1dGgpLCBQZXJjZWl2ZWQgJWluJSAxOjUsIFRydXRoICVpbiUgMTo1KSAlPiUNCiAgY291bnQoUGVyY2VpdmVkLCBUcnV0aCwgbmFtZSA9ICJGcmVxIikgJT4lDQogIGNvbXBsZXRlKA0KICAgIFBlcmNlaXZlZCA9IDE6NSwNCiAgICBUcnV0aCA9IDE6NSwNCiAgICBmaWxsID0gbGlzdChGcmVxID0gMCkNCiAgKSAlPiUNCiAgZ3JvdXBfYnkoVHJ1dGgpICU+JQ0KICBtdXRhdGUoUGVyY2VudCA9IDEwMCAqIEZyZXEgLyBzdW0oRnJlcSkpICU+JQ0KICB1bmdyb3VwKCkgJT4lDQogIG11dGF0ZSgNCiAgICBQZXJjZWl2ZWQgPSBmYWN0b3IoUGVyY2VpdmVkLCBsZXZlbHMgPSAxOjUpLA0KICAgIFRydXRoID0gZmFjdG9yKFRydXRoLCBsZXZlbHMgPSAxOjUpDQogICkNCg0KIyBjb2x1bW4gY291bnRzDQpjb2xfY291bnRzMSA8LSBjb25mdXNpb25fZGYgJT4lDQogIGdyb3VwX2J5KFRydXRoKSAlPiUNCiAgc3VtbWFyaXNlKFRvdGFsX2NvdW50ID0gc3VtKEZyZXEpLCAuZ3JvdXBzID0gImRyb3AiKQ0KDQpwMSA8LSBnZ3Bsb3QoY29uZnVzaW9uX2RmLCBhZXMoeCA9IFRydXRoLCB5ID0gUGVyY2VpdmVkLCBmaWxsID0gUGVyY2VudCkpICsNCiAgZ2VvbV90aWxlKGNvbG9yID0gIndoaXRlIiwgbGluZXdpZHRoID0gMC4yKSArDQogIGdlb21fdGV4dChhZXMobGFiZWwgPSBpZmVsc2UoUGVyY2VudCA+PSAxLCBudW1iZXIoUGVyY2VudCwgMC4xKSwgIiIpKSwgc2l6ZSA9IDMpICsNCiAgZ2VvbV90ZXh0KA0KICAgIGRhdGEgPSBjb2xfY291bnRzMSwNCiAgICBhZXMoeCA9IFRydXRoLCB5ID0gMC41LCBsYWJlbCA9IFRvdGFsX2NvdW50KSwNCiAgICBpbmhlcml0LmFlcyA9IEZBTFNFLA0KICAgIHZqdXN0ID0gMSwgZm9udGZhY2UgPSAiYm9sZCIsIHNpemUgPSAzDQogICkgKw0KICBzY2FsZV9maWxsX3ZpcmlkaXNfYyhvcHRpb24gPSAicGxhc21hIiwgZGlyZWN0aW9uID0gLTEsIG5hbWUgPSAiQ29sdW1uICUiKSArDQogIGxhYnMoeCA9ICJTZWxmLXJlcG9ydCIsIHkgPSAiUGVyY2VwdGlvbiIpICsNCiAgY29vcmRfZXF1YWwoKSArDQogIGV4cGFuZF9saW1pdHMoeSA9IDAuMSkgKw0KICB0aGVtZV9taW5pbWFsKGJhc2Vfc2l6ZSA9IDEyKSArDQogIHRoZW1lKHBhbmVsLmdyaWQgPSBlbGVtZW50X2JsYW5rKCkpDQoNCiNhZ2dyZWdhdGVkIGludG8gZGlzYWdyZWUgKDEvMikgYW5kIGFncmVlICgzLzQpDQpwZXJjZXB0aW9uc19iaW5uZWQgPC0gcGVyY2VwdGlvbnMgJT4lDQogIGZpbHRlcighaXMubmEoUGVyY2VpdmVkKSwgIWlzLm5hKFRydXRoKSwgUGVyY2VpdmVkICVpbiUgMTo1LCBUcnV0aCAlaW4lIDE6NSkgJT4lDQogIG11dGF0ZSgNCiAgICBUcnV0aF9iaW4gPSBjYXNlX3doZW4oDQogICAgICBUcnV0aCAlaW4lIDE6MiB+ICJEaXNhZ3JlZSIsDQogICAgICBUcnV0aCAlaW4lIDQ6NSB+ICJBZ3JlZSINCiAgICApLA0KICAgIFBlcmNlaXZlZF9iaW4gPSBjYXNlX3doZW4oDQogICAgICBQZXJjZWl2ZWQgJWluJSAxOjIgfiAiRGlzYWdyZWUiLA0KICAgICAgUGVyY2VpdmVkICVpbiUgNDo1IH4gIkFncmVlIg0KICAgICkNCiAgKSAlPiUNCiAgZmlsdGVyKCFpcy5uYShUcnV0aF9iaW4pLCAhaXMubmEoUGVyY2VpdmVkX2JpbikpICU+JQ0KICBtdXRhdGUoDQogICAgUGVyY2VpdmVkX2JpbiA9IGZhY3RvcihQZXJjZWl2ZWRfYmluLCBsZXZlbHMgPSBjKCJEaXNhZ3JlZSIsICJBZ3JlZSIpKSwNCiAgICBUcnV0aF9iaW4gPSBmYWN0b3IoVHJ1dGhfYmluLCBsZXZlbHMgPSBjKCJEaXNhZ3JlZSIsICJBZ3JlZSIpKQ0KICApDQoNCmNvbmZ1c2lvbl9iaW5uZWQgPC0gcGVyY2VwdGlvbnNfYmlubmVkICU+JQ0KICBjb3VudChQZXJjZWl2ZWRfYmluLCBUcnV0aF9iaW4sIG5hbWUgPSAiRnJlcSIpICU+JQ0KICBjb21wbGV0ZSgNCiAgICBQZXJjZWl2ZWRfYmluID0gYygiRGlzYWdyZWUiLCAiQWdyZWUiKSwNCiAgICBUcnV0aF9iaW4gPSBjKCJEaXNhZ3JlZSIsICJBZ3JlZSIpLA0KICAgIGZpbGwgPSBsaXN0KEZyZXEgPSAwKQ0KICApICU+JQ0KICBncm91cF9ieShUcnV0aF9iaW4pICU+JQ0KICBtdXRhdGUoUGVyY2VudCA9IDEwMCAqIEZyZXEgLyBzdW0oRnJlcSkpICU+JQ0KICB1bmdyb3VwKCkNCg0KY29sX2NvdW50czIgPC0gY29uZnVzaW9uX2Jpbm5lZCAlPiUNCiAgZ3JvdXBfYnkoVHJ1dGhfYmluKSAlPiUNCiAgc3VtbWFyaXNlKFRvdGFsX2NvdW50ID0gc3VtKEZyZXEpLCAuZ3JvdXBzID0gImRyb3AiKQ0KDQpwMiA8LSBnZ3Bsb3QoY29uZnVzaW9uX2Jpbm5lZCwgYWVzKHggPSBUcnV0aF9iaW4sIHkgPSBQZXJjZWl2ZWRfYmluLCBmaWxsID0gUGVyY2VudCkpICsNCiAgZ2VvbV90aWxlKGNvbG9yID0gIndoaXRlIiwgbGluZXdpZHRoID0gMC4yKSArDQogIGdlb21fdGV4dChhZXMobGFiZWwgPSBpZmVsc2UoUGVyY2VudCA+PSAxLCBudW1iZXIoUGVyY2VudCwgMC4xKSwgIiIpKSwgc2l6ZSA9IDQpICsNCiAgZ2VvbV90ZXh0KA0KICAgIGRhdGEgPSBjb2xfY291bnRzMiwNCiAgICBhZXMoeCA9IFRydXRoX2JpbiwgeSA9IDAuNSwgbGFiZWwgPSBUb3RhbF9jb3VudCksDQogICAgaW5oZXJpdC5hZXMgPSBGQUxTRSwNCiAgICB2anVzdCA9IDEsIGZvbnRmYWNlID0gImJvbGQiLCBzaXplID0gMw0KICApICsNCiAgc2NhbGVfZmlsbF92aXJpZGlzX2Mob3B0aW9uID0gInBsYXNtYSIsIGRpcmVjdGlvbiA9IC0xLCBuYW1lID0gIkNvbHVtbiAlIikgKw0KICBzY2FsZV94X2Rpc2NyZXRlKGxpbWl0cyA9IGMoIkRpc2FncmVlIiwgIkFncmVlIikpICsNCiAgc2NhbGVfeV9kaXNjcmV0ZShsaW1pdHMgPSBjKCJEaXNhZ3JlZSIsICJBZ3JlZSIpKSArDQogIGxhYnMoeCA9ICJTZWxmLXJlcG9ydCIsIHkgPSAiUGVyY2VwdGlvbiIpICsNCiAgY29vcmRfZXF1YWwoKSArDQogIGV4cGFuZF9saW1pdHMoeSA9IDAuMSkgKw0KICB0aGVtZV9taW5pbWFsKGJhc2Vfc2l6ZSA9IDEyKSArDQogIHRoZW1lKHBhbmVsLmdyaWQgPSBlbGVtZW50X2JsYW5rKCkpDQoNCiMgZGlzYWdncmVnYXRlZCBieSB0aGUgcmF0ZXIncyBzZWxmLXJlcG9ydA0KcGVyY2VwdGlvbnNfYmlubmVkX2ZhY2V0IDwtIHBlcmNlcHRpb25zICU+JQ0KICBmaWx0ZXIoIWlzLm5hKFBlcmNlaXZlZCksICFpcy5uYShUcnV0aCksIFBlcmNlaXZlZCAlaW4lIDE6NSwgVHJ1dGggJWluJSAxOjUpICU+JQ0KICBtdXRhdGUoDQogICAgVHJ1dGhfYmluID0gY2FzZV93aGVuKA0KICAgICAgVHJ1dGggJWluJSAxOjIgfiAiRGlzYWdyZWUiLA0KICAgICAgVHJ1dGggJWluJSA0OjUgfiAiQWdyZWUiDQogICAgKSwNCiAgICBQZXJjZWl2ZWRfYmluID0gY2FzZV93aGVuKA0KICAgICAgUGVyY2VpdmVkICVpbiUgMToyIH4gIkRpc2FncmVlIiwNCiAgICAgIFBlcmNlaXZlZCAlaW4lIDQ6NSB+ICJBZ3JlZSINCiAgICApLA0KICAgIFNlbGZfYmluID0gY2FzZV93aGVuKA0KICAgICAgUGVyY2VpdmVyX3NlbGYgJWluJSAxOjIgfiAiRGlzYWdyZWUiLA0KICAgICAgUGVyY2VpdmVyX3NlbGYgJWluJSA0OjUgfiAiQWdyZWUiDQogICAgKQ0KICApICU+JQ0KICBmaWx0ZXIoIWlzLm5hKFRydXRoX2JpbiksICFpcy5uYShQZXJjZWl2ZWRfYmluKSwgIWlzLm5hKFNlbGZfYmluKSkgJT4lDQogIG11dGF0ZSgNCiAgICBQZXJjZWl2ZWRfYmluID0gZmFjdG9yKFBlcmNlaXZlZF9iaW4sIGxldmVscyA9IGMoIkRpc2FncmVlIiwgIkFncmVlIikpLA0KICAgIFRydXRoX2JpbiA9IGZhY3RvcihUcnV0aF9iaW4sIGxldmVscyA9IGMoIkRpc2FncmVlIiwgIkFncmVlIikpLA0KICAgIFNlbGZfYmluID0gZmFjdG9yKFNlbGZfYmluLCBsZXZlbHMgPSBjKCJEaXNhZ3JlZSIsICJBZ3JlZSIpKQ0KICApDQoNCmNvbmZ1c2lvbl9iaW5uZWRfZmFjZXQgPC0gcGVyY2VwdGlvbnNfYmlubmVkX2ZhY2V0ICU+JQ0KICBjb3VudChQZXJjZWl2ZWRfYmluLCBUcnV0aF9iaW4sIFNlbGZfYmluLCBuYW1lID0gIkZyZXEiKSAlPiUNCiAgY29tcGxldGUoDQogICAgUGVyY2VpdmVkX2JpbiA9IGMoIkRpc2FncmVlIiwgIkFncmVlIiksDQogICAgVHJ1dGhfYmluID0gYygiRGlzYWdyZWUiLCAiQWdyZWUiKSwNCiAgICBTZWxmX2JpbiA9IGMoIkRpc2FncmVlIiwgIkFncmVlIiksDQogICAgZmlsbCA9IGxpc3QoRnJlcSA9IDApDQogICkgJT4lDQogIGdyb3VwX2J5KFRydXRoX2JpbiwgU2VsZl9iaW4pICU+JQ0KICBtdXRhdGUoUGVyY2VudCA9IDEwMCAqIEZyZXEgLyBzdW0oRnJlcSkpICU+JQ0KICB1bmdyb3VwKCkNCg0KY29sX2NvdW50czMgPC0gY29uZnVzaW9uX2Jpbm5lZF9mYWNldCAlPiUNCiAgZ3JvdXBfYnkoVHJ1dGhfYmluLCBTZWxmX2JpbikgJT4lDQogIHN1bW1hcmlzZShUb3RhbF9jb3VudCA9IHN1bShGcmVxKSwgLmdyb3VwcyA9ICJkcm9wIikNCg0KcDMgPC0gZ2dwbG90KGNvbmZ1c2lvbl9iaW5uZWRfZmFjZXQsIGFlcyh4ID0gVHJ1dGhfYmluLCB5ID0gUGVyY2VpdmVkX2JpbiwgZmlsbCA9IFBlcmNlbnQpKSArDQogIGdlb21fdGlsZShjb2xvciA9ICJ3aGl0ZSIsIGxpbmV3aWR0aCA9IDAuMikgKw0KICBnZW9tX3RleHQoYWVzKGxhYmVsID0gaWZlbHNlKFBlcmNlbnQgPj0gMSwgbnVtYmVyKFBlcmNlbnQsIDAuMSksICIiKSksIHNpemUgPSAzLjUpICsNCiAgZ2VvbV90ZXh0KA0KICAgIGRhdGEgPSBjb2xfY291bnRzMywNCiAgICBhZXMoeCA9IFRydXRoX2JpbiwgeSA9IDAuNSwgbGFiZWwgPSBUb3RhbF9jb3VudCksDQogICAgaW5oZXJpdC5hZXMgPSBGQUxTRSwNCiAgICB2anVzdCA9IDEsIGZvbnRmYWNlID0gImJvbGQiLCBzaXplID0gMw0KICApICsNCiAgc2NhbGVfZmlsbF92aXJpZGlzX2Mob3B0aW9uID0gInBsYXNtYSIsIGRpcmVjdGlvbiA9IC0xLCBuYW1lID0gIkNvbHVtbiAlIikgKw0KICBzY2FsZV94X2Rpc2NyZXRlKGxpbWl0cyA9IGMoIkRpc2FncmVlIiwgIkFncmVlIikpICsNCiAgc2NhbGVfeV9kaXNjcmV0ZShsaW1pdHMgPSBjKCJEaXNhZ3JlZSIsICJBZ3JlZSIpKSArDQogIGxhYnMoeCA9ICJTZWxmLXJlcG9ydCIsIHkgPSAiUGVyY2VwdGlvbiIpICsNCiAgY29vcmRfZXF1YWwoKSArDQogIGV4cGFuZF9saW1pdHMoeSA9IDAuMSkgKw0KICBmYWNldF93cmFwKH5TZWxmX2JpbiwgbnJvdyA9IDEpICsNCiAgdGhlbWVfbWluaW1hbChiYXNlX3NpemUgPSAxMikgKw0KICB0aGVtZShwYW5lbC5ncmlkID0gZWxlbWVudF9ibGFuaygpKQ0KDQojY29tYmluZQ0KY29tYmkgPC0gZ2dhcnJhbmdlKHAxLCBwMiwgcDMsIG5jb2wgPSAzLCBucm93ID0gMSwgIHdpZHRocyA9IGMoMSwxLDEuMjUpLCBsYWJlbHMgPSBjKCJBLiBSYXcgc2NvcmVzIiwgIkIuIEFncmVlIHZzLiBkaXNhZ3JlZSIsICJDLiBCeSByYXRlcnMnIHNlbGYtcmVwb3J0IikpDQogIA0KYW5ub3RhdGVfZmlndXJlKA0KICBjb21iaSwNCiAgYm90dG9tID0gdGV4dF9ncm9iKA0KICAgICLigJxUb28gbWFueSBpbW1pZ3JhbnRzIGFyZSBjb21pbmcgdG8gdGhlIE5ldGhlcmxhbmRz4oCdICgxID0gY29tcGxldGVseSBkaXNhZ3JlZTsgMiA9IGRpc2FncmVlOyAzID0gbmVpdGhlciBkaXNhZ3JlZSBub3IgYWdyZWU7IDQgPSBhZ3JlZTsgNSA9IGNvbXBsZXRlbHkgYWdyZWUpIiwNCiAgICBoanVzdCA9IDAsIHggPSAwLCBmYWNlID0gIml0YWxpYyIsIHNpemUgPSAxMg0KICApDQopDQpgYGANCg0KDQo=</div>
 <style>
 .center {
   text-align: center;

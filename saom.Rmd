@@ -127,7 +127,7 @@ class_data <- fload(paste0("./data/processed/", today, "zieelkaar_siena.Rda"))
 
 See @krause2018; @snijders2013
 
-```{r, saomE}
+```{r, saom}
 #get one class, and take the perceive-as-right network
 mydata <- class_data[[1]]$right
 
