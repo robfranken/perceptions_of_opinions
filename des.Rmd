@@ -97,7 +97,7 @@ fshowdf <- function(x, caption = NULL, digits = 2, footnote = NULL, ...) {
 ## necessary packages
 
 ```{r, packages, message=FALSE, results='hide'}
-packages = c("tidyverse", "dplyr", "ggplot2", "scales", "purrr", "ggpubr")
+packages = c("tidyverse", "dplyr", "ggplot2", "scales", "purrr", "ggpubr", "viridis")
 fpackage.check(packages)
 rm(packages)
 ```
@@ -114,15 +114,220 @@ Import the replicated data-set.`
 ```{r, data}
 #list.files("./data/processed")
 today <- gsub("-", "", Sys.Date())
-today <- "20250904" #latest updated dataset
+today <- "20250905" #latest updated dataset
 class_data <- fload(paste0("./data/processed/", today, "zieelkaar_classdata.Rda"))
+egonets <- fload(paste0("./data/processed/", today, "egonets.Rda"))
 ```
 
 ---
 
-# confusion matrix
+# confusion matrix 
 
-```{r, wrangle, fig.width=13}
+## egonets
+
+university students, their "core network" partners, and rating between them
+
+
+```{r, conf1, fig.width=13}
+#all pairwise perceptions, across statements, pooled over egonetse.
+perceptions_long <- egonets %>%
+  select(respnr, dyad, tie, ego, 
+         cap.self, cap.perception, cap.truth,
+         threat.self, threat.perception, threat.truth,
+         student.self, student.perception, student.truth) %>%
+  pivot_longer(
+    cols = -c(respnr, dyad, tie, ego),
+    names_to = c("variable", ".value"),
+    names_pattern = "(.*)\\.(self|perception|truth)"
+  ) %>%
+  rename(
+    Perceiver = respnr,
+    Target = dyad,
+    Perceived = perception,
+    Truth = truth,
+    Perceiver_self = self
+  ) %>%
+  filter(!is.na(Perceived), !is.na(Truth)) %>%
+  # reverse-code the 'student' statement so higher = same direction as others
+  mutate(
+    Perceived = ifelse(variable == "student", 5 - Perceived, Perceived),
+    Truth = ifelse(variable == "student", 5 - Truth, Truth),
+    Perceiver_self = ifelse(variable == "student", 5 - Perceiver_self, Perceiver_self)
+  )
+
+#check
+#unique(perceptions_long$variable)
+
+#function to create confusion matrix
+make_confusion_plots <- function(df) {
+  # raw matrix
+  confusion_df <- df %>%
+    filter(Perceived %in% 1:4, Truth %in% 1:4) %>%
+    count(Perceived, Truth, name = "Freq") %>%
+    complete(
+      Perceived = 1:4,
+      Truth = 1:4,
+      fill = list(Freq = 0)
+    ) %>%
+    group_by(Truth) %>%
+    mutate(Percent = 100 * Freq / sum(Freq)) %>%
+    ungroup() %>%
+    mutate(
+      Perceived = factor(Perceived, levels = 1:4),
+      Truth = factor(Truth, levels = 1:4)
+    )
+  
+  col_counts1 <- confusion_df %>%
+    group_by(Truth) %>%
+    summarise(Total_count = sum(Freq), .groups = "drop")
+  
+  p1 <- ggplot(confusion_df, aes(x = Truth, y = Perceived, fill = Percent)) +
+    geom_tile(color = "white", linewidth = 0.2) +
+    geom_text(aes(label = ifelse(Percent >= 1, number(Percent, 0.1), "")), size = 3) +
+    geom_text(
+      data = col_counts1,
+      aes(x = Truth, y = 0.5, label = Total_count),
+      inherit.aes = FALSE,
+      vjust = 1, fontface = "bold", size = 3
+    ) +
+    scale_fill_viridis_c(option = "plasma", direction = -1, name = "Column %") +
+    labs(x = "Self-report", y = "Perception") +
+    coord_equal() +
+    expand_limits(y = 0.1) +
+    theme_minimal(base_size = 12) +
+    theme(panel.grid = element_blank())
+  
+  # aggregated into disagree/agree
+  perceptions_binned <- df %>%
+    filter(Perceived %in% 1:4, Truth %in% 1:4) %>%
+    mutate(
+      Truth_bin = case_when(
+        Truth %in% 1:2 ~ "Disagree",
+        Truth %in% 3:4 ~ "Agree"
+      ),
+      Perceived_bin = case_when(
+        Perceived %in% 1:2 ~ "Disagree",
+        Perceived %in% 3:4 ~ "Agree"
+      )
+    ) %>%
+    filter(!is.na(Truth_bin), !is.na(Perceived_bin)) %>%
+    mutate(
+      Perceived_bin = factor(Perceived_bin, levels = c("Disagree", "Agree")),
+      Truth_bin = factor(Truth_bin, levels = c("Disagree", "Agree"))
+    )
+  
+  confusion_binned <- perceptions_binned %>%
+    count(Perceived_bin, Truth_bin, name = "Freq") %>%
+    complete(
+      Perceived_bin = c("Disagree", "Agree"),
+      Truth_bin = c("Disagree", "Agree"),
+      fill = list(Freq = 0)
+    ) %>%
+    group_by(Truth_bin) %>%
+    mutate(Percent = 100 * Freq / sum(Freq)) %>%
+    ungroup()
+  
+  col_counts2 <- confusion_binned %>%
+    group_by(Truth_bin) %>%
+    summarise(Total_count = sum(Freq), .groups = "drop")
+  
+  p2 <- ggplot(confusion_binned, aes(x = Truth_bin, y = Perceived_bin, fill = Percent)) +
+    geom_tile(color = "white", linewidth = 0.2) +
+    geom_text(aes(label = ifelse(Percent >= 1, number(Percent, 0.1), "")), size = 4) +
+    geom_text(
+      data = col_counts2,
+      aes(x = Truth_bin, y = 0.5, label = Total_count),
+      inherit.aes = FALSE,
+      vjust = 1, fontface = "bold", size = 3
+    ) +
+    scale_fill_viridis_c(option = "plasma", direction = -1, name = "Column %") +
+    scale_x_discrete(limits = c("Disagree", "Agree")) +
+    scale_y_discrete(limits = c("Disagree", "Agree")) +
+    labs(x = "Self-report", y = "Perception") +
+    coord_equal() +
+    expand_limits(y = 0.1) +
+    theme_minimal(base_size = 12) +
+    theme(panel.grid = element_blank())
+  
+  # disaggregated by rater self-report
+  perceptions_binned_facet <- perceptions_binned %>%
+    mutate(Self_bin = case_when(
+      Perceiver_self %in% 1:2 ~ "Disagree",
+      Perceiver_self %in% 3:4 ~ "Agree"
+    )) %>%
+    filter(!is.na(Self_bin)) %>%
+    mutate(Self_bin = factor(Self_bin, levels = c("Disagree", "Agree")))
+  
+  confusion_binned_facet <- perceptions_binned_facet %>%
+    count(Perceived_bin, Truth_bin, Self_bin, name = "Freq") %>%
+    complete(
+      Perceived_bin = c("Disagree", "Agree"),
+      Truth_bin = c("Disagree", "Agree"),
+      Self_bin = c("Disagree", "Agree"),
+      fill = list(Freq = 0)
+    ) %>%
+    group_by(Truth_bin, Self_bin) %>%
+    mutate(Percent = 100 * Freq / sum(Freq)) %>%
+    ungroup()
+  
+  col_counts3 <- confusion_binned_facet %>%
+    group_by(Truth_bin, Self_bin) %>%
+    summarise(Total_count = sum(Freq), .groups = "drop")
+  
+  p3 <- ggplot(confusion_binned_facet, aes(x = Truth_bin, y = Perceived_bin, fill = Percent)) +
+    geom_tile(color = "white", linewidth = 0.2) +
+    geom_text(aes(label = ifelse(Percent >= 1, number(Percent, 0.1), "")), size = 3.5) +
+    geom_text(
+      data = col_counts3,
+      aes(x = Truth_bin, y = 0.5, label = Total_count),
+      inherit.aes = FALSE,
+      vjust = 1, fontface = "bold", size = 3
+    ) +
+    scale_fill_viridis_c(option = "plasma", direction = -1, name = "Column %") +
+    scale_x_discrete(limits = c("Disagree", "Agree")) +
+    scale_y_discrete(limits = c("Disagree", "Agree")) +
+    labs(x = "Self-report", y = "Perception") +
+    coord_equal() +
+    expand_limits(y = 0.1) +
+    facet_wrap(~Self_bin, nrow = 1) +
+    theme_minimal(base_size = 12) +
+    theme(panel.grid = element_blank())
+  
+  # combine
+  combi <- ggarrange(p1, p2, p3, ncol = 3, nrow = 1, 
+                     widths = c(1,1,1.25), 
+                     labels = c("A. Raw scores", 
+                                "B. Agree (3/4) vs. disagree (1/2)", 
+                                "C. By raters' self-report"))
+}
+
+plots <- perceptions_long %>%
+  group_by(variable) %>%
+  group_map(~make_confusion_plots(.x))
+
+# plots is a list of annotated ggplots for cap, threat, and student
+#plots[[1]]  # cap
+#plots[[2]]  # threat
+#plots[[3]]  # student
+
+# pool across statements
+pooled_plot <- make_confusion_plots(perceptions_long)
+
+annotate_figure(
+  pooled_plot,
+  bottom = text_grob(
+    "Pooled analyses:\n1. 'The arrival of migrants poses a threat to Dutch culture'\n2. 'Foreign students are an enrichment for Dutch universities' (reverse-coded)\n3. 'There should be an annual cap on the intake of new asylum seekers' (1 = completely disagree; 2 = disagree; 3 = agree; 4 = completely agree)",
+    hjust = 0, x = 0, face = "italic", size = 12
+  )
+)
+
+``` 
+
+## socionets
+
+complete school class data
+
+```{r, conf2, fig.width=13}
 #all pairwise perceptions, pooled across classes
 perceptions <- purrr::map2_dfr(class_data, names(class_data), function(class_obj, class_name) {
   truth <- class_obj$truth

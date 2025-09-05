@@ -128,6 +128,7 @@ data <- read.csv("./rawdata/zie-elkaar/two_classes.csv", stringsAsFactors = FALS
 
 # Wrangling data
 
+
 ```{r, wrangle, eval=FALSE}
 # metadata
 respondents <- as.character(data$Respondent.code)
