@@ -468,7 +468,7 @@ div.tocify {
   addClassKlippyTo("pre.r, pre.markdown");
   addKlippy('right', 'top', 'auto', '1', 'Copy code', 'Copied!');
 </script>
-<p>Last compiled on 04-09-2025</p>
+<p>Last compiled on 05-09-2025</p>
 <hr />
 <div id="getting-started" class="section level1">
 <h1>Getting started</h1>
@@ -478,10 +478,85 @@ code-chunks.</p>
 <h2>clean up</h2>
 <pre class="r test"><code>rm(list = ls())
 gc()</code></pre>
+<p><br></p>
 </div>
+<div id="general-custom-functions" class="section level2">
+<h2>general custom functions</h2>
+<ul>
+<li><code>fpackage.check</code>: Check if packages are installed (and
+install if not) in R</li>
+<li><code>fsave</code>: Function to save data with time stamp in correct
+directory</li>
+<li><code>fload</code>: Function to load R-objects under new names</li>
+<li><code>fshowdf</code>: Print objects (<code>tibble</code> /
+<code>data.frame</code>) nicely on screen in <code>.Rmd</code></li>
+</ul>
+<pre class="r test"><code>fpackage.check &lt;- function(packages) {
+    lapply(packages, FUN = function(x) {
+        if (!require(x, character.only = TRUE)) {
+            install.packages(x, dependencies = TRUE)
+            library(x, character.only = TRUE)
+        }
+    })
+}
+
+fsave &lt;- function(x, location = &quot;./data/processed/&quot;) {
+    if (location == &quot;./data/processed/&quot;) {
+        ifelse(!dir.exists(&quot;data&quot;), dir.create(&quot;data&quot;), FALSE)
+        ifelse(!dir.exists(&quot;data/processed&quot;), dir.create(&quot;data/processed&quot;), FALSE)
+    }
+
+    object = deparse(substitute(x))
+    datename &lt;- substr(gsub(&quot;[:-]&quot;, &quot;&quot;, Sys.time()), 1, 8)
+    totalname &lt;- paste(location, object, &quot;_&quot;, datename, &quot;.rda&quot;, sep = &quot;&quot;)
+    assign(eval(object), x, envir = .GlobalEnv)
+    print(paste(&quot;SAVED: &quot;, totalname, sep = &quot;&quot;))
+    save(list = object, file = totalname)
+}
+
+fload &lt;- function(fileName) {
+    load(fileName)
+    get(ls()[ls() != &quot;fileName&quot;])
+}
+
+fshowdf &lt;- function(x, caption = NULL, digits = 2, footnote = NULL, ...) {
+    knitr::kable(x, digits = digits, &quot;html&quot;, caption = caption, ...) %&gt;%
+        kableExtra::footnote(general = footnote) %&gt;%
+        kableExtra::kable_styling(bootstrap_options = c(&quot;striped&quot;, &quot;hover&quot;)) %&gt;%
+        kableExtra::scroll_box(width = &quot;100%&quot;, height = &quot;300px&quot;)
+}</code></pre>
+<p><br></p>
+</div>
+<div id="necessary-packages" class="section level2">
+<h2>necessary packages</h2>
+<ul>
+<li><code>tidyverse</code>: data wrangling</li>
+</ul>
+<pre class="r test"><code>packages = c(&quot;tidyverse&quot;)
+fpackage.check(packages)
+rm(packages)</code></pre>
+<p><br></p>
+<hr />
+</div>
+</div>
+<div id="download-data-files" class="section level1">
+<h1>Download data files</h1>
+<p>Download the data files from the <a
+href="https://www.dataarchive.lissdata.nl/study-units/view/1">LISS data
+archive</a>. Note that you must join the LISS community and create an
+account to access the downloads.</p>
+<p>[Links to files]</p>
+<p>Download the data-files, unzip them if needed, and put them in the
+<code>./data/</code> folder. But first, make a <code>./data/</code>
+folder:</p>
+<pre class="r test"><code>ifelse(!dir.exists(&quot;data&quot;), dir.create(&quot;data&quot;), FALSE)</code></pre>
+<hr />
+</div>
+<div id="import-data" class="section level1">
+<h1>Import data</h1>
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkRhdGEgcHJlcGFyYXRpb24iDQpiaWJsaW9ncmFwaHk6IHJlZmVyZW5jZXMuYmliDQpsaW5rLWNpdGF0aW9uczogdHJ1ZQ0KI2F1dGhvcjogInlvdXJuYW1lIg0Kb3V0cHV0OiANCiAgaHRtbF9kb2N1bWVudDoNCiAgICBjc3M6IHR3ZWFrcy5jc3MNCiAgICB0b2M6ICB0cnVlDQogICAgdG9jX2Zsb2F0OiB0cnVlDQogICAgbnVtYmVyX3NlY3Rpb25zOiBmYWxzZQ0KICAgIHRvY19kZXB0aDogMQ0KICAgIGNvZGVfZm9sZGluZzogc2hvdw0KICAgIGNvZGVfZG93bmxvYWQ6IHllcw0KLS0tDQoNCmBgYHtyLCBnbG9iYWxzZXR0aW5ncywgZWNobz1GQUxTRSwgd2FybmluZz1GQUxTRSwgcmVzdWx0cz0naGlkZSd9DQpsaWJyYXJ5KGtuaXRyKQ0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGVjaG8gPSBUUlVFKQ0Kb3B0c19jaHVuayRzZXQodGlkeS5vcHRzPWxpc3Qod2lkdGguY3V0b2ZmPTEwMCksdGlkeT1UUlVFLCB3YXJuaW5nID0gRkFMU0UsIG1lc3NhZ2UgPSBGQUxTRSxjb21tZW50ID0gIiM+IiwgY2FjaGU9VFJVRSwgY2xhc3Muc291cmNlPWMoInRlc3QiKSwgY2xhc3Mub3V0cHV0PWMoInRlc3QzIikpDQpvcHRpb25zKHdpZHRoID0gMTAwKQ0KcmdsOjpzZXR1cEtuaXRyKCkNCg0KYGBgDQoNCg0KYGBge3Iga2xpcHB5LCBlY2hvPUZBTFNFLCBpbmNsdWRlPVRSVUV9DQprbGlwcHk6OmtsaXBweShwb3NpdGlvbiA9IGMoJ3RvcCcsICdyaWdodCcpKQ0KI2tsaXBweTo6a2xpcHB5KGNvbG9yID0gJ2RhcmtyZWQnKQ0KI2tsaXBweTo6a2xpcHB5KHRvb2x0aXBfbWVzc2FnZSA9ICdDbGljayB0byBjb3B5JywgdG9vbHRpcF9zdWNjZXNzID0gJ0RvbmUnKQ0KYGBgDQoNCkxhc3QgY29tcGlsZWQgb24gYHIgZm9ybWF0KFN5cy50aW1lKCksICclZC0lbS0lWScpYA0KDQotLS0gIA0KDQojIEdldHRpbmcgc3RhcnRlZA0KDQpUbyBjb3B5IHRoZSBjb2RlLCBjbGljayB0aGUgYnV0dG9uIGluIHRoZSB1cHBlciByaWdodCBjb3JuZXIgb2YgdGhlIGNvZGUtY2h1bmtzLg0KDQojIyBjbGVhbiB1cA0KDQpgYGB7ciwgcmVzdWx0cz0naGlkZSd9DQpybShsaXN0PWxzKCkpDQpnYygpDQpgYGANCg==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkRhdGEgcHJlcGFyYXRpb24iDQpiaWJsaW9ncmFwaHk6IHJlZmVyZW5jZXMuYmliDQpsaW5rLWNpdGF0aW9uczogdHJ1ZQ0KI2F1dGhvcjogInlvdXJuYW1lIg0Kb3V0cHV0OiANCiAgaHRtbF9kb2N1bWVudDoNCiAgICBjc3M6IHR3ZWFrcy5jc3MNCiAgICB0b2M6ICB0cnVlDQogICAgdG9jX2Zsb2F0OiB0cnVlDQogICAgbnVtYmVyX3NlY3Rpb25zOiBmYWxzZQ0KICAgIHRvY19kZXB0aDogMQ0KICAgIGNvZGVfZm9sZGluZzogc2hvdw0KICAgIGNvZGVfZG93bmxvYWQ6IHllcw0KLS0tDQoNCmBgYHtyLCBnbG9iYWxzZXR0aW5ncywgZWNobz1GQUxTRSwgd2FybmluZz1GQUxTRSwgcmVzdWx0cz0naGlkZSd9DQpsaWJyYXJ5KGtuaXRyKQ0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGVjaG8gPSBUUlVFKQ0Kb3B0c19jaHVuayRzZXQodGlkeS5vcHRzPWxpc3Qod2lkdGguY3V0b2ZmPTEwMCksdGlkeT1UUlVFLCB3YXJuaW5nID0gRkFMU0UsIG1lc3NhZ2UgPSBGQUxTRSxjb21tZW50ID0gIiM+IiwgY2FjaGU9VFJVRSwgY2xhc3Muc291cmNlPWMoInRlc3QiKSwgY2xhc3Mub3V0cHV0PWMoInRlc3QzIikpDQpvcHRpb25zKHdpZHRoID0gMTAwKQ0KcmdsOjpzZXR1cEtuaXRyKCkNCg0KYGBgDQoNCg0KYGBge3Iga2xpcHB5LCBlY2hvPUZBTFNFLCBpbmNsdWRlPVRSVUV9DQprbGlwcHk6OmtsaXBweShwb3NpdGlvbiA9IGMoJ3RvcCcsICdyaWdodCcpKQ0KI2tsaXBweTo6a2xpcHB5KGNvbG9yID0gJ2RhcmtyZWQnKQ0KI2tsaXBweTo6a2xpcHB5KHRvb2x0aXBfbWVzc2FnZSA9ICdDbGljayB0byBjb3B5JywgdG9vbHRpcF9zdWNjZXNzID0gJ0RvbmUnKQ0KYGBgDQoNCkxhc3QgY29tcGlsZWQgb24gYHIgZm9ybWF0KFN5cy50aW1lKCksICclZC0lbS0lWScpYA0KDQotLS0gIA0KDQojIEdldHRpbmcgc3RhcnRlZA0KDQpUbyBjb3B5IHRoZSBjb2RlLCBjbGljayB0aGUgYnV0dG9uIGluIHRoZSB1cHBlciByaWdodCBjb3JuZXIgb2YgdGhlIGNvZGUtY2h1bmtzLg0KDQojIyBjbGVhbiB1cA0KDQpgYGB7ciwgcmVzdWx0cz0naGlkZSd9DQpybShsaXN0PWxzKCkpDQpnYygpDQpgYGANCg0KPGJyPg0KDQoNCiMjIGdlbmVyYWwgY3VzdG9tIGZ1bmN0aW9ucw0KDQotIGBmcGFja2FnZS5jaGVja2A6IENoZWNrIGlmIHBhY2thZ2VzIGFyZSBpbnN0YWxsZWQgKGFuZCBpbnN0YWxsIGlmIG5vdCkgaW4gUg0KLSBgZnNhdmVgOiBGdW5jdGlvbiB0byBzYXZlIGRhdGEgd2l0aCB0aW1lIHN0YW1wIGluIGNvcnJlY3QgZGlyZWN0b3J5DQotIGBmbG9hZGA6IEZ1bmN0aW9uIHRvIGxvYWQgUi1vYmplY3RzIHVuZGVyIG5ldyBuYW1lcw0KLSBgZnNob3dkZmA6IFByaW50IG9iamVjdHMgKGB0aWJibGVgIC8gYGRhdGEuZnJhbWVgKSBuaWNlbHkgb24gc2NyZWVuIGluIGAuUm1kYA0KDQpgYGB7ciwgZnVufQ0KZnBhY2thZ2UuY2hlY2sgPC0gZnVuY3Rpb24ocGFja2FnZXMpIHsNCiAgICBsYXBwbHkocGFja2FnZXMsIEZVTiA9IGZ1bmN0aW9uKHgpIHsNCiAgICAgICAgaWYgKCFyZXF1aXJlKHgsIGNoYXJhY3Rlci5vbmx5ID0gVFJVRSkpIHsNCiAgICAgICAgICAgIGluc3RhbGwucGFja2FnZXMoeCwgZGVwZW5kZW5jaWVzID0gVFJVRSkNCiAgICAgICAgICAgIGxpYnJhcnkoeCwgY2hhcmFjdGVyLm9ubHkgPSBUUlVFKQ0KICAgICAgICB9DQogICAgfSkNCn0NCg0KZnNhdmUgPC0gZnVuY3Rpb24oeCwgbG9jYXRpb24gPSAiLi9kYXRhL3Byb2Nlc3NlZC8iKSB7DQogIGlmIChsb2NhdGlvbiA9PSAiLi9kYXRhL3Byb2Nlc3NlZC8iKSB7DQogIGlmZWxzZSghZGlyLmV4aXN0cygiZGF0YSIpLCBkaXIuY3JlYXRlKCJkYXRhIiksIEZBTFNFKQ0KICBpZmVsc2UoIWRpci5leGlzdHMoImRhdGEvcHJvY2Vzc2VkIiksIGRpci5jcmVhdGUoImRhdGEvcHJvY2Vzc2VkIiksIEZBTFNFKQ0KICB9DQoNCiAgb2JqZWN0ID0gZGVwYXJzZShzdWJzdGl0dXRlKHgpKQ0KICBkYXRlbmFtZSA8LSBzdWJzdHIoZ3N1YigiWzotXSIsICIiLCBTeXMudGltZSgpKSwgMSwgOCkNCiAgdG90YWxuYW1lIDwtIHBhc3RlKGxvY2F0aW9uLCBvYmplY3QsICJfIiwgZGF0ZW5hbWUsICAiLnJkYSIsIHNlcCA9ICIiKQ0KICBhc3NpZ24oZXZhbChvYmplY3QpLCB4LCBlbnZpciA9IC5HbG9iYWxFbnYpDQogIHByaW50KHBhc3RlKCJTQVZFRDogIiwgdG90YWxuYW1lLCBzZXAgPSAiIikpDQogIHNhdmUobGlzdCA9IG9iamVjdCwgZmlsZSA9IHRvdGFsbmFtZSkgIA0KfQ0KDQpmbG9hZCAgPC0gZnVuY3Rpb24oZmlsZU5hbWUpew0KICBsb2FkKGZpbGVOYW1lKQ0KICBnZXQobHMoKVtscygpICE9ICJmaWxlTmFtZSJdKQ0KfQ0KDQpmc2hvd2RmIDwtIGZ1bmN0aW9uKHgsIGNhcHRpb24gPSBOVUxMLCBkaWdpdHMgPSAyLCBmb290bm90ZSA9IE5VTEwsIC4uLikgew0KICAgIGtuaXRyOjprYWJsZSh4LCBkaWdpdHMgPSBkaWdpdHMsICJodG1sIiwgY2FwdGlvbiA9IGNhcHRpb24sIC4uLikgJT4lDQogICAgICAgIGthYmxlRXh0cmE6OmZvb3Rub3RlKGdlbmVyYWwgPSBmb290bm90ZSkgJT4lDQogICAgICAgIGthYmxlRXh0cmE6OmthYmxlX3N0eWxpbmcoYm9vdHN0cmFwX29wdGlvbnMgPSBjKCJzdHJpcGVkIiwgImhvdmVyIikpICU+JQ0KICAgICAgICBrYWJsZUV4dHJhOjpzY3JvbGxfYm94KHdpZHRoID0gIjEwMCUiLCBoZWlnaHQgPSAiMzAwcHgiKQ0KfQ0KYGBgDQoNCg0KPGJyPg0KDQojIyBuZWNlc3NhcnkgcGFja2FnZXMNCg0KLSBgdGlkeXZlcnNlYDogZGF0YSB3cmFuZ2xpbmcNCg0KYGBge3IsIHBhY2thZ2VzLCBtZXNzYWdlPUZBTFNFLCByZXN1bHRzPSdoaWRlJ30NCnBhY2thZ2VzID0gYygidGlkeXZlcnNlIikNCmZwYWNrYWdlLmNoZWNrKHBhY2thZ2VzKQ0Kcm0ocGFja2FnZXMpDQpgYGANCjxicj4NCg0KLS0tDQoNCiMgRG93bmxvYWQgZGF0YSBmaWxlcw0KDQpEb3dubG9hZCB0aGUgZGF0YSBmaWxlcyBmcm9tIHRoZSBbTElTUyBkYXRhIGFyY2hpdmVdKGh0dHBzOi8vd3d3LmRhdGFhcmNoaXZlLmxpc3NkYXRhLm5sL3N0dWR5LXVuaXRzL3ZpZXcvMSkuIE5vdGUgdGhhdCB5b3UgbXVzdCBqb2luIHRoZSBMSVNTIGNvbW11bml0eSBhbmQgY3JlYXRlIGFuIGFjY291bnQgdG8gYWNjZXNzIHRoZSBkb3dubG9hZHMuDQoNCltMaW5rcyB0byBmaWxlc10NCg0KRG93bmxvYWQgdGhlIGRhdGEtZmlsZXMsIHVuemlwIHRoZW0gaWYgbmVlZGVkLCBhbmQgcHV0IHRoZW0gaW4gdGhlIGAuL2RhdGEvYCBmb2xkZXIuIEJ1dCBmaXJzdCwgbWFrZSBhIGAuL2RhdGEvYCBmb2xkZXI6DQoNCmBgYHtyLCBldmFsPUZBTFNFfQ0KaWZlbHNlKCFkaXIuZXhpc3RzKCJkYXRhIiksIGRpci5jcmVhdGUoImRhdGEiKSwgRkFMU0UpDQpgYGAgDQoNCi0tLS0gDQoNCiMgSW1wb3J0IGRhdGENCg0KDQoNCg==</div>
 <style>
 .center {
   text-align: center;

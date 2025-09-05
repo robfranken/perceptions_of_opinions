@@ -2,7 +2,7 @@
 title: "Data preparation"
 bibliography: references.bib
 link-citations: true
-#author: "yourname"
+author: "Rob Franken"
 output: 
   html_document:
     css: tweaks.css
@@ -44,3 +44,841 @@ To copy the code, click the button in the upper right corner of the code-chunks.
 rm(list=ls())
 gc()
 ```
+
+<br>
+
+
+## general custom functions
+
+- `fpackage.check`: Check if packages are installed (and install if not) in R
+- `fsave`: Function to save data with time stamp in correct directory
+- `fload`: Function to load R-objects under new names
+- `fshowdf`: Print objects (`tibble` / `data.frame`) nicely on screen in `.Rmd`
+
+```{r, fun}
+fpackage.check <- function(packages) {
+    lapply(packages, FUN = function(x) {
+        if (!require(x, character.only = TRUE)) {
+            install.packages(x, dependencies = TRUE)
+            library(x, character.only = TRUE)
+        }
+    })
+}
+
+fsave <- function(x, file, location = "./data/processed/", ...) {
+    if (!dir.exists(location))
+        dir.create(location)
+    datename <- substr(gsub("[:-]", "", Sys.time()), 1, 8)
+    totalname <- paste(location, datename, file, sep = "")
+    print(paste("SAVED: ", totalname, sep = ""))
+    save(x, file = totalname)
+}
+
+fload  <- function(fileName){
+  load(fileName)
+  get(ls()[ls() != "fileName"])
+}
+
+fshowdf <- function(x, caption = NULL, digits = 2, footnote = NULL, ...) {
+    knitr::kable(x, digits = digits, "html", caption = caption, ...) %>%
+        kableExtra::footnote(general = footnote) %>%
+        kableExtra::kable_styling(bootstrap_options = c("striped", "hover")) %>%
+        kableExtra::scroll_box(width = "100%", height = "300px")
+}
+```
+
+
+<br>
+
+## necessary packages
+
+- `tidyverse`: data wrangling
+
+```{r, packages, message=FALSE, results='hide'}
+packages = c("tidyverse")
+fpackage.check(packages)
+rm(packages)
+```
+
+<br>
+
+<script>
+function myFunction() {
+
+            var btn = document.getElementById("myButton");
+            //to make it fancier
+            if (btn.value == "Click to hide code") {
+                btn.value = "Show code";
+                btn.innerHTML = "Show code";
+            }
+            else {
+                btn.value = "Click to hide code";
+                btn.innerHTML = "Hide code";
+            }
+            //this is what you're looking for
+            var x = document.getElementById("myDIV");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+          
+</script>
+
+
+# Download data
+
+The anonymized data-sets [@sportsfriendships] are deposited in DANS EASY. You can download the data-sets [here](https://ssh.datastations.nl/dataset.xhtml?persistentId=doi:10.17026/SS/GODKDR).
+
+Download the data-files `short_public.R`, `alter_public.R`, and `data_public.R` and put them in the `./data/` folder. But first, make a `./data/` folder: 
+
+```{r, eval=F}
+ifelse(!dir.exists("data"), dir.create("data"), FALSE)
+``` 
+
+<br>
+
+To see the code used to anonymize the raw data files, click the button below.
+
+<button class=button1 onclick="myFunction()" id="myButton" value="Click To Open Instructions">Show code: from raw to public data</button>
+
+<div style="display:none;" id="myDIV">
+<br>
+
+## load in raw data
+```{r eval=FALSE}
+# ego-survey
+ego <- read.csv("./rawdata/results-survey429769.csv")
+
+#alter survey
+alter <- read.csv("./rawdata/results-survey659119.csv")
+```
+
+<br>
+
+## make public data-set to deposit {.tabset .tabset-fade} 
+
+```{r, eval=FALSE}
+#first, remove 'fake'/test responses
+#that is, with empty email string
+#ego <- ego[-which(ego$email==""),]
+
+#replace email with 'respnr'.
+#some respondents have multiple (incomplete) responses.
+ego$respnr <- NA
+
+for (i in 1:nrow(ego)) {
+  ego$respnr[i] <- which(unique(ego$email) %in% ego$email[i])
+}
+
+# we subset the combination of 'email' and 'respnr'...
+merge <- ego[,c("email", "respnr")]
+# remove duplicates
+merge <- distinct(merge)
+
+#so that we can replace email/identifier in the alter-data
+alter <- merge(alter,merge, by="email")
+
+#now we can remove names and email from both dataframes
+ego <- select(ego, -email, -firstname, -lastname, -ipaddr)
+alter <- select(alter, -email, -firstname, -lastname, -ipaddr)
+
+fsave(ego, file="ego_public.RDa")
+fsave(alter, file="alter_public.RDa")
+
+load("./data/data_public.R")
+fsave(x, file="data_public.RDa")
+```
+
+</div>
+
+----
+
+<br>
+
+# Import data
+
+- `short_public.R`: anonymized data of the additional ego-survey
+- `alters_public.R`: anonymized data of the additional alter-survey
+- `data_public.R`: anonymized data of alters nested in ego (with data on: ego, alter and dyad characteristics; constructed from the main survey data).
+
+
+```{r, eval=FALSE}
+ego <- fload("./data/short_public.Rda")
+alter <- fload("./data/alters_public.Rda")
+dat <- fload("./data/data_public.Rda")
+#@RF hier nog closeness / contact freq. aan; o.b.v. voorgaande dataset?
+```
+
+--- 
+
+<br>
+
+# Wrangling
+
+In case you don't wish to replicate the data-set, you may obtain it by downloading: `r xfun::embed_file("./data_shared/egonets.rda")`
+
+## accuracy from ego's perspective
+
+I calculate ego's accuracy in 'estimating' alters position on various items. I also attach variables at ego/alter level (gender age, education), dyad (duration); sameness; Relational functions (confidant, study, friend, sports)
+
+```{r , eval=F}
+#first, extract egos at least one of whose alters filled out the survey
+ego <- ego[-which(!ego$respnr %in% unique(alter$respnr)),]
+
+#i exported all ego responses, including those that were not completed,
+#because a small number of egos did not 'submit' their answers, yet their alters filled out their part
+ego <- ego[which(ego$lastpage>13),]
+
+#make an (empty) dataframe to store output in, with a row for each alter of ego
+df <- data.frame(respnr = alter$respnr,
+                 dyad = NA,
+                 tie = NA,
+                 ego = "ego",
+                 
+                 #ego characteristics
+                 ego_gender = NA,
+                 ego_educ = NA,
+                 ego_age = NA,
+                 
+                 #alter
+                 alter_gender = NA,
+                 alter_educ = NA,
+                 alter_age = NA,
+                 
+                 #sameness
+                 same_gender = NA,
+                 same_educ = NA,
+                 same_age = NA,
+                 
+                 #networks
+                 cdn = NA,
+                 study = NA,
+                 bff = NA,
+                 csn = NA, 
+                 
+                 #dyad
+                 duration = NA,
+                 
+                 #structure
+                 embeddedness = NA,
+                 
+                 #### opionions ######
+                 
+                 #left right placement
+                 LR.self = NA,
+                 LR.perception = NA,
+                 LR.truth = NA,
+                 LR.accuracy = NA,
+                 
+                 #importance of political themes
+                 imp_crime.self = NA,
+                 imp_crime.perception = NA, #crime
+                 imp_crime.truth = NA,
+                 imp_crime.accuracy = NA,
+                 imp_climate.self = NA,
+                 imp_climate.perception = NA, #climate
+                 imp_climate.truth = NA,
+                 imp_climate.accuracy = NA,
+                 imp_discrim.self = NA,
+                 imp_discrim.perception = NA, #discrimination 
+                 imp_discrim.truth = NA,
+                 imp_discrim.accuracy = NA,
+                 imp_housing.self = NA,
+                 imp_housing.perception = NA, #housing shortage
+                 imp_housing.truth = NA,
+                 imp_housing.accuracy = NA,
+                 imp_refugee.self = NA,
+                 imp_refugee.perception = NA, #refugees
+                 imp_refugee.truth = NA,
+                 imp_refugee.accuracy = NA,
+          
+                 #eco-friendly actions
+                 sechand.self = NA,
+                 sechand.perception = NA, #buying second hand products
+                 sechand.truth = NA,
+                 sechand.accuracy = NA,
+                 replace.self = NA,
+                 replace.perception = NA, #using items as long as possible before replacement
+                 replace.truth = NA, 
+                 replace.accuracy = NA,
+                 animal.self = NA,
+                 animal.perception = NA, #reduced consumption of animal products
+                 animal.truth = NA, 
+                 animal.accuracy = NA, 
+                 
+                 #climate policy
+                 fly.self = NA,
+                 fly.perception = NA, #flight tax
+                 fly.truth = NA,
+                 fly.accuracy = NA,
+                 meat.self = NA,
+                 meat.perception = NA, #meat tax
+                 meat.truth = NA, 
+                 meat.accuracy = NA,
+                 nature.self = NA,
+                 nature.perception = NA, #expandng nature reserves
+                 nature.truth = NA, 
+                 nature.accuracy = NA, 
+                 
+                 #migration (policy)
+                 cap.self = NA,
+                 cap.perception = NA, #annual cap on asylum seekers
+                 cap.truth = NA,
+                 cap.accuracy = NA,
+                 student.self=NA,
+                 student.perception = NA, #international students 'enrich' Dutch universities
+                 student.truth = NA, 
+                 student.accuracy = NA, 
+                 threat.self = NA,
+                 threat.perception = NA, #migration as a threat to Dutch culture
+                 threat.truth = NA, 
+                 threat.accuracy = NA)
+                 
+#reorder
+df <- df[order(df$respnr),]
+rownames(df) <- 1:nrow(df)
+
+#recode answers on statements numerically
+{
+ego[ego=="Helemaal eens"] <- 4
+ego[ego=="Eens"] <- 3
+ego[ego=="Oneens"] <- 2
+ego[ego=="Helemaal oneens"] <- 1
+ego[ego=="Helemaal van toepassing"] <- 4
+ego[ego=="Enigszins van toepassing"] <- 3
+ego[ego=="Nauwelijks van toepassing"] <- 2
+ego[ego=="Niet van toepassing"] <- 1
+ego[ego=="Zeer belangrijk"] <- 4
+ego[ego=="Belangrijk"] <- 3
+ego[ego=="Niet belangrijk, maar ook niet onbelangrijk"] <- 2
+ego[ego=="Niet belangrijk"] <- 1
+alter[alter=="Helemaal eens"] <- 4
+alter[alter=="Eens"] <- 3
+alter[alter=="Oneens"] <- 2
+alter[alter=="Helemaal oneens"] <- 1
+alter[alter=="Helemaal van toepassing"] <- 4
+alter[alter=="Enigszins van toepassing"] <- 3
+alter[alter=="Nauwelijks van toepassing"] <- 2
+alter[alter=="Niet van toepassing"] <- 1
+alter[alter=="Zeer belangrijk"] <- 4
+alter[alter=="Belangrijk"] <- 3
+alter[alter=="Niet belangrijk, maar ook niet onbelangrijk"] <- 2
+alter[alter=="Niet belangrijk"] <- 1
+}
+
+for (i in unique(df$respnr)) {
+ 
+ ## unique(df$respnr)[7]->i
+
+#  print(i)
+  
+  #get egodata corresponding to i
+  egodata <- ego[which(ego$respnr==i),]
+
+  #some double ego-responses (for those who did not complete, but did send the invitation to alters). I take the response that reached the latest page.
+  egodata <- egodata[ which(egodata$lastpage == max(egodata$lastpage[!is.na(egodata$lastpage)])), ] 
+  
+  #get alterdata
+  alterdata <- alter[which(alter$respnr==i),]
+
+  #find out which of ego's alters (x and y) filled out the survey
+  ind <- which(c(egodata$attribute_9, egodata$attribute_10) %in% alterdata$token)
+  
+  #get alter data of i
+  data <- dat[which(dat$respnr==i),]
+  
+  #take the row(s) corresponding to the selected alter(s) that participated 
+  data <- data[which(data$token %in% c(egodata$attribute_9, egodata$attribute_10)[ind]),]
+  
+  #give dyad id (i.e., ego-alter dyad of ego-alterx and ego-altery)
+  df$dyad[which(df$respnr==i)] <-  as.numeric(c(paste0(1000 + df$respnr[which(df$respnr==i)][1], "1"), paste0(1000 + df$respnr[which(df$respnr==i)][1], "2")) )[ind]
+  
+  #also a tie id (giving direction); here, everything is from ego's perspective. I add a "1" to indicate this ("2") for alter perspective
+  df$tie[which(df$respnr==i)] <- as.numeric(paste0(df$dyad[which(df$respnr==i)], "1"))
+  
+  #ego covars
+  df$ego_gender[which(df$respnr==i)] <-  data$ego_gender[1]
+  df$ego_educ[which(df$respnr==i)] <- data$ego_educ[1]
+  df$ego_age[which(df$respnr==i)] <- data$ego_age[1]
+  
+  #alter
+  df$alter_gender[which(df$respnr==i)] <- data$alter_gender
+  df$alter_educ[which(df$respnr==i)] <- data$alter_educ
+  df$alter_age[which(df$respnr==i)] <- data$alter_age
+  
+  #dyad
+  df$duration[which(df$respnr==i)] <- data$duration
+  #@RF. add closeness/frequency
+
+  #same
+  df$same_gender[which(df$respnr==i)] <- data$same_gender
+  df$same_educ[which(df$respnr==i)] <- data$same_educ
+  df$same_age[which(df$respnr==i)] <- data$same_age
+
+  #network
+  df$cdn[which(df$respnr==i)] <- data$cdn
+  df$study[which(df$respnr==i)] <- data$study
+  df$bff[which(df$respnr==i)] <- data$bff
+  df$csn[which(df$respnr==i)] <- data$csn
+  
+  ### embeddedness ###
+  #n_tie / (n_tie + n_notie)
+  
+  #alterX
+  tie <- length( which(c(egodata$adjacency.SQ001.,egodata$adjacency.SQ002.,egodata$adjacency.SQ003.,egodata$adjacency.SQ004.,egodata$adjacency.SQ005.,
+                         egodata$adjacency.SQ006.,egodata$adjacency.SQ007.,egodata$adjacency.SQ008.,egodata$adjacency.SQ009.,egodata$adjacency.SQ010.,
+                         egodata$adjacency.SQ011.,egodata$adjacency.SQ012.,egodata$adjacency.SQ013.,egodata$adjacency.SQ014.,egodata$adjacency.SQ015.,
+                         egodata$adjacency.SQ016.,egodata$adjacency.SQ017.,egodata$adjacency.SQ018.,egodata$adjacency.SQ019.,egodata$adjacency.SQ020.)
+                         =="Ja") )
+                 
+  notie <- length( which(c(egodata$adjacency.SQ001.,egodata$adjacency.SQ002.,egodata$adjacency.SQ003.,egodata$adjacency.SQ004.,
+                           egodata$adjacency.SQ005.,egodata$adjacency.SQ006.,egodata$adjacency.SQ007.,egodata$adjacency.SQ008.,
+                           egodata$adjacency.SQ009.,egodata$adjacency.SQ010.,egodata$adjacency.SQ011.,egodata$adjacency.SQ012.,
+                           egodata$adjacency.SQ013.,egodata$adjacency.SQ014.,egodata$adjacency.SQ015.,egodata$adjacency.SQ016.,
+                           egodata$adjacency.SQ017.,egodata$adjacency.SQ018.,egodata$adjacency.SQ019.,egodata$adjacency.SQ020.)=="Nee") )
+    
+  embedX <- tie/(tie+notie)
+
+  #alterY
+  tie <- length( which(c(egodata$adjacency2.SQ001.,egodata$adjacency2.SQ002.,egodata$adjacency2.SQ003.,egodata$adjacency2.SQ004.,
+                         egodata$adjacency2.S005.,egodata$adjacency2.SQ006.,egodata$adjacency2.SQ007.,egodata$adjacency2.SQ008.,
+                         egodata$adjacency2.SQ009.,egodata$adjacency2.SQ010.,egodata$adjacency2.SQ011.,egodata$adjacency2.SQ012.,
+                         egodata$adjacency2.SQ013.,egodata$adjacency2.SQ014.,egodata$adjacency2.SQ015.,egodata$adjacency2.SQ016.,
+                         egodata$adjacency2.SQ017.,egodata$adjacency2.SQ018.,egodata$adjacency2.SQ019.,egodata$adjacency2.SQ020.)
+                         =="Ja") )
+                 
+  notie <- length( which(c(egodata$adjacency2.SQ001.,egodata$adjacency2.SQ002.,egodata$adjacency2.SQ003.,egodata$adjacency2.SQ004.,
+                           egodata$adjacency2.SQ005.,egodata$adjacency2.SQ006.,egodata$adjacency2.SQ007.,egodata$adjacency2.SQ008.,
+                           egodata$adjacency2.SQ009.,egodata$adjacency2.SQ010.,egodata$adjacency2.SQ011.,egodata$adjacency2.SQ012.,
+                           egodata$adjacency2.SQ013.,egodata$adjacency2.SQ014.,egodata$adjacency2.SQ015.,egodata$adjacency2.SQ016.,
+                           egodata$adjacency2.SQ017.,egodata$adjacency2.SQ018.,egodata$adjacency2.SQ019.,egodata$adjacency2.SQ020.)=="Nee") )
+    
+  embedY <- tie/(tie+notie)
+  
+  df$embeddedness[which(df$respnr==i)] <- c(embedX,embedY)[ind]
+
+  #### ego's own position
+  df$LR.self[which(df$respnr==i)] <- as.numeric(stringr::str_extract(egodata$P1, pattern = "\\(?[0-9,.]+\\)?"))
+  df$imp_crime.self[which(df$respnr==i)] <- egodata$P2.SQ001.
+  df$imp_climate.self[which(df$respnr==i)] <- egodata$P2.SQ002.
+  df$imp_discrim.self[which(df$respnr==i)] <- egodata$P2.SQ003.
+  df$imp_housing.self[which(df$respnr==i)] <- egodata$P2.SQ004.
+  df$imp_refugee.self[which(df$respnr==i)] <- egodata$P2.SQ005.
+  df$sechand.self[which(df$respnr==i)] <- egodata$C2.SQ001.
+  df$replace.self[which(df$respnr==i)] <- egodata$C2.SQ002.
+  df$animal.self[which(df$respnr==i)] <- egodata$C2.SQ003.
+  df$fly.self[which(df$respnr==i)] <- egodata$C1.SQ001.
+  df$meat.self[which(df$respnr==i)] <- egodata$C1.SQ002.
+  df$nature.self[which(df$respnr==i)] <- egodata$C1.SQ003.
+  df$cap.self[which(df$respnr==i)] <- egodata$M1.SQ001.
+  df$student.self[which(df$respnr==i)] <- egodata$M1.SQ002.
+  df$threat.self[which(df$respnr==i)] <- egodata$M1.SQ003.
+  
+  #### ego's perception of corresponding alters' positions
+  
+  #LR
+  df$LR.perception[which(df$respnr==i)] <- 
+    c(as.numeric(stringr::str_extract(egodata$P1X,pattern = "\\(?[0-9,.]+\\)?")),
+      as.numeric(stringr::str_extract(egodata$P1Y,pattern = "\\(?[0-9,.]+\\)?")) )[ind]
+  
+  #importance of political topics
+  df$imp_crime.perception[which(df$respnr==i)] <- c(egodata$P2X.SQ001.,egodata$P2Y.SQ001.)[ind]
+  df$imp_climate.perception[which(df$respnr==i)] <- c(egodata$P2X.SQ002.,egodata$P2Y.SQ002.)[ind]
+  df$imp_discrim.perception[which(df$respnr==i)] <- c(egodata$P2X.SQ003.,egodata$P2Y.SQ003.)[ind]
+  df$imp_housing.perception[which(df$respnr==i)] <- c(egodata$P2X.SQ004.,egodata$P2Y.SQ004.)[ind]
+  df$imp_refugee.perception[which(df$respnr==i)] <- c(egodata$P2X.SQ005.,egodata$P2Y.SQ005.)[ind]
+  
+  #eco-friendly behavior
+  df$sechand.perception[which(df$respnr==i)] <- c(egodata$C2X.SQ001., egodata$C2Y.SQ001.)[ind] 
+  df$replace.perception[which(df$respnr==i)] <- c(egodata$C2X.SQ002., egodata$C2Y.SQ002.)[ind] 
+  df$animal.perception[which(df$respnr==i)] <- c(egodata$C2X.SQ003., egodata$C2Y.SQ003.)[ind] 
+  
+  #climate policy attitude
+  df$fly.perception[which(df$respnr==i)] <- c(egodata$C1X.SQ001., egodata$C1Y.SQ001.)[ind] 
+  df$meat.perception[which(df$respnr==i)] <- c(egodata$C1X.SQ002., egodata$C1Y.SQ002.)[ind] 
+  df$nature.perception[which(df$respnr==i)] <- c(egodata$C1X.SQ003., egodata$C1Y.SQ003.)[ind] 
+  
+  #migration (policy) attitude
+  df$cap.perception[which(df$respnr==i)] <- c(egodata$M1X.SQ001., egodata$M1Y.SQ001.)[ind]
+  df$student.perception[which(df$respnr==i)] <- c(egodata$M1X.SQ002., egodata$M1Y.SQ002.)[ind]
+  df$threat.perception[which(df$respnr==i)] <- c(egodata$M1X.SQ003., egodata$M1Y.SQ003.)[ind]
+
+  #### where do(es) alter(s) place themselves?
+  
+  #LR
+  
+  df$LR.truth[which(df$respnr==i)]  <- c( ifelse( length (as.numeric(stringr::str_extract(alter[which(alter$respnr==i & alter$token==egodata$attribute_9),]$P1, pattern = "\\(?[0-9,.]+\\)?"))) == 0, NA, as.numeric(stringr::str_extract(alter[which(alter$respnr==i & alter$token==egodata$attribute_9),]$P1, pattern = "\\(?[0-9,.]+\\)?"))), ifelse( length (as.numeric(stringr::str_extract(alter[which(alter$respnr==i & alter$token==egodata$attribute_10),]$P1, pattern = "\\(?[0-9,.]+\\)?"))) == 0, NA, as.numeric(stringr::str_extract(alter[which(alter$respnr==i & alter$token==egodata$attribute_10),]$P1, pattern = "\\(?[0-9,.]+\\)?"))) )[ind]
+  
+
+  #importance of topics
+  df$imp_crime.truth[which(df$respnr==i)] <- c( ifelse( length( alter[which(alter$respnr==i & alter$token==egodata$attribute_9),]$P2.SQ001) == 0, NA, alter[which(alter$respnr==i & alter$token==egodata$attribute_9),]$P2.SQ001),  ifelse( length( alter[which(alter$respnr==i & alter$token==egodata$attribute_10),]$P2.SQ001) == 0, NA, alter[which(alter$respnr==i & alter$token==egodata$attribute_10),]$P2.SQ001) )[ind]
+  
+  df$imp_climate.truth[which(df$respnr==i)] <- c( ifelse( length( alter[which(alter$respnr==i & alter$token==egodata$attribute_9),]$P2.SQ002) == 0, NA, alter[which(alter$respnr==i & alter$token==egodata$attribute_9),]$P2.SQ002),  ifelse( length( alter[which(alter$respnr==i & alter$token==egodata$attribute_10),]$P2.SQ002) == 0, NA, alter[which(alter$respnr==i & alter$token==egodata$attribute_10),]$P2.SQ002) )[ind]
+  
+  df$imp_discrim.truth[which(df$respnr==i)] <- c( ifelse( length( alter[which(alter$respnr==i & alter$token==egodata$attribute_9),]$P2.SQ003) == 0, NA, alter[which(alter$respnr==i & alter$token==egodata$attribute_9),]$P2.SQ003),  ifelse( length( alter[which(alter$respnr==i & alter$token==egodata$attribute_10),]$P2.SQ003) == 0, NA, alter[which(alter$respnr==i & alter$token==egodata$attribute_10),]$P2.SQ003) )[ind]
+
+  df$imp_housing.truth[which(df$respnr==i)] <- c( ifelse( length( alter[which(alter$respnr==i & alter$token==egodata$attribute_9),]$P2.SQ004) == 0, NA, alter[which(alter$respnr==i & alter$token==egodata$attribute_9),]$P2.SQ004),  ifelse( length( alter[which(alter$respnr==i & alter$token==egodata$attribute_10),]$P2.SQ004) == 0, NA, alter[which(alter$respnr==i & alter$token==egodata$attribute_10),]$P2.SQ004) )[ind]
+  
+  df$imp_refugee.truth[which(df$respnr==i)] <- c( ifelse( length( alter[which(alter$respnr==i & alter$token==egodata$attribute_9),]$P2.SQ005) == 0, NA, alter[which(alter$respnr==i & alter$token==egodata$attribute_9),]$P2.SQ005),  ifelse( length( alter[which(alter$respnr==i & alter$token==egodata$attribute_10),]$P2.SQ005) == 0, NA, alter[which(alter$respnr==i & alter$token==egodata$attribute_10),]$P2.SQ005) )[ind]
+
+ #eco-friendly actions
+  df$sechand.truth[which(df$respnr==i)] <- c( ifelse( length( alter[which(alter$respnr==i & alter$token==egodata$attribute_9),]$C2.SQ001) == 0, NA, alter[which(alter$respnr==i & alter$token==egodata$attribute_9),]$C2.SQ001),  ifelse( length( alter[which(alter$respnr==i & alter$token==egodata$attribute_10),]$C2.SQ001) == 0, NA, alter[which(alter$respnr==i & alter$token==egodata$attribute_10),]$C2.SQ001) )[ind]
+  
+  df$replace.truth[which(df$respnr==i)] <-  c( ifelse( length( alter[which(alter$respnr==i & alter$token==egodata$attribute_9),]$C2.SQ002) == 0, NA, alter[which(alter$respnr==i & alter$token==egodata$attribute_9),]$C2.SQ002),  ifelse( length( alter[which(alter$respnr==i & alter$token==egodata$attribute_10),]$C2.SQ002) == 0, NA, alter[which(alter$respnr==i & alter$token==egodata$attribute_10),]$C2.SQ002) )[ind]
+  
+  df$animal.truth[which(df$respnr==i)] <- c( ifelse( length( alter[which(alter$respnr==i & alter$token==egodata$attribute_9),]$C2.SQ003) == 0, NA, alter[which(alter$respnr==i & alter$token==egodata$attribute_9),]$C2.SQ003),  ifelse( length( alter[which(alter$respnr==i & alter$token==egodata$attribute_10),]$C2.SQ003) == 0, NA, alter[which(alter$respnr==i & alter$token==egodata$attribute_10),]$C2.SQ003) )[ind]
+  
+  #climate policy
+  df$fly.truth[which(df$respnr==i)] <- c( ifelse( length( alter[which(alter$respnr==i & alter$token==egodata$attribute_9),]$C1.SQ001) == 0, NA, alter[which(alter$respnr==i & alter$token==egodata$attribute_9),]$C1.SQ001),  ifelse( length( alter[which(alter$respnr==i & alter$token==egodata$attribute_10),]$C1.SQ001) == 0, NA, alter[which(alter$respnr==i & alter$token==egodata$attribute_10),]$C1.SQ001) )[ind]
+  
+  df$meat.truth[which(df$respnr==i)] <- c( ifelse( length( alter[which(alter$respnr==i & alter$token==egodata$attribute_9),]$C1.SQ002) == 0, NA, alter[which(alter$respnr==i & alter$token==egodata$attribute_9),]$C1.SQ002),  ifelse( length( alter[which(alter$respnr==i & alter$token==egodata$attribute_10),]$C1.SQ002) == 0, NA, alter[which(alter$respnr==i & alter$token==egodata$attribute_10),]$C1.SQ002) )[ind]
+  
+  df$nature.truth[which(df$respnr==i)] <- c( ifelse( length( alter[which(alter$respnr==i & alter$token==egodata$attribute_9),]$C1.SQ003) == 0, NA, alter[which(alter$respnr==i & alter$token==egodata$attribute_9),]$C1.SQ003),  ifelse( length( alter[which(alter$respnr==i & alter$token==egodata$attribute_10),]$C1.SQ003) == 0, NA, alter[which(alter$respnr==i & alter$token==egodata$attribute_10),]$C1.SQ003) )[ind]
+  
+  #migration
+  df$cap.truth[which(df$respnr==i)] <- c( ifelse( length( alter[which(alter$respnr==i & alter$token==egodata$attribute_9),]$M1.SQ001) == 0, NA, alter[which(alter$respnr==i & alter$token==egodata$attribute_9),]$M1.SQ001),  ifelse( length( alter[which(alter$respnr==i & alter$token==egodata$attribute_10),]$M1.SQ001) == 0, NA, alter[which(alter$respnr==i & alter$token==egodata$attribute_10),]$M1.SQ001) )[ind]
+  
+  df$student.truth[which(df$respnr==i)] <- c( ifelse( length( alter[which(alter$respnr==i & alter$token==egodata$attribute_9),]$M1.SQ002) == 0, NA, alter[which(alter$respnr==i & alter$token==egodata$attribute_9),]$M1.SQ002),  ifelse( length( alter[which(alter$respnr==i & alter$token==egodata$attribute_10),]$M1.SQ002) == 0, NA, alter[which(alter$respnr==i & alter$token==egodata$attribute_10),]$M1.SQ002) )[ind]
+  
+  df$threat.truth[which(df$respnr==i)] <- c( ifelse( length( alter[which(alter$respnr==i & alter$token==egodata$attribute_9),]$M1.SQ003) == 0, NA, alter[which(alter$respnr==i & alter$token==egodata$attribute_9),]$M1.SQ003),  ifelse( length( alter[which(alter$respnr==i & alter$token==egodata$attribute_10),]$M1.SQ003) == 0, NA, alter[which(alter$respnr==i & alter$token==egodata$attribute_10),]$M1.SQ003) )[ind]
+
+}
+
+#based on this, calculate ego's accuracy in positioning alter
+#1-(|perception-truth|/range)
+
+#but first, convert positions to numeric
+df[,20:length(df)] <- lapply(names(df)[-c(1:19)], function(x) as.numeric(df[[x]]))
+
+{
+df$LR.accuracy <- 1-abs(df$LR.perception-df$LR.truth)/11
+df$imp_crime.accuracy <- 1-abs(df$imp_crime.perception-df$imp_crime.truth)/4
+df$imp_climate.accuracy <- 1-abs(df$imp_climate.perception-df$imp_climate.truth)/4
+df$imp_discrim.accuracy <- 1-abs(df$imp_discrim.perception-df$imp_discrim.truth)/4
+df$imp_housing.accuracy <- 1-abs(df$imp_housing.perception-df$imp_housing.truth)/4
+df$imp_refugee.accuracy <- 1-abs(df$imp_refugee.perception-df$imp_refugee.truth)/4
+df$sechand.accuracy <- 1-abs(df$sechand.perception-df$sechand.truth)/4
+df$replace.accuracy <- 1-abs(df$replace.perception-df$replace.truth)/4
+df$animal.accuracy <- 1-abs(df$animal.perception-df$animal.truth)/4
+df$fly.accuracy <- 1-abs(df$fly.perception-df$fly.truth)/4
+df$meat.accuracy <- 1-abs(df$meat.perception-df$meat.truth)/4
+df$nature.accuracy <- 1-abs(df$nature.perception-df$nature.truth)/4
+df$cap.accuracy <- 1-abs(df$cap.perception-df$cap.truth)/4
+df$student.accuracy <- 1-abs(df$student.perception-df$student.truth)/4
+df$threat.accuracy <- 1-abs(df$threat.perception-df$threat.truth)/4
+}
+
+df.ego <- df
+rm(df)
+#fix(df.ego)
+```
+
+<br>
+
+
+## accuracy from alter's perspective
+
+```{r , eval=F}
+#make an (empty) dataframe to store output in, with a row for each alter-ego dyad
+
+df <- data.frame(respnr = alter$respnr,
+                 dyad = NA,
+                 tie = NA,
+                 ego = "alter",
+                 
+                 #ego characteristics
+                 ego_gender = NA,
+                 ego_educ = NA,
+                 ego_age = NA,
+                 
+                 #alter
+                 alter_gender = NA,
+                 alter_educ = NA,
+                 alter_age = NA,
+                 
+                 #sameness
+                 same_gender = NA,
+                 same_educ = NA,
+                 same_age = NA,
+                 
+                 #networks
+                 cdn = NA,
+                 study = NA,
+                 bff = NA,
+                 csn = NA, 
+                 
+                 #dyad
+                 duration = NA,
+                 
+                 #structure
+                 embeddedness = NA,
+                 
+                 #### opionions ######
+                 
+                 #left right placement
+                 LR.self = NA,
+                 LR.perception = NA,
+                 LR.truth = NA,
+                 LR.accuracy = NA,
+                 
+                 #importance of political themes
+                 imp_crime.self = NA,
+                 imp_crime.perception = NA, #crime
+                 imp_crime.truth = NA,
+                 imp_crime.accuracy = NA,
+                 imp_climate.self = NA,
+                 imp_climate.perception = NA, #climate
+                 imp_climate.truth = NA,
+                 imp_climate.accuracy = NA,
+                 imp_discrim.self = NA,
+                 imp_discrim.perception = NA, #discrimination 
+                 imp_discrim.truth = NA,
+                 imp_discrim.accuracy = NA,
+                 imp_housing.self = NA,
+                 imp_housing.perception = NA, #housing shortage
+                 imp_housing.truth = NA,
+                 imp_housing.accuracy = NA,
+                 imp_refugee.self = NA,
+                 imp_refugee.perception = NA, #refugees
+                 imp_refugee.truth = NA,
+                 imp_refugee.accuracy = NA,
+          
+                 #eco-friendly actions
+                 sechand.self = NA,
+                 sechand.perception = NA, #buying second hand products
+                 sechand.truth = NA,
+                 sechand.accuracy = NA,
+                 replace.self = NA,
+                 replace.perception = NA, #using items as long as possible before replacement
+                 replace.truth = NA, 
+                 replace.accuracy = NA,
+                 animal.self = NA,
+                 animal.perception = NA, #reduced consumption of animal products
+                 animal.truth = NA, 
+                 animal.accuracy = NA, 
+                 
+                 #climate policy
+                 fly.self = NA,
+                 fly.perception = NA, #flight tax
+                 fly.truth = NA,
+                 fly.accuracy = NA,
+                 meat.self = NA,
+                 meat.perception = NA, #meat tax
+                 meat.truth = NA, 
+                 meat.accuracy = NA,
+                 nature.self = NA,
+                 nature.perception = NA, #expandng nature reserves
+                 nature.truth = NA, 
+                 nature.accuracy = NA, 
+                 
+                 #migration (policy)
+                 cap.self = NA,
+                 cap.perception = NA, #annual cap on asylum seekers
+                 cap.truth = NA,
+                 cap.accuracy = NA,
+                 student.self=NA,
+                 student.perception = NA, #international students 'enrich' Dutch universities
+                 student.truth = NA, 
+                 student.accuracy = NA, 
+                 threat.self = NA,
+                 threat.perception = NA, #migration as a threat to Dutch culture
+                 threat.truth = NA, 
+                 threat.accuracy = NA)
+                 
+#reorder
+df <- df[order(df$respnr),]
+rownames(df) <- 1:nrow(df)
+
+#now, ego characteristics are alter characteristics, and vice versa
+gender <- df.ego$ego_gender
+gender2 <- df.ego$alter_gender
+
+df$ego_gender <- gender2
+df$alter_gender <- gender
+
+#also for age and educ
+educ <- df.ego$ego_educ
+educ2 <- df.ego$alter_educ
+
+df$ego_educ <- educ2
+df$alter_educ <- educ
+
+age <- df.ego$ego_age
+age2 <- df.ego$alter_age
+
+df$ego_age <- age2
+df$alter_age <- age
+
+# same and duration are similar (symmetric)
+df$same_age <- df.ego$same_age
+df$same_educ <- df.ego$same_educ
+df$same_gender <- df.ego$same_gender
+df$duration <- df.ego$duration
+
+#assumption: relation are undirected
+df$cdn <- df.ego$cdn
+df$study <- df.ego$study
+df$bff <- df.ego$bff
+df$csn <- df.ego$csn
+
+df$dyad <- df.ego$dyad
+
+for (i in unique(df$respnr)) {
+  #unique(df$respnr)[10]->i
+   
+  #get egodata corresponding to i
+  egodata <- ego[which(ego$respnr==i),]
+  
+  #some double ego-responses (for those who did not complete, but did send the invitation to alters). I take the response that reached the latest page.
+  egodata <- egodata[ which(egodata$lastpage == max(egodata$lastpage[!is.na(egodata$lastpage)])), ] 
+  
+  #get alterdata
+  alterdata <- alter[which(alter$respnr==i),]
+  
+  #give correct order (alter x first, then y)
+  alterdata <- alterdata[c(which(alterdata$token==egodata$attribute_9),which(alterdata$token==egodata$attribute_10)),]
+  
+  df$tie[which(df$respnr==i)] <- as.numeric(paste0(df$dyad[which(df$respnr==i)], "2"))
+  
+  ### alter's own placement/opinion
+  df$LR.self[which(df$respnr==i)] <- as.numeric(stringr::str_extract(alterdata$P1, pattern = "\\(?[0-9,.]+\\)?"))
+  df$imp_crime.self[which(df$respnr==i)] <- alterdata$P2.SQ001.
+  df$imp_climate.self[which(df$respnr==i)] <- alterdata$P2.SQ002.
+  df$imp_discrim.self[which(df$respnr==i)] <- alterdata$P2.SQ003.
+  df$imp_housing.self[which(df$respnr==i)] <- alterdata$P2.SQ004.
+  df$imp_refugee.self[which(df$respnr==i)] <- alterdata$P2.SQ005.
+  df$sechand.self[which(df$respnr==i)] <- alterdata$C2.SQ001.
+  df$replace.self[which(df$respnr==i)] <- alterdata$C2.SQ002.
+  df$animal.self[which(df$respnr==i)] <- alterdata$C2.SQ003.
+  df$fly.self[which(df$respnr==i)] <- alterdata$C1.SQ001.
+  df$meat.self[which(df$respnr==i)] <- alterdata$C1.SQ002.
+  df$nature.self[which(df$respnr==i)] <- alterdata$C1.SQ003.
+  df$cap.self[which(df$respnr==i)] <- alterdata$M1.SQ001.
+  df$student.self[which(df$respnr==i)] <- alterdata$M1.SQ002.
+  df$threat.self[which(df$respnr==i)] <- alterdata$M1.SQ003.
+  
+  
+  #### alter's perception of ego's position
+  
+  #LR
+  df$LR.perception[which(df$respnr==i)] <- as.numeric(stringr::str_extract(alterdata$P1X, pattern = "\\(?[0-9,.]+\\)?"))
+  
+  #importance of political topics
+  df$imp_crime.perception[which(df$respnr==i)] <- alterdata$P2X.SQ001.
+  df$imp_climate.perception[which(df$respnr==i)] <- alterdata$P2X.SQ002.
+  df$imp_discrim.perception[which(df$respnr==i)] <- alterdata$P2X.SQ003.
+  df$imp_housing.perception[which(df$respnr==i)] <- alterdata$P2X.SQ004.
+  df$imp_refugee.perception[which(df$respnr==i)] <- alterdata$P2X.SQ005.
+
+  #eco-friendly behavior
+  df$sechand.perception[which(df$respnr==i)] <- alterdata$C2X.SQ001.
+  df$replace.perception[which(df$respnr==i)] <- alterdata$C2X.SQ002.
+  df$animal.perception[which(df$respnr==i)] <- alterdata$C2X.SQ003.
+  
+  #climate policy attitude
+  df$fly.perception[which(df$respnr==i)] <- alterdata$C1X.SQ001.
+  df$meat.perception[which(df$respnr==i)] <- alterdata$C1X.SQ002.
+  df$nature.perception[which(df$respnr==i)] <- alterdata$C1X.SQ003.
+  
+  #migration (policy) attitude
+  df$cap.perception[which(df$respnr==i)] <- alterdata$M1X.SQ001.
+  df$student.perception[which(df$respnr==i)] <- alterdata$M1X.SQ002.
+  df$threat.perception[which(df$respnr==i)] <- alterdata$M1X.SQ003.
+
+  #### where does ego place himself?
+  df$LR.truth[which(df$respnr==i)] <- as.numeric(stringr::str_extract(egodata$P1, pattern = "\\(?[0-9,.]+\\)?"))
+
+  #importance of topics
+  df$imp_crime.truth[which(df$respnr==i)] <- egodata$P2.SQ001.
+  df$imp_climate.truth[which(df$respnr==i)] <- egodata$P2.SQ002.
+  df$imp_discrim.truth[which(df$respnr==i)] <- egodata$P2.SQ003.
+  df$imp_housing.truth[which(df$respnr==i)] <- egodata$P2.SQ004.
+  df$imp_refugee.truth[which(df$respnr==i)] <- egodata$P2.SQ005.
+  
+  #eco-friendly actions
+  df$sechand.truth[which(df$respnr==i)] <- egodata$C2.SQ001.
+  df$replace.truth[which(df$respnr==i)] <- egodata$C2.SQ002.
+  df$animal.truth[which(df$respnr==i)] <- egodata$C2.SQ003.
+  
+  #climate policy
+  df$fly.truth[which(df$respnr==i)] <- egodata$C1.SQ001.
+  df$meat.truth[which(df$respnr==i)] <- egodata$C1.SQ002.
+  df$nature.truth[which(df$respnr==i)] <- egodata$C1.SQ003.
+  
+  #migration
+  df$cap.truth[which(df$respnr==i)] <- egodata$M1.SQ001.
+  df$student.truth[which(df$respnr==i)] <- egodata$M1.SQ002.
+  df$threat.truth[which(df$respnr==i)] <- egodata$M1.SQ003.
+}
+
+#based on this, calculate alter's accuracy in positioning ego
+#1-(|perception-truth|/range)
+#names(df)
+#but first, convert positions to numeric
+df[,20:length(df)] <- lapply(names(df)[-c(1:19)], function(x) as.numeric(df[[x]]))
+
+{
+df$LR.accuracy <- 1-abs(df$LR.perception-df$LR.truth)/11
+df$imp_crime.accuracy <- 1-abs(df$imp_crime.perception-df$imp_crime.truth)/4
+df$imp_climate.accuracy <- 1-abs(df$imp_climate.perception-df$imp_climate.truth)/4
+df$imp_discrim.accuracy <- 1-abs(df$imp_discrim.perception-df$imp_discrim.truth)/4
+df$imp_housing.accuracy <- 1-abs(df$imp_housing.perception-df$imp_housing.truth)/4
+df$imp_refugee.accuracy <- 1-abs(df$imp_refugee.perception-df$imp_refugee.truth)/4
+df$sechand.accuracy <- 1-abs(df$sechand.perception-df$sechand.truth)/4
+df$replace.accuracy <- 1-abs(df$replace.perception-df$replace.truth)/4
+df$animal.accuracy <- 1-abs(df$animal.perception-df$animal.truth)/4
+df$fly.accuracy <- 1-abs(df$fly.perception-df$fly.truth)/4
+df$meat.accuracy <- 1-abs(df$meat.perception-df$meat.truth)/4
+df$nature.accuracy <- 1-abs(df$nature.perception-df$nature.truth)/4
+df$cap.accuracy <- 1-abs(df$cap.perception-df$cap.truth)/4
+df$student.accuracy <- 1-abs(df$student.perception-df$student.truth)/4
+df$threat.accuracy <- 1-abs(df$threat.perception-df$threat.truth)/4
+}
+
+#psych::describe(df[,which(grepl("accuracy", names(df)))])
+df.alter <- df
+rm(df)
+```
+
+<br>
+
+### rbind data-frames
+
+```{r,eval=F}
+df.alter$embeddedness <- NA
+df <- rbind(df.ego,df.alter)
+
+#reorder by ego id
+df <- df[order(df$dyad),]
+rownames(df) <- 1:nrow(df)
+#fix(df)
+``` 
+
+<br>
+
+## save
+
+```{r,eval=F}
+fsave(df, "egonets.rda")
+```
+
+<br>
+
+# Output
+
+```{r, echo=FALSE}
+df <- fload("./data/processed/20250905egonets.Rda")
+options(knitr.kable.NA='')
+
+knitr::kable(df, digit=2, "html", caption="Output") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover")) %>%
+  kableExtra::scroll_box(width = "100%", height = "300px")
+
+```
+
+----
+
+## References
+

@@ -44,3 +44,85 @@ To copy the code, click the button in the upper right corner of the code-chunks.
 rm(list=ls())
 gc()
 ```
+
+<br>
+
+
+## general custom functions
+
+- `fpackage.check`: Check if packages are installed (and install if not) in R
+- `fsave`: Function to save data with time stamp in correct directory
+- `fload`: Function to load R-objects under new names
+- `fshowdf`: Print objects (`tibble` / `data.frame`) nicely on screen in `.Rmd`
+
+```{r, fun}
+fpackage.check <- function(packages) {
+    lapply(packages, FUN = function(x) {
+        if (!require(x, character.only = TRUE)) {
+            install.packages(x, dependencies = TRUE)
+            library(x, character.only = TRUE)
+        }
+    })
+}
+
+fsave <- function(x, location = "./data/processed/") {
+  if (location == "./data/processed/") {
+  ifelse(!dir.exists("data"), dir.create("data"), FALSE)
+  ifelse(!dir.exists("data/processed"), dir.create("data/processed"), FALSE)
+  }
+
+  object = deparse(substitute(x))
+  datename <- substr(gsub("[:-]", "", Sys.time()), 1, 8)
+  totalname <- paste(location, object, "_", datename,  ".rda", sep = "")
+  assign(eval(object), x, envir = .GlobalEnv)
+  print(paste("SAVED: ", totalname, sep = ""))
+  save(list = object, file = totalname)  
+}
+
+fload  <- function(fileName){
+  load(fileName)
+  get(ls()[ls() != "fileName"])
+}
+
+fshowdf <- function(x, caption = NULL, digits = 2, footnote = NULL, ...) {
+    knitr::kable(x, digits = digits, "html", caption = caption, ...) %>%
+        kableExtra::footnote(general = footnote) %>%
+        kableExtra::kable_styling(bootstrap_options = c("striped", "hover")) %>%
+        kableExtra::scroll_box(width = "100%", height = "300px")
+}
+```
+
+
+<br>
+
+## necessary packages
+
+- `tidyverse`: data wrangling
+
+```{r, packages, message=FALSE, results='hide'}
+packages = c("tidyverse")
+fpackage.check(packages)
+rm(packages)
+```
+<br>
+
+---
+
+# Download data files
+
+Download the data files from the [LISS data archive](https://www.dataarchive.lissdata.nl/study-units/view/1). Note that you must join the LISS community and create an account to access the downloads.
+
+[Links to files]
+
+Download the data-files, unzip them if needed, and put them in the `./data/` folder. But first, make a `./data/` folder:
+
+```{r, eval=FALSE}
+ifelse(!dir.exists("data"), dir.create("data"), FALSE)
+``` 
+
+---- 
+
+# Import data
+
+
+
